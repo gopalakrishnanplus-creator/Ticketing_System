@@ -1,0 +1,63 @@
+Form title,Screening Tool for  Acute Vomiting,,,,
+Purpose of Screening Tool,"The purpose of this screening tool is to help identify red flags in children with vomiting that may indicate a special condition. The screening tool is not a diagnostic test, but a way to be alerted to the presence of a redflag and decide on the appropriate course of action.
+",,,,
+Usage,To be used as many times as sent  by your doctor,,,,
+Sr No,Question,Options,Red Flag Trigger,Answer for patient	,Redflag_id
+1,"Is the child conscious & alert ? 
+",Yes,,,
+,,No,Child with acute vomiting is not alert and consious,Child is not consicous and alert,9900012
+,,,,,
+2,Does the child seem weak & dehydrated ?,Yes,Child with acute vomiting seems weak & dehydrated,Child seems weak & dehydrated,9900021
+,,No,,,
+,,,,,
+3,Is the child drinking orally ? ,Yes,,,
+,,No,Child with acute vomiting not drinking orally,Child is not drinking orally,9900032
+,,,,,
+4,Is the child passing urine in sufficient quantity? ,Yes,,,
+,,No,Child with acute vomiting not passing urine in sufficient quantity,Child is not passing urine in sufficient quantity,9900042
+,,,,,
+5,"Are there any other symptoms like Fever, Diarrhoea or pain in the abdomen? (multiple)
+",Fever,Child with acute vomiting has fever,Child has fever,9900051
+,,Diarrhoea,Child with acute vomiting has dirrhoea,Child has diarrhoea,9900052
+,,Pain in abdomen,Child with acute vomiting has pain abdomen,Child has pain in abdomen,9900053
+,,No such symptoms,,,
+,,,,,
+6,Is the abdomen of the child distended ? ,Yes,Child with acute vomiting has distended abdomen,Abdomen of the child is stretched out,9900061
+,,No,,,
+,,,,,
+7,What is the frequency of vomiting?,Less than 4,,,
+,,More than 4,Child with acute vomiting has frequency of vomiting is more than 4,Frequency of vomiting is more than 4,9900072
+,,,,,
+8,What is the duration of vomiting?,Less than 2 days,,,
+,,More than 2 days,Child with acute vomiting has duration of vomiting is of more 2 days,Duration of vomiting is of more 2 days,9900082
+,,,,,
+9,What is the quantity of the vomiting?,Small Amount,,,
+,,Moderate Amount,,,
+,,Large or forceful vomiting,Child with acute vomiting has large or forceful vomiting,Large or forceful vomiting,9900093
+,,,,,
+10,What is the colour of vomiting?,Yellow or Green,Child with acute vomiting has yellow or green coloured vomiting,Colour of vomiting: Yellow or Green,9900101
+,,Brown or Coffee-Ground Like,Child with acute vomiting has Brown or Coffee-Ground Like vomiting,Colour of vomiting:Brown or Coffee-Ground Like,9900102
+,,Red,Child with acute vomiting has red coloured vomiting,Colour of vomiting:Red,9900103
+,,Black,Child with acute vomiting has black coloured vomiting,Colour of vomiting:Black,9900104
+,,White,,,
+,,,,,
+11,Are there any other family members suffering from similar complaints?,Yes,Child with acute vomiting have other family members are suffering from similar complaints,Other family members are suffering from similar complaints,99001111
+,,No,,,
+,,,,,
+12,Does the child have a history of eating junk food or street food?,Yes,Child with acute vomiting have history of eating junk food or street food ,Child has a history of eating junk food or street food ,9900121
+,,No,,,
+,,,,,
+,Has your child experienced any severe headaches accompanied by vomiting?,Yes,Child with acute vomiting have experienced severe headaches accompanied by vomiting,Child experienced severe headaches accompanied by vomiting,
+,,No,,,
+,,,,,
+,Has your child shown any signs of difficulty breathing along with vomiting?,Yes,Child with acute vomiting have shown signs of difficulty breathing along with vomiting,Child shown signs of difficulty breathing along with vomiting,
+,,No,,,
+,,,,,
+,Has a rash appeared on your child's body along with vomiting?,Yes,Child with acute vomiting have Rash appeared on child's body ,Rash appeared on child's body along with vomiting,
+,,No,,,
+,,,,,
+,Has your child been unusually lethargic or unresponsive? ,Yes,Child with acute vomiting have been unusually lethargic or unresponsive,Child been unusually lethargic or unresponsive,
+,,No,,,
+,,,,,
+,Has your child suffered any head injury or trauma recently before starting to vomit?,Yes,Child with acute vomiting have suffered head injury or trauma recently before starting to vomit,Child suffered head injury or trauma recently before starting to vomit,
+,,No,,,

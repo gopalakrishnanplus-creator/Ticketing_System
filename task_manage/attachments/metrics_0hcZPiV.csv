@@ -1,0 +1,6 @@
+department__name,tickets_raised,tickets_received,tickets_closed,open_tickets
+CONTENT,4,4,0,0
+MANAGEMENT,1,1,0,0
+PRODUCT,8,8,1,0
+SALES,1,1,0,0
+TECHNOLOGY,16,16,0,0

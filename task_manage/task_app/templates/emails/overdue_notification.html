@@ -1,0 +1,6 @@
+<p>Hi {{ manager.get_full_name }},</p>
+<p>The following ticket is overdue:</p>
+<p><strong>Ticket number:</strong> {{ ticket.task_id }}</p>
+<p><strong>Subject:</strong> {{ ticket.subject }}</p>
+<a href="{{ view_ticket_url }}" style="background: #4CAF50; color: white; padding: 10px 15px; text-decoration: none;">View Ticket</a>
+<p>Thank you!<br>System</p>

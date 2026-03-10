@@ -1,0 +1,61 @@
+,Screening Tool for Excessive Sleepiness,,,,,
+Purpose of Screening Tool,"The purpose of this screening tool is to help identify red flags in children with excessive sleepiness that may indicate a special condition. The screening tool is not a diagnostic test, but a way to be alerted to the presence of a redflag and decide on the appropriate course of action.
+",,,,,
+Usage,To be used as many times as sent  by your doctor,,,,,
+Sr No,Question,Options,Red Flag Trigger,Answer for patient,Redflag_id,At-a- glance information
+1,"Has the child been sleeping more than usual? If yes,how long has it been?","If yes, <Free Text>",,"The child has been sleeping more than usual , <Free Text >",10200011,"The child's increased need for sleep could be indicative of hypersomnia or other sleep disorders, possibly stemming from underlying infections or psychological issues such as depression. A detailed sleep history, sleep pattern assessment, and possibly a referral to a sleep specialist for further evaluation, including polysomnography, might be necessary for accurate diagnosis."
+,,No,,,,
+,,,,,,
+2,Does the child have Fever?,Yes,,The child has been sleeping more than usual with Fever,10200021,"Persistent fever in a child is a red flag, potentially pointing to infections or inflammatory diseases. It's crucial to evaluate the duration, pattern, and associated symptoms (like rash, weight loss, or joint pain). Blood tests, urine analysis, and possibly imaging studies may be necessary to identify the underlying cause."
+,,No,,,,
+,,,,,,
+3,"Is the child Vomiting?
+",Yes,Yes,Child has Vomitting and excessive sleepiness,10200031,"Frequent vomiting could indicate gastrointestinal infections or central nervous system disorders. Assessment of associated symptoms such as diarrhea, abdominal pain, or neurological signs is key. Depending on the clinical context, referral to a gastroenterologist for further evaluation or neuroimaging might be warranted."
+,,No,,,,
+,,,,,,
+4,Is the child complaining of Headache/irritability?,Yes,Yes,The child has been sleeping more than usual with Complaining of headache/irritability,10200041,"These symptoms can be associated with migraines, CNS disorders, infections, or psychological stress. A thorough neurological examination and history-taking, focusing on headache onset, duration, and associated features like photophobia or nausea, are essential. Neuroimaging or referral to a neurologist may be necessary for further evaluation."
+,,No,,,,
+,,,,,,
+5,Is the child having symptoms of Fits?,Yes,Yes,The child has been sleeping more than usual and having symptoms of fits,10200051,"Witnessed fits in a child are concerning for epilepsy or other neurological disorders. It's important to determine the type, frequency, and triggers of these episodes. An EEG and neuroimaging, along with a referral to a pediatric neurologist, are crucial for differential diagnosis."
+,,No,,,,
+,,,,,,
+6,Has the child shown any abnormal behavior in the last 3 days?,"Yes , Specify: ",Yes,The child has been sleeping more than usual and has shown abnormal behavior in the last 3 days: <text>,10200061,"Recent onset of abnormal behavior could suggest psychological disorders, neurological issues, or infections. A comprehensive evaluation of mental status, developmental history, and potential exposure to toxins or infections is necessary. Referral to a child psychologist or pediatric neurologist may be indicated based on the findings."
+,,No,,,,
+,,,,,,
+7,Is the child eating regularly?,Yes,,,,
+,,No,,The child has been sleeping more than usual and not eating regularly,10200072,"Lack of regular eating can point towards eating disorders, gastrointestinal issues, or infections. Assessment of dietary habits, associated symptoms like weight loss or abdominal pain, and nutritional status is key. Depending on the findings, referral to a dietitian or gastroenterologist might be needed."
+,,,,,,
+8,"Time since urine last passed?
+","1 Hour
+
+",,,,
+,,"3 Hours
+",,,,
+,,"5 hours
+",,,,
+,,More than 5 hours,Yes,The child has been sleeping more than usual and time since urine last passed- More than 5 hours ,10200084,"Prolonged urinary retention can be a sign of a urinary tract infection, dehydration, or kidney disease. A urinalysis, renal function tests, and ultrasound of the kidneys and bladder are important for diagnosing the underlying cause. A referral to a nephrologist may be warranted based on the results."
+,,,,,,
+9,Has the child taken any medicines/prescribed drugs?,"If yes, medicine name -  <Free Text>",,The child has been sleeping more than usual and the child has taken medicines/prescribed drugs. <Medicine Name>,10200091,"Recent medication or drug use can lead to side effects or allergic reactions. It's important to assess the type of medication, dosage, and onset of symptoms post-administration. Depending on the medication and symptoms, monitoring and possibly a referral to a toxicologist or relevant specialist might be required."
+,,No,,,,
+,,,,,,
+10,Any major illness in the past?,"Yes
+<free text>",Yes,The child has been sleeping more than usual and there is history of major illness in the past <free text>,10200101,"A history of major illness could have ongoing implications or risk of recurrence. Detailed medical history, focusing on the previous illness, its treatment, and current symptoms, is crucial. A referral to a specialist related to the past illness for a comprehensive evaluation and monitoring is recommended."
+,,No,,,,
+,,,,,,
+,Have you noticed any of the following:,"Consistently have difficulty waking up in the morning, even after going to bed at an appropriate time",Yes,"The child has been sleeping more than usual and difficulty Waking Up in the Morning, Despite Appropriate Bedtime",,
+,,,,,,
+,,Child appear sleepy or fall asleep during the day despite seemingly getting enough sleep at night,Yes,The child has been sleeping more than usual and child appear sleepy or fall asleep during the day despite seemingly getting enough sleep at night,,
+,,,,,,
+,,Decline in your child's academic performance or a decrease in their ability to concentrate on schoolwork,Yes,The child has been sleeping more than usual and decline in your child's academic performance or a decrease in their ability to concentrate on schoolwork,,
+,,,,,,
+,,"Child snore loudly, gasp for air, or stop breathing for short periods during sleep",Yes,"The child has been sleeping more than usual and child snore loudly, gasp for air, or stop breathing for short periods during sleep",,
+,,,,,,
+,,Having difficulty concentrating or experiencing memory problems recently,Yes,The child has been sleeping more than usual and having difficulty concentrating or experiencing memory problems recently,,
+,,,,,,
+,,Increase in your child's appetite or unexpected weight gain,Yes,The child has been sleeping more than usualand increase in child's appetite or unexpected weight gain,,
+,,,,,,
+,,"Unusual behaviors during sleep, such as sleepwalking, experiencing night terrors, or having severe nightmares",Yes,"The child has been sleeping more than usual and unusual behaviors during sleep, such as sleepwalking, experiencing night terrors, or having severe nightmares",,
+,,,,,,
+,,Consume caffeine or energy drinks to stay awake during the day,Yes,The child has been sleeping more than usual and consume caffeine or energy drinks to stay awake during the day,,
+,,,,,,
+,,None,,,,

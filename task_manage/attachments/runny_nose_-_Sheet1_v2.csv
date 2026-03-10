@@ -1,0 +1,78 @@
+Form title,Screening Tool for Running nose,,`,,,,
+Purpose of Screening Tool,"The purpose of this screening tool is to help identify red flags in children with Chronic Recurrent Running nose that may indicate a special condition. The screening tool is not a diagnostic test, but a way to be alerted to the presence of a redflag and decide on the appropriate course of action.
+",,,,,,
+Usage,To be used as many times as sent  by your doctor,,,,,,
+Conditions,Sr No,Question,Options,Red Flag Trigger,Redflag response,Redflag_ID,At-a-glance information
+,1,Is the nasal discharge almost daily ?,Yes,Yes,Nasal discharge is almost daily ,10000011,"A daily nasal discharge suggests chronic rhinitis, but further evaluation is needed to determine the underlying cause. Consider allergen exposure, irritants, and infections. Perform a thorough history and physical exam, including allergy testing, to differentiate between allergic and non-allergic causes."
+,,,No,,,,
+,,,,,,,
+if yes for Q1,2,"If yes, is it present like that on certain months in a year?",Yes,Yes,Nasal discharge is present  on certain months in a year,10000021,Seasonal occurrence points to seasonal allergic rhinitis. Start with a detailed allergy history and skin prick tests for common allergens. Rule out other seasonal factors like infections. Consider referral to an allergist for specialized evaluation.
+,,,No,,,,
+,,,,,,,
+If no for Q1,3,"If no, is it at least 15 days in a month ?",Yes,Yes,Nasal discharge is at least 15 days in a month,10000031,A frequent nasal discharge may indicate persistent allergic rhinitis. Assess potential allergen exposures and environmental triggers. Perform allergy testing and consider allergist consultation for comprehensive management.
+,,,No,,,,
+,,,,,,,
+,4,Is the nasal discharge mostly watery?,Yes,Yes,Nasal discharge is mostly watery,10000041,"Watery discharge suggests an allergic etiology or viral infection. Evaluate for allergen exposure, check for associated symptoms, and conduct viral screening. Further investigations may include allergy testing and consultation with an allergist or pediatric infectious disease specialist."
+,,,No,,,,
+,,,,,,,
+,5, Is the nasal discharge associated with sneezing?,Yes,Yes,Nasal discharge is associated with sneezing ,10000051,"Sneezing along with nasal discharge commonly occurs in allergic rhinitis or viral infections. Rule out potential allergen exposure, perform allergy testing, and consider an infectious disease evaluation if necessary."
+,,,No,,,,
+,,,,,,,
+,6,Is the nasal discharge associated with blocked nose?,Yes,Yes,"Nasal discharge is associated with blocked nose 
+",10000061,Nasal blockage suggests allergic rhinitis or sinusitis. Assess for chronic sinus issues and consider imaging if necessary. Consultation with an allergist or an ENT specialist may be needed for further evaluation and management.
+,,,No,,,,
+,,,,,,,
+,7,Is there associated eye redness?,Yes,Yes,Nasal discharge associated with eye redness ,10000071,Eye redness alongside nasal symptoms could indicate allergic rhinitis or conjunctivitis. Perform a thorough eye examination and allergy testing. Referral to an ophthalmologist may be warranted for eye-specific concerns.
+,,,No,,,,
+,,,,,,,
+,8,Is there itching in the eyes of the child?,Yes,Yes,Running nose and Itching in the eyes with nasal discharge,10000081, Eye itching is often linked to allergies or conjunctivitis. Assess for allergen exposure and perform eye examinations. Consult an allergist or an ophthalmologist for specialized evaluation if needed.
+,,,No,,,,
+,,,,,,,
+,9,Is there associated breathing difficulties?,Yes,Yes,Running nose with breathing difficulties,10000091,Breathing difficulties may indicate underlying asthma or severe allergic reactions. Conduct lung function tests and consider referral to a pulmonologist for asthma evaluation. Address any acute concerns promptly.
+,,,No,,,,
+,,,,,,,
+,10,Is there associated cough?,Yes,Yes,Cough is associated  with running nose,10000101,"Cough, a common symptom, can accompany various underlying conditions. It may be associated with allergic rhinitis, asthma, bronchitis, or other respiratory issues. Investigate the duration, frequency, and characteristics of the cough. Consider pulmonary function tests and chest X-rays to assess lung health. Consultation with a pulmonologist may be warranted if the cough persists or worsens."
+,,,No,,,,
+,,,,,,,
+,11,Is there any skin itching?,Yes,Yes,Itchy skin with running nose,10000111,"The presence of skin itching in conjunction with nasal symptoms suggests a potential link to atopic conditions, such as atopic dermatitis. Itching may contribute to the overall discomfort of the child. Conduct a thorough dermatological evaluation to diagnose and manage any skin issues effectively. Collaboration with a dermatologist can provide specialized care tailored to the child's needs."
+,,,No,,,,
+,,,,,,,
+,12,Is the nasal discharge only on one side?,Yes,Yes,Nasal discharge only on one side,10000121,"Unilateral nasal discharge, primarily from one nostril, can signal underlying nasal issues, such as nasal polyps or structural abnormalities. To determine the cause, perform a nasal endoscopy and consider imaging studies. Referral to an Ear, Nose, and Throat (ENT) specialist is crucial for a detailed assessment and tailored treatment plan to address the specific nasal condition."
+,,,No,,,,
+,,,,,,,
+,13, Is it associated with change or absent smell?,Yes,Yes,Change or absent smell is associated with running nose,10000131,"Alterations in the sense of smell, including a diminished or absent ability to smell, may result from conditions like sinusitis or nasal polyps. Conduct a thorough evaluation of the nasal passages, and if necessary, order imaging studies to visualize any obstructions or abnormalities. Referral to an ENT specialist can provide specialized care to address the olfactory concerns effectively."
+,,,No,,,,
+,,,,,,,
+,14,Is the discharge just like plain water and present throughout the day with no other itching?,Yes,Yes,Nasal discharge just like plain water and present throughout the day with no other itching,10000141,"In rare cases, a clear nasal discharge resembling plain water could indicate a cerebrospinal fluid (CSF) leak, which requires immediate attention. Perform a neurological examination to assess for neurological symptoms and signs. If a CSF leak is suspected, promptly consult a neurologist for further evaluation and appropriate intervention to address this potentially serious issue."
+,,,No,,,,
+,,,,,,,
+,15,"Does the child have a severe headache ?
+",Yes,Yes, Running nose with Severe headache ,10000151,"Severe headaches can have multifaceted causes, including sinusitis, migraine, tension headaches, or underlying medical conditions. Conduct a comprehensive neurological examination, including assessment for headache triggers and patterns. Consider neuroimaging studies if warranted. Promptly consult a neurologist to rule out or manage any underlying neurological or headache disorders."
+,,,No,,,,
+,,,,,,,
+,16, Is the discharge blood stained ?,Yes,Yes,Nasal discharge is blood stained,10000161,"A nasal discharge with bloodstains may be indicative of various factors, including nasal trauma, infections, or other underlying conditions. Conduct a thorough evaluation to determine the source of bleeding and assess its frequency and severity. Consider imaging studies if necessary. Promptly refer the child to an ENT specialist or pediatrician for an in-depth assessment and appropriate management tailored to the specific cause of the blood-stained discharge."
+,,,No,,,,
+,,,,,,,
+,17,Does your child have trouble sleeping because of a stuffy or runny nose?,Yes,Yes,Child has trouble sleeping because of a stuffy or runny nose,,
+,,,No,,,,
+,,,,,,,
+,18,Is your child more tired than usual during the day?,Yes,Yes,Child has running nose and is more tired than usual during the day,,
+,,,No,,,,
+,,,,,,,
+,19,Does your child get ear infections often?,Yes,Yes,Child has running nose and  gets ear infections often,,
+,,,No,,,,
+,,,,,,,
+,20,Does your child talk through their nose or breathe through their mouth a lot?,Yes,Yes,Child talks through his nose or breathes through his mouth a lot,,
+,,,No,,,,
+,,,,,,,
+,21,Have you noticed dark circles under your child's eyes?,Yes,Yes,Child has  running nose nose and dark circles under eyes ,,
+,,,No,,,,
+,,,,,,,
+,22,Does your child complain about pain or pressure in their face?,Yes,Yes,Child has running nose and  complains about pain or pressure in their face,,
+,,,No,,,,
+,,,,,,,
+,23,Have you seen a drop in your child's grades or attention at school?,Yes,Yes,Drop in child's grades or attention at school due to runny nose,,
+,,,No,,,,
+,,,,,,,
+,24,"If your child has asthma, do their asthma symptoms get worse when they have a stuffy or runny nose?",Yes,Yes,Child has asthma and asthma symptoms get worse when they have a stuffy or runny nose,,
+,,,No,,,,

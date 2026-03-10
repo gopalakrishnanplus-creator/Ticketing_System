@@ -1,0 +1,789 @@
+{% extends 'base_generic.html' %}
+{% load static %}
+
+{% block content %}
+<div class="task-manager-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo-container">
+            <h2>Task<span>Flow</span></h2>
+        </div>
+        <div class="menu-container">
+            <ul>
+                {% with request.user.userprofile as profile %}
+                    {% if profile.category == 'Task Management System Manager' %}
+                        <li><a href="{% url 'activity' %}" class="{% if request.resolver_match.url_name == 'activity' %}active{% endif %}">
+                            <i class="fas fa-chart-line"></i> Activity
+                        </a></li>
+                        <li><a href="{% url 'metrics' %}" class="{% if request.resolver_match.url_name == 'metrics' %}active{% endif %}">
+                            <i class="fas fa-tachometer-alt"></i> Metrics
+                        </a></li>
+                        <li><a href="{% url 'system_logs' %}" class="{% if request.resolver_match.url_name == 'system_logs' %}active{% endif %}">
+                            <i class="fas fa-list-alt"></i> System Logs
+                        </a></li>
+                        <li><a href="{% url 'user_profile' %}" class="{% if request.resolver_match.url_name == 'user_profile' %}active{% endif %}">
+                            <i class="fas fa-user"></i> User Profile
+                        </a></li>
+                    {% else %}
+                        {% if profile.category == "Departmental Manager" %}
+                            <li><a href="{% url 'home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">
+                                <i class="fas fa-home"></i> Home
+                            </a></li>
+                        {% endif %}
+                        <li><a href="{% url 'assigned_to_me' %}" class="{% if request.resolver_match.url_name == 'assigned_to_me' %}active{% endif %}">
+                            <i class="fas fa-tasks"></i> Assigned To Me
+                        </a></li>
+                        <li><a href="{% url 'assigned_by_me' %}" class="{% if request.resolver_match.url_name == 'assigned_by_me' %}active{% endif %}">
+                            <i class="fas fa-project-diagram"></i> Assigned By Me
+                        </a></li>
+                        <li><a href="{% url 'user_profile' %}" class="{% if request.resolver_match.url_name == 'user_profile' %}active{% endif %}">
+                            <i class="fas fa-user"></i> User Profile
+                        </a></li>
+                    {% endif %}
+                {% endwith %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="greeting">
+            <h1>System Logs</h1>
+            <p>View system logs and discrepancies</p>
+        </div>
+        <div class="user-actions">
+            <div class="notification">
+                <i class="fas fa-bell"></i>
+            </div>
+            <div class="user">
+                <img src="{% static 'task_app\images/user-icon.png' %}" alt="User Avatar" class="avatar" />
+                <span>{{ request.user.get_full_name }}</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <div class="filter-container">
+                <h3><i class="fas fa-filter"></i> Log Filters</h3>
+                
+                <div class="filters">
+                    <!-- Log Type Filter -->
+                    <div class="filter-group">
+                        <label>Log Type</label>
+                        <div class="multi-select" id="logTypeFilterContainer">
+                            <div class="multi-select-header" onclick="toggleDropdown('logTypeDropdown')">
+                                <span class="placeholder">Select Log Types</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="multi-select-dropdown" id="logTypeDropdown">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="logTypeInfo" value="info" checked>
+                                    <label for="logTypeInfo">Info</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="logTypeWarning" value="warning" checked>
+                                    <label for="logTypeWarning">Warning</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="logTypeError" value="error" checked>
+                                    <label for="logTypeError">Error</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="logTypeSystem" value="system" checked>
+                                    <label for="logTypeSystem">System</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Date Range Filter -->
+                    <div class="filter-group">
+                        <label>From Date</label>
+                        <input type="date" id="fromDateFilter" class="date-input">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>To Date</label>
+                        <input type="date" id="toDateFilter" class="date-input">
+                    </div>
+                    
+                    <!-- User Filter -->
+                    <div class="filter-group">
+                        <label>User</label>
+                        <div class="multi-select" id="userFilterContainer">
+                            <div class="multi-select-header" onclick="toggleDropdown('userDropdown')">
+                                <span class="placeholder">Select Users</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="multi-select-dropdown" id="userDropdown">
+                                {% for user in users %}
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="user{{ forloop.counter }}" value="{{ user.get_full_name }}">
+                                        <label for="user{{ forloop.counter }}">{{ user.get_full_name }}</label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="filter-btn" onclick="applyFilters()">Apply Filters</button>
+                    <button class="reset-btn" onclick="resetFilters()">Reset</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Logs Container -->
+        <div class="logs-container">
+            {% for log in logs %}
+                <div class="log-entry {% if 'error' in log.lower %}error{% elif 'warning' in log.lower %}warning{% else %}info{% endif %}">
+                    <div class="log-icon">
+                        {% if 'error' in log.lower %}
+                            <i class="fas fa-exclamation-circle"></i>
+                        {% elif 'warning' in log.lower %}
+                            <i class="fas fa-exclamation-triangle"></i>
+                        {% else %}
+                            <i class="fas fa-info-circle"></i>
+                        {% endif %}
+                    </div>
+                    <div class="log-content">
+                        <div class="log-text">{{ log }}</div>
+                        <div class="log-time">{{ log.timestamp|default:"2023-05-17 14:30:22" }}</div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="no-logs">
+                    <i class="fas fa-clipboard-list"></i>
+                    <p>No system logs found.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Link to Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<!-- Inline CSS -->
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
+
+    body {
+        background-color: #f5f7fb;
+        color: #333;
+    }
+
+    .task-manager-container {
+        display: flex;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    /* Modern Sidebar */
+    .sidebar {
+        width: 240px;
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        z-index: 10;
+    }
+
+    .logo-container {
+        padding: 25px 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .logo-container h2 {
+        font-size: 24px;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    .logo-container h2 span {
+        color: #3ee9e5;
+    }
+
+    .menu-container {
+        flex: 1;
+        padding: 15px 0;
+    }
+
+    .sidebar ul {
+        list-style: none;
+    }
+    
+    .sidebar ul li {
+        margin: 5px 0;
+    }
+
+    .sidebar ul li a {
+        text-decoration: none;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 16px;
+        padding: 12px 20px;
+        display: flex;
+        align-items: center;
+        transition: all 0.3s ease;
+        border-left: 4px solid transparent;
+    }
+
+    .sidebar ul li a i {
+        margin-right: 10px;
+        font-size: 18px;
+    }
+
+    .sidebar ul li a.active, .sidebar ul li a:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        border-left: 4px solid #3ee9e5;
+    }
+
+    /* Main Content */
+    .main-content {
+        flex: 1;
+        padding: 20px 30px;
+        background-color: #f5f7fb;
+        overflow-y: auto;
+    }
+
+    /* Header */
+    .greeting h1 {
+        font-size: 24px;
+        color: #333;
+        margin-bottom: 5px;
+    }
+
+    .greeting p {
+        color: #666;
+        font-size: 14px;
+    }
+
+    .user-actions {
+        display: flex;
+        align-items: center;
+    }
+
+    .notification {
+        position: relative;
+        margin-right: 25px;
+        cursor: pointer;
+    }
+
+    .notification i {
+        font-size: 20px;
+        color: #666;
+    }
+
+    .badge {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background: linear-gradient(135deg, #ff416c, #ff4b2b);
+        color: white;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        font-size: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .user {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+        object-fit: cover;
+        border: 2px solid #fff;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .user span {
+        font-size: 14px;
+        font-weight: 500;
+        margin-right: 10px;
+    }
+
+    /* Filter Section */
+    .filter-section {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 30px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        position: relative;
+    }
+
+    .filter-container h3 {
+        font-size: 18px;
+        margin-bottom: 20px;
+        color: #333;
+        display: flex;
+        align-items: center;
+    }
+
+    .filter-container h3 i {
+        margin-right: 8px;
+        color: #2a5298;
+    }
+
+    .filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        align-items: flex-end;
+    }
+
+    .filter-group {
+        flex: 1;
+        min-width: 200px;
+    }
+
+    .filter-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 14px;
+        color: #666;
+    }
+
+    /* Multi-select dropdown */
+    .multi-select {
+        position: relative;
+        width: 100%;
+    }
+
+    .multi-select-header {
+        padding: 10px 15px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        background-color: #fff;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .multi-select-header:hover {
+        border-color: #2a5298;
+    }
+
+    .multi-select-header .placeholder {
+        color: #999;
+        font-size: 14px;
+    }
+
+    .multi-select-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        margin-top: 5px;
+        max-height: 200px;
+        overflow-y: auto;
+        z-index: 100;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        display: none;
+    }
+
+    .checkbox-item {
+        padding: 10px 15px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    .checkbox-item:hover {
+        background-color: #f5f7fb;
+    }
+
+    .checkbox-item input[type="checkbox"] {
+        margin-right: 10px;
+        cursor: pointer;
+        accent-color: #2a5298;
+    }
+
+    .checkbox-item label {
+        font-size: 14px;
+        color: #333;
+        cursor: pointer;
+        margin-bottom: 0;
+    }
+
+    /* Date input field */
+    .date-input {
+        width: 100%;
+        padding: 10px 15px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 14px;
+        color: #333;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .date-input:focus {
+        border-color: #2a5298;
+        outline: none;
+    }
+
+    /* Filter and Reset Buttons */
+    .filter-btn, .reset-btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .filter-btn {
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        color: white;
+    }
+
+    .reset-btn {
+        background-color: #f5f5f5;
+        color: #666;
+        margin-left: 10px;
+    }
+
+    .filter-btn:hover {
+        background: linear-gradient(135deg, #2a5298, #1e3c72);
+        transform: translateY(-2px);
+    }
+
+    .reset-btn:hover {
+        background-color: #e5e5e5;
+        transform: translateY(-2px);
+    }
+
+    /* Logs container */
+    .logs-container {
+        background: white;
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        overflow-y: auto;
+        height: calc(100vh - 250px);
+    }
+
+    /* Log Entry */
+    .log-entry {
+        display: flex;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        background-color: #f9fafc;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .log-entry:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+
+    .log-entry.error {
+        border-left: 4px solid #e53935;
+    }
+
+    .log-entry.warning {
+        border-left: 4px solid #ffb300;
+    }
+
+    .log-entry.info {
+        border-left: 4px solid #43a047;
+    }
+
+    .log-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+        flex-shrink: 0;
+    }
+
+    .log-entry.error .log-icon {
+        color: #e53935;
+        background-color: #ffebee;
+    }
+
+    .log-entry.warning .log-icon {
+        color: #ffb300;
+        background-color: #fff8e1;
+    }
+
+    .log-entry.info .log-icon {
+        color: #43a047;
+        background-color: #e8f5e9;
+    }
+
+    .log-icon i {
+        font-size: 18px;
+    }
+
+    .log-content {
+        flex: 1;
+    }
+
+    .log-text {
+        font-size: 14px;
+        color: #333;
+        margin-bottom: 5px;
+        line-height: 1.5;
+    }
+
+    .log-time {
+        font-size: 12px;
+        color: #999;
+    }
+
+    /* No logs message */
+    .no-logs {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 40px;
+        color: #bbb;
+    }
+
+    .no-logs i {
+        font-size: 48px;
+        margin-bottom: 10px;
+    }
+
+    .no-logs p {
+        font-size: 16px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 1200px) {
+        .filter-group {
+            min-width: 150px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .sidebar {
+            width: 70px;
+        }
+        
+        .logo-container h2 {
+            display: none;
+        }
+        
+        .sidebar ul li a span {
+            display: none;
+        }
+        
+        .sidebar ul li a i {
+            margin-right: 0;
+        }
+        
+        .filter-group {
+            flex: 100%;
+        }
+    }
+</style>
+
+<!-- JavaScript for filters -->
+<script>
+    // Toggle dropdown menus
+    function toggleDropdown(dropdownId) {
+        const dropdown = document.getElementById(dropdownId);
+        
+        // Close all other dropdowns first
+        const allDropdowns = document.querySelectorAll('.multi-select-dropdown');
+        allDropdowns.forEach(element => {
+            if (element.id !== dropdownId) {
+                element.style.display = 'none';
+            }
+        });
+        
+        // Toggle the selected dropdown
+        if (dropdown.style.display === 'block') {
+            dropdown.style.display = 'none';
+        } else {
+            dropdown.style.display = 'block';
+        }
+    }
+    
+    // Handle window clicks to close dropdowns when clicking outside
+    window.addEventListener('click', function(e) {
+        if (!e.target.closest('.multi-select')) {
+            const allDropdowns = document.querySelectorAll('.multi-select-dropdown');
+            allDropdowns.forEach(dropdown => {
+                dropdown.style.display = 'none';
+            });
+        }
+    }, true);
+    
+    // Update placeholder text based on selections
+    function updatePlaceholder(containerId, selectedValues) {
+        const container = document.getElementById(containerId);
+        const placeholder = container.querySelector('.placeholder');
+        
+        if (selectedValues.length === 0) {
+            // Set default text based on filter type
+            switch(containerId) {
+                case 'logTypeFilterContainer':
+                    placeholder.textContent = 'Select Log Types';
+                    break;
+                case 'userFilterContainer':
+                    placeholder.textContent = 'Select Users';
+                    break;
+                default:
+                    placeholder.textContent = 'Select Options';
+            }
+        } else if (selectedValues.length === 1) {
+            placeholder.textContent = selectedValues[0];
+        } else {
+            placeholder.textContent = `${selectedValues.length} selected`;
+        }
+    }
+    
+    // Apply filters to logs
+    function applyFilters() {
+        // Get all filter values
+        const logTypeValues = getSelectedCheckboxValues('logTypeDropdown');
+        const userValues = getSelectedCheckboxValues('userDropdown');
+        const fromDate = document.getElementById('fromDateFilter').value;
+        const toDate = document.getElementById('toDateFilter').value;
+        
+        // Update placeholders
+        updatePlaceholder('logTypeFilterContainer', logTypeValues);
+        updatePlaceholder('userFilterContainer', userValues);
+        
+        // Filter logs
+        const logs = document.querySelectorAll('.log-entry');
+        
+        logs.forEach(log => {
+            const logText = log.querySelector('.log-text').textContent.toLowerCase();
+            const logTime = log.querySelector('.log-time').textContent;
+            
+            let displayLog = true;
+            
+            // Log type filtering
+            if (logTypeValues.length > 0) {
+                let matchesType = false;
+                logTypeValues.forEach(type => {
+                    if (logText.includes(type.toLowerCase())) {
+                        matchesType = true;
+                    }
+                });
+                if (!matchesType) displayLog = false;
+            }
+            
+            // User filtering
+            if (userValues.length > 0) {
+                let matchesUser = false;
+                userValues.forEach(user => {
+                    if (logText.includes(user.toLowerCase())) {
+                        matchesUser = true;
+                    }
+                });
+                if (!matchesUser) displayLog = false;
+            }
+            
+            // Date filtering
+            if (fromDate) {
+                const logDate = new Date(logTime);
+                const filterFromDate = new Date(fromDate);
+                if (logDate < filterFromDate) {
+                    displayLog = false;
+                }
+            }
+            
+            if (toDate) {
+                const logDate = new Date(logTime);
+                const filterToDate = new Date(toDate);
+                if (logDate > filterToDate) {
+                    displayLog = false;
+                }
+            }
+            
+            log.style.display = displayLog ? '' : 'none';
+        });
+        
+        // Close all dropdowns
+        const allDropdowns = document.querySelectorAll('.multi-select-dropdown');
+        allDropdowns.forEach(dropdown => {
+            dropdown.style.display = 'none';
+        });
+    }
+    
+    // Get all selected values from a multi-select dropdown
+    function getSelectedCheckboxValues(dropdownId) {
+        const dropdown = document.getElementById(dropdownId);
+        const checkboxes = dropdown.querySelectorAll('input[type="checkbox"]');
+        const values = [];
+        
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                values.push(checkbox.value);
+            }
+        });
+        
+        return values;
+    }
+    
+    // Reset all filters
+    function resetFilters() {
+        // Check all log type checkboxes by default
+        document.querySelectorAll('#logTypeDropdown input[type="checkbox"]').forEach(checkbox => {
+            checkbox.checked = true;
+        });
+        
+        // Uncheck all user checkboxes
+        document.querySelectorAll('#userDropdown input[type="checkbox"]').forEach(checkbox => {
+            checkbox.checked = false;
+        });
+        
+        // Reset date filters
+        document.getElementById('fromDateFilter').value = '';
+        document.getElementById('toDateFilter').value = '';
+        
+        // Reset placeholders
+        updatePlaceholder('logTypeFilterContainer', ['Info', 'Warning', 'Error', 'System']);
+        updatePlaceholder('userFilterContainer', []);
+        
+        // Show all logs
+        document.querySelectorAll('.log-entry').forEach(log => {
+            log.style.display = '';
+        });
+    }
+    
+    // Initialize the page
+    document.addEventListener('DOMContentLoaded', function() {
+        // Make sure all log types are checked by default
+        document.querySelectorAll('#logTypeDropdown input[type="checkbox"]').forEach(checkbox => {
+            checkbox.checked = true;
+        });
+        
+        // Set the default values in the placeholder
+        updatePlaceholder('logTypeFilterContainer', ['Info', 'Warning', 'Error', 'System']);
+    });
+</script>
+{% endblock %}

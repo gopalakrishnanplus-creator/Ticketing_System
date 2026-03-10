@@ -1,0 +1,39 @@
+,Screening Tool for Abdominal Pain,,,,
+Purpose of Screening Tool,"The purpose of this screening tool is to help identify red flags in children with abdominal pain that may indicate a special condition. The screening tool is not a diagnostic test, but a way to be alerted to the presence of a redflag and decide on the appropriate course of action.
+",,,,
+Usage,To be used as many times as sent  by your doctor,,,,
+Sr No,Question,Options,Red Flag Trigger,Redflag response,RED FLAG ID
+1,Since how long has the patient been experiencing pain?,Less than 24 hours,,,
+,,More than 24 hours,Yes,The child has abdominal pain more than 24 hours,
+,, Recurrent since more than a month,Yes,The child has recurrent abdnominal pain since a month,10400014
+,,,,,
+3,How severe is the pain? Rate the pain on a scale of 1-10 where 1 is mild and 10 is severe,Rate the pain on a scale of 1-10 where 1 is mild and 10 is severe <free text/dropdown>,"Yes, 7-10 (severe)",Severity of Abdominal pain: <free text>,10400037
+,,,,,
+4,Is the pain only in one area of the stomach or does it keep migrating?,"Yes
+If Yes, Specify the location:
+Eg:  lower right side, near the belly button
+<>",,,
+,,No,Yes,The abdominal pain is not localized and keeps migrating,10400042
+,,,,,
+5,Is this the First time that the child is experiencing pain in the stomach or has it happened before?,First time,,,
+,,Happened before,Yes,The child has experienced pain in stomach before,10400052
+,,,,,
+6,Is there any history of trauma?,Yes,Yes,History of trauma,10400061
+,,No,,,
+,,,,,
+7,"Is it associated with Vomiting? If yes, is it greenish?","Yes, Greenish",Yes,"The abdominal pain is associated with vomitting,greenish",10400071
+,,"Yes, but Not Greenish",,,
+,,No Vomiting,,,
+,,,,,
+8,Was it associated with any of the following:,"Fever
+",Yes,The abdominal pain is associated with fever,10400081
+,,Urinary complaint,Yes,The abdominal pain is associated with urinary complaints,10400082
+,,Bowel complaints,Yes,The abdominal pain is associated with bowel complaints,10400083
+,,Breathing more rapidly or their heart beating faster than usual,Yes,Abdominal pain with Breathing more rapidly or their heart beating faster than usual,
+,,Unexplained weight loss,Yes,Abdominal pain with Unexplained weight loss,
+,,"Signs of dehydration (dry mouth, sunken eyes)",Yes,"Abdominal pain withSigns of dehydration (dry mouth, sunken eyes) ",
+,,Changes in child's consciousness (like drowsiness) or behavior (like irritability or confusion),Yes,The abdominal pain with Changes in child's consciousness (like drowsiness) or behavior (like irritability or confusion),
+,,None of these,,,
+,,,,,
+9,Is the child able to eat/ play/ sleep well when there is no pain?,Yes,,,
+,,No,Yes,The child is not able to eat/ play/ sleep well when there is no abdominal pain,10400092

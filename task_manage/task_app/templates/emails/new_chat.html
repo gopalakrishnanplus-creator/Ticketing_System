@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: 1px solid #e4e4e4;
+        }
+
+        .email-header {
+            background: #4CAF50;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 20px;
+        }
+
+        .email-body {
+            padding: 20px;
+        }
+
+        .email-body p {
+            line-height: 1.6;
+            margin: 10px 0;
+        }
+
+        .email-body strong {
+            color: #4CAF50;
+        }
+
+        .email-button {
+            display: inline-block;
+            background: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .email-footer {
+            text-align: center;
+            padding: 10px;
+            background: #f4f4f4;
+            font-size: 12px;
+            color: #888;
+        }
+
+        .email-footer a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="email-header">
+            New Message Notification
+        </div>
+        <div class="email-body">
+            <p>Hi {{ user.get_full_name }},</p>
+            <p>You have received a new message in the system.</p>
+            <p><strong>From:</strong> {{ message.sender_name }}</p>
+            <p><strong>Subject:</strong> {{ message.subject }}</p>
+            <p><strong>Sent on:</strong> {{ message.timestamp }}</p>
+            <p><strong>Message preview:</strong> {{ message.preview }}</p>
+            <a href="{{ view_message_url }}" class="email-button">View Message</a>
+            <p>Thank you!<br>Task Management System</p>
+        </div>
+        <div class="email-footer">
+            <p>This is an automated notification. Please do not reply to this email.</p>
+            <p>To manage your notification settings, <a href="{{ notification_settings_url }}">click here</a>.</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,3 @@
+Department Name,Tickets Received Last 24hr,Open Tickets Received,Tickets Raised Last 24hr,Open Tickets Raised,Older Open Tickets,Pending Tickets Bifurcation
+Product,0,18,0,5,18,"{'Product': 4, 'Technology': 14}"
+Technology,0,2,0,15,2,"{'Product': 1, 'Technology': 1}"

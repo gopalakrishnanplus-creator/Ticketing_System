@@ -1,0 +1,603 @@
+{% extends 'base_generic.html' %}
+{% load static %}
+
+{% block content %}
+<div class="task-manager-container">
+    <!-- Sidebar (same as in assigned_by_me.html) -->
+    <div class="sidebar">
+        <div class="logo-container">
+            <h2>Task<span>Flow</span></h2>
+        </div>
+        <div class="menu-container">
+            <ul>
+                {% with request.user.userprofile as profile %}
+                    {% if profile.category == 'Task Management System Manager' %}
+                        <li><a href="{% url 'activity' %}" class="{% if request.resolver_match.url_name == 'activity' %}active{% endif %}">
+                            <i class="fas fa-chart-line"></i> Activity
+                        </a></li>
+                        <li><a href="{% url 'metrics' %}" class="{% if request.resolver_match.url_name == 'metrics' %}active{% endif %}">
+                            <i class="fas fa-tachometer-alt"></i> Metrics
+                        </a></li>
+                        <li><a href="{% url 'user_profile' %}" class="{% if request.resolver_match.url_name == 'user_profile' %}active{% endif %}">
+                            <i class="fas fa-user"></i> User Profile
+                        </a></li>
+                    {% else %}
+                        {% if profile.category == "Departmental Manager" %}
+                            <li><a href="{% url 'home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">
+                                <i class="fas fa-home"></i> Home
+                            </a></li>
+                        {% endif %}
+                        <li><a href="{% url 'assigned_to_me' %}" class="{% if request.resolver_match.url_name == 'assigned_to_me' %}active{% endif %}">
+                            <i class="fas fa-tasks"></i> Assigned To Me
+                        </a></li>
+                        <li><a href="{% url 'assigned_by_me' %}" class="{% if request.resolver_match.url_name == 'assigned_by_me' %}active{% endif %}">
+                            <i class="fas fa-project-diagram"></i> Assigned By Me
+                        </a></li>
+                        <li><a href="{% url 'user_profile' %}" class="{% if request.resolver_match.url_name == 'user_profile' %}active{% endif %}">
+                            <i class="fas fa-user"></i> User Profile
+                        </a></li>
+                    {% endif %}
+                {% endwith %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header with back link and greeting -->
+        <div class="header-with-back">
+            <a href="{% url 'task_detail' task.task_id %}" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back to Task Details
+            </a>
+            <div class="user-actions">
+                <div class="notification">
+                    <i class="fas fa-bell"></i>
+                </div>
+                <div class="user">
+                    <img src="{% static 'task_app/images/user-icon.png' %}" alt="User Avatar" class="avatar" />
+                    <span>{{ request.user.get_full_name }}</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Task update form card -->
+        <div class="task-update-card">
+            <div class="card-header">
+                <h2><i class="fas fa-pen"></i> Update Task: <span class="task-id">{{ task.task_id }}</span></h2>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {% if error_message %}
+                        <div class="error-alert">
+                            <i class="fas fa-exclamation-circle"></i> {{ error_message }}
+                        </div>
+                    {% endif %}
+                    
+                    <!-- Task Info Display -->
+                    <div class="task-info">
+                        <div class="info-item">
+                            <span class="info-label">Subject:</span>
+                            <span class="info-value">{{ task.subject }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Current Status:</span>
+                            <span class="info-value status-badge {{ task.status|slugify }}">{{ task.status }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Current Deadline:</span>
+                            <span class="info-value">{{ task.deadline }}</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Form inputs -->
+                    <div class="form-group">
+                        <label for="id_revised_completion_date">
+                            <i class="far fa-calendar-alt"></i> Revise Deadline:
+                        </label>
+                        {{ form.revised_completion_date }}
+                        {% if form.revised_completion_date.errors %}
+                            <div class="form-error">{{ form.revised_completion_date.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_status">
+                            <i class="fas fa-tasks"></i> Update Status:
+                        </label>
+                        <select name="status" id="id_status" class="form-control status-select">
+                            <option value="Not Started" {% if task.status == 'Not Started' %}selected{% endif %}>Not Started</option>
+                            <option value="In Progress" {% if task.status == 'In Progress' %}selected{% endif %}>In Progress</option>
+                            <option value="Completed" {% if task.status == 'Completed' %}selected{% endif %}>Completed</option>
+                            <option value="Stalled" {% if task.status == 'Stalled' %}selected{% endif %}>Stalled</option>
+                            <option value="On-Hold" {% if task.status == 'On-Hold' %}selected{% endif %}>On-Hold</option>
+                            <option value="Cancelled" {% if task.status == 'Cancelled' %}selected{% endif %}>Cancelled</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_comments_by_assignee">
+                            <i class="far fa-comment-alt"></i> Add Comments:
+                        </label>
+                        {{ form.comments_by_assignee }}
+                        {% if form.comments_by_assignee.errors %}
+                            <div class="form-error">{{ form.comments_by_assignee.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Action buttons -->
+                    <div class="form-actions">
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-save"></i> Save Updates
+                        </button>
+                        <a href="{% url 'task_detail' task.task_id %}" class="cancel-btn">
+                            <i class="fas fa-times"></i> Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Link to Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<!-- Inline CSS -->
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
+
+    body {
+        background-color: #f5f7fb;
+        color: #333;
+    }
+
+    .task-manager-container {
+        display: flex;
+        height: 100vh;
+        overflow: hidden;
+    }
+    .error-alert {
+        background-color: #ffebee;
+        color: #c62828;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        border-left: 4px solid #c62828;
+        display: flex;
+        align-items: center;
+    }
+
+    .error-alert i {
+        margin-right: 10px;
+        font-size: 18px;
+    }
+
+    /* Modern Sidebar - same as in previous template */
+    .sidebar {
+        width: 240px;
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        z-index: 10;
+    }
+
+    .logo-container {
+        padding: 25px 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .logo-container h2 {
+        font-size: 24px;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    .logo-container h2 span {
+        color: #3ee9e5;
+    }
+
+    .menu-container {
+        flex: 1;
+        padding: 15px 0;
+    }
+
+    .sidebar ul {
+        list-style: none;
+    }
+    
+    .sidebar ul li {
+        margin: 5px 0;
+    }
+
+    .sidebar ul li a {
+        text-decoration: none;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 16px;
+        padding: 12px 20px;
+        display: flex;
+        align-items: center;
+        transition: all 0.3s ease;
+        border-left: 4px solid transparent;
+    }
+
+    .sidebar ul li a i {
+        margin-right: 10px;
+        font-size: 18px;
+    }
+
+    .sidebar ul li a.active, .sidebar ul li a:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        border-left: 4px solid #3ee9e5;
+    }
+
+    /* Main Content */
+    .main-content {
+        flex: 1;
+        padding: 20px 30px;
+        background-color: #f5f7fb;
+        overflow-y: auto;
+    }
+
+    /* Header with back button */
+    .header-with-back {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    .back-link {
+        display: flex;
+        align-items: center;
+        color: #2a5298;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 16px;
+        transition: all 0.2s ease;
+    }
+
+    .back-link:hover {
+        color: #1e3c72;
+        transform: translateX(-3px);
+    }
+
+    .back-link i {
+        margin-right: 5px;
+    }
+
+    /* User actions (notification and profile) */
+    .user-actions {
+        display: flex;
+        align-items: center;
+    }
+
+    .notification {
+        position: relative;
+        margin-right: 25px;
+        cursor: pointer;
+    }
+
+    .notification i {
+        font-size: 20px;
+        color: #666;
+    }
+
+    .badge {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background: linear-gradient(135deg, #ff416c, #ff4b2b);
+        color: white;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        font-size: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .user {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+        object-fit: cover;
+        border: 2px solid #fff;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .user span {
+        font-size: 14px;
+        font-weight: 500;
+        margin-right: 10px;
+    }
+
+    /* Task update card */
+    .task-update-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        margin-bottom: 20px;
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        color: white;
+        padding: 20px 25px;
+    }
+
+    .card-header h2 {
+        font-size: 20px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+    }
+
+    .card-header h2 i {
+        margin-right: 10px;
+    }
+
+    .card-header .task-id {
+        color: #3ee9e5;
+        margin-left: 5px;
+    }
+
+    .card-body {
+        padding: 25px;
+    }
+
+    /* Task info display */
+    .task-info {
+        background-color: #f9fafc;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 25px;
+        border-left: 4px solid #2a5298;
+    }
+
+    .info-item {
+        display: flex;
+        margin-bottom: 10px;
+    }
+
+    .info-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .info-label {
+        font-weight: 600;
+        width: 150px;
+        color: #555;
+    }
+
+    .info-value {
+        flex: 1;
+    }
+
+    /* Form styling */
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: #444;
+        font-size: 15px;
+    }
+
+    .form-group label i {
+        margin-right: 5px;
+        color: #2a5298;
+    }
+
+    .form-group input[type="date"],
+    .form-group textarea,
+    .form-group select {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 14px;
+        color: #333;
+        transition: all 0.3s ease;
+        background-color: white;
+    }
+
+    .form-group input[type="date"]:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+        border-color: #2a5298;
+        box-shadow: 0 0 0 2px rgba(42, 82, 152, 0.2);
+        outline: none;
+    }
+
+    .form-group textarea {
+        height: 150px;
+        resize: vertical;
+    }
+
+    /* Custom styling for select dropdown */
+    .status-select {
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        background-size: 16px;
+        padding-right: 40px;
+    }
+
+    .status-select:hover {
+        border-color: #2a5298;
+    }
+
+    .form-error {
+        color: #e53935;
+        font-size: 13px;
+        margin-top: 5px;
+    }
+
+    /* Action buttons */
+    .form-actions {
+        display: flex;
+        gap: 15px;
+        margin-top: 30px;
+    }
+
+    .submit-btn, .cancel-btn {
+        padding: 12px 25px;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 500;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+
+    .submit-btn {
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        color: white;
+        border: none;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .submit-btn:hover {
+        background: linear-gradient(135deg, #2a5298, #1e3c72);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+
+    .cancel-btn {
+        background-color: #f5f5f5;
+        color: #666;
+        text-decoration: none;
+        border: 1px solid #e0e0e0;
+    }
+
+    .cancel-btn:hover {
+        background-color: #e5e5e5;
+        transform: translateY(-2px);
+    }
+
+    .submit-btn i, .cancel-btn i {
+        margin-right: 8px;
+    }
+
+    /* Status badges */
+    .status-badge {
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+        display: inline-block;
+    }
+
+    .status-badge.not-started {
+        background-color: #e3f2fd;
+        color: #1976d2;
+    }
+
+    .status-badge.in-progress {
+        background-color: #e8f5e9;
+        color: #43a047;
+    }
+
+    .status-badge.completed {
+        background-color: #e0f2f1;
+        color: #00897b;
+    }
+
+    .status-badge.stalled {
+        background-color: #ede7f6;
+        color: #7b1fa2;
+    }
+
+    .status-badge.on-hold {
+        background-color: #fff3e0;
+        color: #f57c00;
+    }
+
+    .status-badge.cancelled {
+        background-color: #fafafa;
+        color: #757575;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .sidebar {
+            width: 70px;
+        }
+        
+        .logo-container h2 {
+            display: none;
+        }
+        
+        .sidebar ul li a span {
+            display: none;
+        }
+        
+        .sidebar ul li a i {
+            margin-right: 0;
+        }
+        
+        .form-actions {
+            flex-direction: column;
+        }
+    }
+</style>
+
+<script>
+    // Add smooth transitions and interactive feedback
+    document.addEventListener('DOMContentLoaded', function() {
+        const statusSelect = document.getElementById('id_status');
+        const currentStatusBadge = document.querySelector('.status-badge');
+        
+        // Update status badge preview when dropdown changes
+        statusSelect.addEventListener('change', function() {
+            const selectedStatus = this.value;
+            const statusClass = selectedStatus.toLowerCase().replace(' ', '-').replace('-', '-');
+            
+            // Remove all existing status classes
+            currentStatusBadge.className = currentStatusBadge.className.split(' ').filter(cls => !cls.includes('-')).join(' ');
+            
+            // Add new status class
+            currentStatusBadge.classList.add(statusClass);
+            currentStatusBadge.textContent = selectedStatus;
+        });
+        
+        // Add form validation
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function(e) {
+            const deadline = document.getElementById('id_revised_completion_date').value;
+            const comments = document.getElementById('id_comments_by_assignee').value;
+            
+            if (!deadline && !comments.trim() && statusSelect.value === "{{ task.status }}") {
+                e.preventDefault();
+                alert('Please make at least one change before submitting.');
+                return false;
+            }
+        });
+    });
+</script>
+{% endblock %}
