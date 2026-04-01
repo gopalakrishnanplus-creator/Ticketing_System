@@ -1,0 +1,142 @@
+{% extends "client_tickets/base.html" %}
+
+{% block title %}Client Ticket Dashboard{% endblock %}
+
+{% block content %}
+<h2 class="section-title">Dashboard</h2>
+<p class="section-subtitle">A single view of ticket volumes, SLA risk, and recent movement across the new Client Tickets app.</p>
+
+<div class="metric-grid">
+    <div class="metric-card">
+        <div class="label">Total Tickets</div>
+        <div class="value">{{ metrics.total }}</div>
+    </div>
+    <div class="metric-card">
+        <div class="label">Open Tickets</div>
+        <div class="value">{{ metrics.open }}</div>
+    </div>
+    <div class="metric-card">
+        <div class="label">High Priority</div>
+        <div class="value">{{ metrics.high_priority }}</div>
+    </div>
+    <div class="metric-card">
+        <div class="label">Waiting For Client</div>
+        <div class="value">{{ metrics.waiting_for_client }}</div>
+    </div>
+    <div class="metric-card">
+        <div class="label">Waiting For Inditech</div>
+        <div class="value">{{ metrics.waiting_for_inditech }}</div>
+    </div>
+    <div class="metric-card">
+        <div class="label">Unchecked 24h+</div>
+        <div class="value">{{ metrics.stale_unchecked }}</div>
+    </div>
+</div>
+
+<div class="two-column">
+    <div class="panel">
+        <h3>Status Distribution</h3>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Status</th>
+                        <th>Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in status_counts %}
+                        <tr>
+                            <td>{{ row.status|default:"---------" }}</td>
+                            <td>{{ row.total }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="2" class="empty-state">No ticket data yet.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel">
+        <h3>Source Systems</h3>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Source</th>
+                        <th>Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in source_counts %}
+                        <tr>
+                            <td>{{ row.source_system }}</td>
+                            <td>{{ row.total }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="2" class="empty-state">No source system data yet.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="two-column">
+    <div class="panel">
+        <h3>My Tickets</h3>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ticket</th>
+                        <th>Requester</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ticket in my_tickets %}
+                        <tr>
+                            <td><a href="{% url 'client_tickets:ticket_detail' ticket.ticket_number %}">{{ ticket.ticket_number }}</a></td>
+                            <td>{{ ticket.requester_name }}</td>
+                            <td><span class="badge priority-{{ ticket.priority }}">{{ ticket.get_priority_display }}</span></td>
+                            <td><span class="badge status-{{ ticket.status|default:'open' }}">{{ ticket.get_status_display|default:"---------" }}</span></td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="4" class="empty-state">No client tickets assigned to or managed by you yet.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel">
+        <h3>Recent Updates</h3>
+        <div class="timeline">
+            {% for update in recent_updates %}
+                <div class="timeline-item">
+                    <div class="timeline-meta">
+                        <strong>{{ update.ticket.ticket_number }}</strong>
+                        <span>{{ update.created_at }}</span>
+                    </div>
+                    <div><strong>{{ update.get_actor_type_display }}</strong> updated the ticket.</div>
+                    <div>Status: {{ update.get_status_display|default:"---------" }} | Inditech: {{ update.get_inditech_status_display|default:"---------" }} | Client: {{ update.get_client_status_display|default:"---------" }}</div>
+                    {% if update.message %}
+                        <p>{{ update.message|linebreaksbr }}</p>
+                    {% endif %}
+                </div>
+            {% empty %}
+                <div class="empty-state">No updates yet.</div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

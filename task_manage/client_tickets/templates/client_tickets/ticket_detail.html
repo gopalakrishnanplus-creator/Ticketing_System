@@ -1,0 +1,169 @@
+{% extends "client_tickets/base.html" %}
+
+{% block title %}{{ ticket.ticket_number }}{% endblock %}
+
+{% block content %}
+<div class="button-row" style="margin-bottom: 16px;">
+    <a class="btn btn-secondary" href="{% url 'client_tickets:ticket_list' %}">Back to Client Tickets</a>
+</div>
+
+<div class="ticket-layout">
+    <div class="ticket-main">
+        <div class="detail-panel">
+            <h3>{{ ticket.ticket_number }} | {{ ticket.title }}</h3>
+            <div class="detail-grid">
+                <div class="detail-item">
+                    <div class="detail-label">Description</div>
+                    <div class="detail-value">{{ ticket.description|linebreaksbr }}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Ticket Type</div>
+                    <div class="detail-value">{{ ticket.ticket_type_label }}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Priority</div>
+                    <div class="detail-value"><span class="badge priority-{{ ticket.priority }}">{{ ticket.get_priority_display }}</span></div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Overall Status</div>
+                    <div class="detail-value"><span class="badge status-{{ ticket.status|default:'open' }}">{{ ticket.get_status_display|default:"---------" }}</span></div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Inditech Status</div>
+                    <div class="detail-value"><span class="badge status-{{ ticket.inditech_status|default:'pending' }}">{{ ticket.get_inditech_status_display|default:"---------" }}</span></div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Client Status</div>
+                    <div class="detail-value"><span class="badge status-{{ ticket.client_status|default:'pending' }}">{{ ticket.get_client_status_display|default:"---------" }}</span></div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Requester</div>
+                    <div class="detail-value">{{ ticket.requester_name }}<br>{{ ticket.requester_email }}<br>{{ ticket.requester_number }}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">To</div>
+                    <div class="detail-value">{{ ticket.assigned_to.get_full_name|default:ticket.assigned_to.username }}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Project Manager</div>
+                    <div class="detail-value">{{ ticket.project_manager.get_full_name|default:ticket.project_manager.username }}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Department</div>
+                    <div class="detail-value">{{ ticket.department.name }}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">User Type</div>
+                    <div class="detail-value">{{ ticket.get_user_type_display }}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Source System</div>
+                    <div class="detail-value">{{ ticket.get_source_system_display }}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Created</div>
+                    <div class="detail-value">{{ ticket.created_at }}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Updated</div>
+                    <div class="detail-value">{{ ticket.updated_at }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="detail-panel">
+            <h3>Attachments</h3>
+            <div class="attachments-list">
+                {% for attachment in ticket.attachments.all %}
+                    <div class="attachment-item">
+                        <strong>{{ attachment.filename }}</strong><br>
+                        Uploaded by {{ attachment.get_uploaded_by_role_display }} on {{ attachment.uploaded_at }}<br>
+                        <a href="{{ attachment.file.url }}" target="_blank" rel="noopener">Open attachment</a>
+                    </div>
+                {% empty %}
+                    <div class="empty-state">No attachments uploaded yet.</div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="detail-panel">
+            <h3>Update Timeline</h3>
+            <div class="timeline">
+                {% for update in ticket.updates.all %}
+                    <div class="timeline-item">
+                        <div class="timeline-meta">
+                            <strong>{{ update.get_actor_type_display }}</strong>
+                            <span>{{ update.created_at }}</span>
+                        </div>
+                        <div>Status: {{ update.get_status_display|default:"---------" }}</div>
+                        <div>Inditech: {{ update.get_inditech_status_display|default:"---------" }} | Client: {{ update.get_client_status_display|default:"---------" }}</div>
+                        {% if update.message %}
+                            <p>{{ update.message|linebreaksbr }}</p>
+                        {% endif %}
+                        {% if update.attachments.all %}
+                            <div>
+                                {% for attachment in update.attachments.all %}
+                                    <a href="{{ attachment.file.url }}" target="_blank" rel="noopener">{{ attachment.filename }}</a>{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% empty %}
+                    <div class="empty-state">No updates yet.</div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="ticket-side">
+        <div class="form-panel">
+            <h3>Inditech Update</h3>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="{{ inditech_form.status.id_for_label }}">Overall Status</label>
+                    {{ inditech_form.status }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ inditech_form.inditech_status.id_for_label }}">Inditech Status</label>
+                    {{ inditech_form.inditech_status }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ inditech_form.message.id_for_label }}">Message</label>
+                    {{ inditech_form.message }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ inditech_form.attachments.id_for_label }}">Attachments</label>
+                    {{ inditech_form.attachments }}
+                </div>
+                <div class="button-row">
+                    <button class="btn btn-primary" type="submit" name="submit_inditech_update">Save Inditech Update</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="form-panel">
+            <h3>Client Update</h3>
+            <p class="field-help">Use this when you want to record or test the client-side status from the UI. API updates from the client are also supported.</p>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="{{ client_form.client_status.id_for_label }}">Client Status</label>
+                    {{ client_form.client_status }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ client_form.message.id_for_label }}">Message</label>
+                    {{ client_form.message }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ client_form.attachments.id_for_label }}">Attachments</label>
+                    {{ client_form.attachments }}
+                </div>
+                <div class="button-row">
+                    <button class="btn btn-warning" type="submit" name="submit_client_update">Save Client Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

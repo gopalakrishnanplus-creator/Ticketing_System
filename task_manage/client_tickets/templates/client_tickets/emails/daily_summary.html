@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<body style="font-family: Arial, sans-serif; color: #1f2933; line-height: 1.5;">
+    <h2>Client Tickets Daily Summary</h2>
+    <p>Hello {{ user.get_full_name|default:user.username }}, here is your client ticket summary for {{ generated_at|date:"d M Y H:i" }}.</p>
+
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+        <tr>
+            <td style="padding: 10px; border: 1px solid #d9e2ec;"><strong>Pending Tickets</strong></td>
+            <td style="padding: 10px; border: 1px solid #d9e2ec;">{{ summary.pending_count }}</td>
+            <td style="padding: 10px; border: 1px solid #d9e2ec;"><strong>High Priority</strong></td>
+            <td style="padding: 10px; border: 1px solid #d9e2ec;">{{ summary.high_priority_count }}</td>
+        </tr>
+        <tr>
+            <td style="padding: 10px; border: 1px solid #d9e2ec;"><strong>Waiting For Client</strong></td>
+            <td style="padding: 10px; border: 1px solid #d9e2ec;">{{ summary.waiting_for_client_count }}</td>
+            <td style="padding: 10px; border: 1px solid #d9e2ec;"><strong>Waiting For Inditech</strong></td>
+            <td style="padding: 10px; border: 1px solid #d9e2ec;">{{ summary.waiting_for_inditech_count }}</td>
+        </tr>
+    </table>
+
+    <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+            <tr>
+                <th style="padding: 10px; border: 1px solid #d9e2ec; background: #102a43; color: #fff;">Ticket</th>
+                <th style="padding: 10px; border: 1px solid #d9e2ec; background: #102a43; color: #fff;">Requester</th>
+                <th style="padding: 10px; border: 1px solid #d9e2ec; background: #102a43; color: #fff;">Priority</th>
+                <th style="padding: 10px; border: 1px solid #d9e2ec; background: #102a43; color: #fff;">Status</th>
+                <th style="padding: 10px; border: 1px solid #d9e2ec; background: #102a43; color: #fff;">Updated</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in ticket_rows %}
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #d9e2ec;">
+                        <strong>{{ row.ticket.ticket_number }}</strong><br>
+                        {{ row.ticket.title }}
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #d9e2ec;">
+                        {{ row.ticket.requester_name }}<br>{{ row.ticket.requester_email }}
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #d9e2ec;">
+                        <span style="display: inline-block; padding: 4px 8px; border-radius: 999px; background: {{ row.priority_color }}; color: #fff;">
+                            {{ row.ticket.get_priority_display }}
+                        </span>
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #d9e2ec;">{{ row.ticket.get_status_display|default:"---------" }}</td>
+                    <td style="padding: 10px; border: 1px solid #d9e2ec;">{{ row.ticket.updated_at }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

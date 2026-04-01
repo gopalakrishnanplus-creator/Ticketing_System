@@ -20,7 +20,7 @@ def send_deadline_reminders_logic():
             context = {
                 'user': task.assigned_to,
                 'ticket': task,
-                'view_ticket_url': f"http://127.0.0.1:8000/tasks/detail/{task.task_id}/",
+                'view_ticket_url': f"http://127.0.0.1:5467/tasks/detail/{task.task_id}/",
             }
             email_body = render_to_string('emails/deadline_reminder.html', context)
             send_mail(
@@ -36,7 +36,7 @@ def send_deadline_reminders_logic():
             context = {
                 'user': task.assigned_by,
                 'ticket': task,
-                'view_ticket_url': f"http://127.0.0.1:8000/tasks/detail/{task.task_id}/",
+                'view_ticket_url': f"http://127.0.0.1:5467/tasks/detail/{task.task_id}/",
             }
             email_body = render_to_string('emails/deadline_reminder.html', context)
             send_mail(
