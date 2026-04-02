@@ -1,0 +1,87 @@
+{% extends "client_tickets/base.html" %}
+
+{% block title %}Client Tickets{% endblock %}
+
+{% block content %}
+<h2 class="section-title">All Client Tickets</h2>
+<p class="section-subtitle">Filter across manual and API-raised tickets from PM Dashboard, Campaign Management, and other sources.</p>
+
+<div class="panel">
+    <form method="get" class="filter-row">
+        <div class="form-group">
+            <label for="q">Search</label>
+            <input type="text" id="q" name="q" value="{{ search }}" placeholder="Ticket number, title, requester">
+        </div>
+        <div class="form-group">
+            <label for="status">Status</label>
+            <select id="status" name="status">
+                <option value="">All</option>
+                {% for value, label in status_choices %}
+                    <option value="{{ value }}" {% if selected_status == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="priority">Priority</label>
+            <select id="priority" name="priority">
+                <option value="">All</option>
+                {% for value, label in priority_choices %}
+                    <option value="{{ value }}" {% if selected_priority == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="source_system">Source</label>
+            <select id="source_system" name="source_system">
+                <option value="">All</option>
+                {% for value, label in source_choices %}
+                    <option value="{{ value }}" {% if selected_source_system == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="button-row">
+            <button class="btn btn-primary" type="submit">Apply Filters</button>
+            <a class="btn btn-secondary" href="{% url 'client_tickets:ticket_list' %}">Reset</a>
+        </div>
+    </form>
+</div>
+
+<div class="panel">
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Ticket</th>
+                    <th>Title</th>
+                    <th>Requester</th>
+                    <th>To</th>
+                    <th>Project Manager</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Source</th>
+                    <th>Updated</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ticket in tickets %}
+                    <tr>
+                        <td><a href="{% url 'client_tickets:ticket_detail' ticket.ticket_number %}">{{ ticket.ticket_number }}</a></td>
+                        <td>{{ ticket.title }}</td>
+                        <td>{{ ticket.requester_name }}<br><small>{{ ticket.requester_email }}</small></td>
+                        <td>{{ ticket.assigned_to.get_full_name|default:ticket.assigned_to.username }}</td>
+                        <td>{{ ticket.project_manager.get_full_name|default:ticket.project_manager.username }}</td>
+                        <td><span class="badge priority-{{ ticket.priority }}">{{ ticket.get_priority_display }}</span></td>
+                        <td><span class="badge status-{{ ticket.status|default:'open' }}">{{ ticket.get_status_display|default:"---------" }}</span></td>
+                        <td>{{ ticket.get_source_system_display }}</td>
+                        <td>{{ ticket.updated_at }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="9" class="empty-state">No client tickets matched the current filters.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

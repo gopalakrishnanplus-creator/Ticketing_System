@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Client Tickets{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'client_tickets/styles.css' %}">
+</head>
+<body>
+    <div class="client-shell">
+        <header class="client-header">
+            <div class="client-header-top">
+                <div>
+                    <h1>Client Tickets</h1>
+                    <p>PM Dashboard and Campaign Management ticket flow connected into Inditech.</p>
+                </div>
+                {% if user.is_authenticated %}
+                    <div>
+                        Logged in as <strong>{{ user.get_full_name|default:user.username }}</strong>
+                    </div>
+                {% endif %}
+            </div>
+            <nav class="client-nav">
+                <a href="{% url 'client_tickets:dashboard' %}" class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">Dashboard</a>
+                <a href="{% url 'client_tickets:ticket_list' %}" class="{% if request.resolver_match.url_name == 'ticket_list' %}active{% endif %}">All Client Tickets</a>
+                <a href="{% url 'client_tickets:create_ticket' %}" class="{% if request.resolver_match.url_name == 'create_ticket' %}active{% endif %}">Create Client Ticket</a>
+                <a href="{% url 'create_task' %}">Existing Ticketing</a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'logout' %}">Logout</a>
+                {% endif %}
+            </nav>
+        </header>
+
+        <main class="client-content">
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <div class="message {{ message.tags|default:'success' }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+</body>
+</html>

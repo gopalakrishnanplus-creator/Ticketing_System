@@ -1,0 +1,123 @@
+{% extends "client_tickets/base.html" %}
+
+{% block title %}Create Client Ticket{% endblock %}
+
+{% block content %}
+<h2 class="section-title">Create Client Ticket</h2>
+<p class="section-subtitle">Raise a new client-facing ticket manually. The same data shape is also available through the API.</p>
+
+<div class="form-panel">
+    {% if form.non_field_errors %}
+        <div class="errornote">{{ form.non_field_errors }}</div>
+    {% endif %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="{{ form.title.id_for_label }}">Title</label>
+                {{ form.title }}
+                {{ form.title.errors }}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.ticket_type.id_for_label }}">Ticket Type</label>
+                {{ form.ticket_type }}
+                {{ form.ticket_type.errors }}
+            </div>
+            <div class="form-group full">
+                <label for="{{ form.description.id_for_label }}">Description</label>
+                {{ form.description }}
+                {{ form.description.errors }}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.ticket_type_other.id_for_label }}">Ticket Type Other</label>
+                {{ form.ticket_type_other }}
+                <div class="field-help">Use this if the dropdown does not match the request.</div>
+                {{ form.ticket_type_other.errors }}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.department.id_for_label }}">Department</label>
+                {{ form.department }}
+                <div class="field-help">If the selected ticket type has a mapped department, it will be auto-selected.</div>
+                {{ form.department.errors }}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.requester_name.id_for_label }}">Requester Name</label>
+                {{ form.requester_name }}
+                {{ form.requester_name.errors }}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.requester_email.id_for_label }}">Requester Email</label>
+                {{ form.requester_email }}
+                {{ form.requester_email.errors }}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.requester_number.id_for_label }}">Requester Number</label>
+                {{ form.requester_number }}
+                {{ form.requester_number.errors }}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.assigned_to.id_for_label }}">To</label>
+                {{ form.assigned_to }}
+                {{ form.assigned_to.errors }}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.project_manager.id_for_label }}">Project Manager</label>
+                {{ form.project_manager }}
+                {{ form.project_manager.errors }}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.user_type.id_for_label }}">User Type</label>
+                {{ form.user_type }}
+                {{ form.user_type.errors }}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.source_system.id_for_label }}">Source System</label>
+                {{ form.source_system }}
+                {{ form.source_system.errors }}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.priority.id_for_label }}">Priority</label>
+                {{ form.priority }}
+                {{ form.priority.errors }}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.status.id_for_label }}">Status</label>
+                {{ form.status }}
+                {{ form.status.errors }}
+            </div>
+            <div class="form-group full">
+                <label for="{{ form.attachments.id_for_label }}">Attachments</label>
+                {{ form.attachments }}
+                <div class="field-help">{{ form.attachments.help_text }}</div>
+                {{ form.attachments.errors }}
+            </div>
+        </div>
+        <div class="button-row">
+            <button class="btn btn-primary" type="submit">Create Client Ticket</button>
+            <a class="btn btn-secondary" href="{% url 'client_tickets:ticket_list' %}">Back to List</a>
+        </div>
+    </form>
+</div>
+
+{{ ticket_type_department_map|json_script:"ticket-type-department-map" }}
+<script>
+    const ticketTypeMapElement = document.getElementById("ticket-type-department-map");
+    const ticketTypeMap = ticketTypeMapElement ? JSON.parse(ticketTypeMapElement.textContent) : {};
+    const ticketTypeField = document.getElementById("id_ticket_type");
+    const departmentField = document.getElementById("id_department");
+
+    function syncDepartmentFromTicketType() {
+        if (!ticketTypeField || !departmentField) {
+            return;
+        }
+        const departmentId = ticketTypeMap[ticketTypeField.value];
+        if (departmentId) {
+            departmentField.value = String(departmentId);
+        }
+    }
+
+    if (ticketTypeField) {
+        ticketTypeField.addEventListener("change", syncDepartmentFromTicketType);
+    }
+</script>
+{% endblock %}

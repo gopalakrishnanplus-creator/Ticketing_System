@@ -1,0 +1,318 @@
+{% extends 'base_generic.html' %}
+{% load static %}
+
+{% block content %}
+<div class="task-manager-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo-container">
+            <h2>Task<span>Flow</span></h2>
+        </div>
+        <div class="menu-container">
+            <ul>
+                {% with request.user.userprofile as profile %}
+                    {% if profile.category == 'Task Management System Manager' %}
+                        <li><a href="{% url 'activity' %}" class="{% if request.resolver_match.url_name == 'activity' %}active{% endif %}">
+                            <i class="fas fa-chart-line"></i> Activity
+                        </a></li>
+                        <li><a href="{% url 'metrics' %}" class="{% if request.resolver_match.url_name == 'metrics' %}active{% endif %}">
+                            <i class="fas fa-tachometer-alt"></i> Metrics
+                        </a></li>
+                        <li><a href="{% url 'user_profile' %}" class="{% if request.resolver_match.url_name == 'user_profile' %}active{% endif %}">
+                            <i class="fas fa-user"></i> User Profile
+                        </a></li>
+                    {% endif %}
+                {% endwith %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="greeting">
+            <h1>Metrics for {{ department_name }} Department</h1>
+            <p>Overview of tickets raised and received by the department, including last 24 hours and all-time data</p>
+        </div>
+
+        <!-- Metrics Table -->
+        <div class="metrics-table-container">
+            <h3><i class="fas fa-chart-bar"></i> Ticket Metrics Overview</h3>
+            <div class="table-wrapper">
+                <table id="metricsTable">
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+<tbody>
+                        <tr>
+                            <td>Open Tickets Received</td>
+                            <td>{{ department_metrics_data.open_tickets_received }}</td>
+                        </tr>
+                        <tr>
+                            <td>Tickets Received in Last 24 Hours</td>
+                            <td>{{ department_metrics_data.tickets_received_last_24hr }}</td>
+                        </tr>
+                        <tr>
+                            <td>Open Tickets Raised</td>
+                            <td>{{ department_metrics_data.open_tickets_raised }}</td>
+                        </tr>
+                        <tr>
+                            <td>Tickets Raised in Last 24 Hours</td>
+                            <td>{{ department_metrics_data.tickets_raised_last_24hr }}</td>
+                        </tr>
+                        <tr>
+                            <td>Older Open Tickets</td>
+                            <td>{{ department_metrics_data.older_open_tickets }}</td>
+                        </tr>
+                        <tr>
+                            <td>Pending Tickets (Assigned to Other Departments)</td>
+                            <td>
+                                <ul class="pending-list">
+                                    {% for dept_name, count in department_metrics_data.pending_tickets_bifurcation.items %}
+                                        <li><span class="dept-name">{{ dept_name }}:</span> <span class="dept-count">{{ count }}</span></li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Pending Tickets (Assigned by Other Departments)</td>
+                            <td>
+                                <ul class="pending-list">
+                                    {% for dept_name, count in department_metrics_data.tickets_assigned_to_other_depts.items %}
+                                        <li><span class="dept-name">{{ dept_name }}:</span> <span class="dept-count">{{ count }}</span></li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Tickets Passed 72 Hours After Raising</td>
+                            <td>{{ department_metrics_data.tickets_passed_72_hours }}</td>
+                        </tr>
+                        <tr>
+                            <td>Tickets Passed the Revised Deadline</td>
+                            <td>{{ department_metrics_data.tickets_passed_revised_deadline }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Link to Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<!-- Inline CSS -->
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
+
+    body {
+        background-color: #f5f7fb;
+        color: #333;
+    }
+
+    .task-manager-container {
+        display: flex;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    /* Modern Sidebar */
+    .sidebar {
+        width: 240px;
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        z-index: 10;
+    }
+
+    .logo-container {
+        padding: 25px 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .logo-container h2 {
+        font-size: 24px;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    .logo-container h2 span {
+        color: #3ee9e5;
+    }
+
+    .menu-container {
+        flex: 1;
+        padding: 15px 0;
+    }
+
+    .sidebar ul {
+        list-style: none;
+    }
+    
+    .sidebar ul li {
+        margin: 5px 0;
+    }
+
+    .sidebar ul li a {
+        text-decoration: none;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 16px;
+        padding: 12px 20px;
+        display: flex;
+        align-items: center;
+        transition: all 0.3s ease;
+        border-left: 4px solid transparent;
+    }
+
+    .sidebar ul li a i {
+        margin-right: 10px;
+        font-size: 18px;
+    }
+
+    .sidebar ul li a.active, .sidebar ul li a:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        border-left: 4px solid #3ee9e5;
+    }
+
+    /* Main Content */
+    .main-content {
+        flex: 1;
+        padding: 20px 30px;
+        background-color: #f5f7fb;
+        overflow-y: auto;
+    }
+
+    /* Header */
+    .greeting h1 {
+        font-size: 24px;
+        color: #333;
+        margin-bottom: 5px;
+    }
+
+    .greeting p {
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 30px;
+    }
+
+    /* Metrics Table */
+    .metrics-table-container {
+        background: white;
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        margin-bottom: 20px;
+    }
+
+    .metrics-table-container h3 {
+        font-size: 18px;
+        margin-bottom: 20px;
+        color: #333;
+        display: flex;
+        align-items: center;
+    }
+
+    .metrics-table-container h3 i {
+        margin-right: 8px;
+        color: #2a5298;
+    }
+
+    .table-wrapper {
+        overflow-x: auto;
+    }
+
+    #metricsTable {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+    #metricsTable th, #metricsTable td {
+        padding: 15px;
+        text-align: left;
+    }
+
+    #metricsTable th {
+        background-color: #f5f7fb;
+        color: #555;
+        font-weight: 600;
+        font-size: 14px;
+        position: sticky;
+        top: 0;
+        z-index: 5;
+    }
+
+    #metricsTable th:first-child {
+        border-top-left-radius: 10px;
+    }
+
+    #metricsTable th:last-child {
+        border-top-right-radius: 10px;
+    }
+
+    #metricsTable tr {
+        transition: background-color 0.2s;
+    }
+
+    #metricsTable tbody tr:hover {
+        background-color: #f9fafc;
+    }
+
+    #metricsTable td {
+        border-bottom: 1px solid #eee;
+        font-size: 14px;
+        color: #333;
+    }
+
+    /* Pending tickets list styling */
+    .pending-list {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .pending-list li {
+        margin-bottom: 4px;
+        font-size: 13px;
+    }
+
+    .pending-list .dept-name {
+        color: #666;
+    }
+
+    .pending-list .dept-count {
+        font-weight: 500;
+        color: #333;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .sidebar {
+            width: 70px;
+        }
+        
+        .logo-container h2 {
+            display: none;
+        }
+        
+        .sidebar ul li a span {
+            display: none;
+        }
+        
+        .sidebar ul li a i {
+            margin-right: 0;
+        }
+    }
+</style>
+{% endblock %}

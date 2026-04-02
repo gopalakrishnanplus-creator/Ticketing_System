@@ -1,0 +1,125 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Task Management System{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <style>
+        .cross-app-shortcuts {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            z-index: 9999;
+            width: min(320px, calc(100vw - 32px));
+            background: rgba(15, 23, 42, 0.96);
+            color: #fff;
+            border-radius: 18px;
+            padding: 16px;
+            box-shadow: 0 16px 36px rgba(15, 23, 42, 0.28);
+            backdrop-filter: blur(8px);
+        }
+
+        .cross-app-shortcuts-title {
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 6px;
+        }
+
+        .cross-app-shortcuts h3 {
+            margin: 0 0 8px;
+            font-size: 18px;
+        }
+
+        .cross-app-shortcuts p {
+            margin: 0 0 12px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.82);
+            line-height: 1.5;
+        }
+
+        .cross-app-shortcuts-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .cross-app-shortcuts-actions a {
+            flex: 1 1 140px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px;
+            border-radius: 999px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .cross-app-shortcuts-actions a.primary {
+            background: #1d4ed8;
+            color: #fff;
+        }
+
+        .cross-app-shortcuts-actions a.secondary {
+            background: rgba(255, 255, 255, 0.12);
+            color: #fff;
+        }
+
+        .cross-app-shortcuts-actions a:hover {
+            opacity: 0.92;
+            text-decoration: none;
+        }
+
+        @media (max-width: 700px) {
+            .cross-app-shortcuts {
+                right: 12px;
+                left: 12px;
+                bottom: 12px;
+                width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    {% if user.is_authenticated %}
+        <aside class="cross-app-shortcuts" aria-label="Client ticket quick access">
+            <div class="cross-app-shortcuts-title">Connected Systems</div>
+            <h3>Client Tickets</h3>
+            <p>Open the client ticket dashboard, see all client tickets, or raise a new one from anywhere in the current ticketing system.</p>
+            <div class="cross-app-shortcuts-actions">
+                <a class="primary" href="{% url 'client_tickets:dashboard' %}">Client Dashboard</a>
+                <a class="secondary" href="{% url 'client_tickets:ticket_list' %}">All Client Tickets</a>
+                <a class="secondary" href="{% url 'client_tickets:create_ticket' %}">Create Client Ticket</a>
+            </div>
+        </aside>
+    {% endif %}
+    <div class="header">
+        
+
+        <div class="navbar">
+            {% if user.is_authenticated %}
+                <!-- Display "Home" link only for Departmental Managers -->
+                <!-- {% if user_category == 'Departmental Manager' %}
+                    <a href="{% url 'home' %}">Home</a>
+                {% endif %}
+                <a href="{% url 'assigned_to_me' %}">Assigned to Me</a>
+                <a href="{% url 'assigned_by_me' %}">Assigned by Me</a>
+                <a href="{% url 'create_task' %}">Create Task</a>
+                <a href="{% url 'user_profile' %}">Profile</a>
+                <a href="{% url 'logout' %}">Logout</a> -->
+            {% endif %}
+        </div>
+        
+    </div>
+
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+
+    
+</body>
+</html>

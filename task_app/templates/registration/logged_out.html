@@ -1,0 +1,10 @@
+<!-- task_app/templates/registration/logged_out.html -->
+
+{% extends 'base_generic.html' %}
+
+{% block content %}
+    <h2>Logged out</h2>
+    <p>You have been successfully logged out.</p>
+    <p>Click below to log in again:</p>
+    <a href="{% url 'login' %}">Log in again</a>  <!-- This points to the user login page -->
+{% endblock %}

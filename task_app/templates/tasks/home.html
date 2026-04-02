@@ -1,0 +1,1336 @@
+{% extends 'base_generic.html' %}
+{% load static %}
+
+{% block content %}
+<div class="task-manager-container">
+    <!-- Compressed Sidebar -->
+    <div class="sidebar" id="mainSidebar">
+        <div class="logo-container">
+            <h2 class="logo-full">Task<span>Flow</span></h2>
+            <h2 class="logo-compact">TF</h2>
+        </div>
+        <div class="menu-container">
+            <ul>
+                {% with request.user.userprofile as profile %}
+                    {% if profile.category == 'Task Management System Manager' %}
+                        <li><a href="{% url 'activity' %}" class="{% if request.resolver_match.url_name == 'activity' %}active{% endif %}" title="Activity">
+                            <i class="fas fa-chart-line"></i> <span>Activity</span>
+                        </a></li>
+                        <li><a href="{% url 'metrics' %}" class="{% if request.resolver_match.url_name == 'metrics' %}active{% endif %}" title="Metrics">
+                            <i class="fas fa-tachometer-alt"></i> <span>Metrics</span>
+                        </a></li>
+                        <li><a href="{% url 'user_profile' %}" class="{% if request.resolver_match.url_name == 'user_profile' %}active{% endif %}" title="User Profile">
+                            <i class="fas fa-user"></i> <span>User Profile</span>
+                        </a></li>
+                    {% else %}
+                        {% if profile.category == "Departmental Manager" %}
+                            <li><a href="{% url 'home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}" title="Home">
+                                <i class="fas fa-home"></i> <span>Home</span>
+                            </a></li>
+                            <li><a href="{% url 'manage_users' %}" class="{% if request.resolver_match.url_name == 'manage_users' %}active{% endif %}" title="Users">
+                                <i class="fas fa-users"></i> <span>Users</span>
+                            </a></li>
+                        {% endif %}
+                        <li><a href="{% url 'assigned_to_me' %}" class="{% if request.resolver_match.url_name == 'assigned_to_me' %}active{% endif %}" title="Assigned To Me">
+                            <i class="fas fa-tasks"></i> <span>Assigned To Me</span>
+                        </a></li>
+                        <li><a href="{% url 'assigned_by_me' %}" class="{% if request.resolver_match.url_name == 'assigned_by_me' %}active{% endif %}" title="Assigned By Me">
+                            <i class="fas fa-project-diagram"></i> <span>Assigned By Me</span>
+                        </a></li>
+                        <li><a href="{% url 'user_profile' %}" class="{% if request.resolver_match.url_name == 'user_profile' %}active{% endif %}" title="User Profile">
+                            <i class="fas fa-user"></i> <span>User Profile</span>
+                        </a></li>
+                    {% endif %}
+                {% endwith %}
+            </ul>
+        </div>
+        <div class="sidebar-toggle" onclick="toggleSidebar()">
+            <i class="fas fa-chevron-left" id="sidebarToggleIcon"></i>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="header-section">
+            <div class="greeting">
+                <h1>Welcome, {{ request.user.username }}!</h1>
+                <p>Here's an overview of your tasks</p>
+            </div>
+            <div class="header-actions">
+                <div class="user-actions">
+                    <div class="notification">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <div class="user">
+                        <img src="{% static 'task_app\images/user-icon.png' %}" alt="User Avatar" class="avatar" />
+                        <span>{{ request.user.get_full_name }}</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </div>
+                <button class="create-task-btn" onclick="window.location.href='{% url 'create_task' %}'">
+                    <i class="fas fa-plus"></i> Create Task
+                </button>
+            </div>
+        </div>
+
+        <div class="content-wrapper">
+            <!-- Vertical Filter Panel -->
+            <div class="filter-panel" id="filterPanel">
+                <div class="filter-header">
+                    <h3><i class="fas fa-filter"></i> Filters</h3>
+                    <button class="close-filters-btn" onclick="toggleFilterPanel()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <div class="filter-content">
+                    <!-- Priority Filter -->
+                    <div class="filter-group">
+                        <label>Priority</label>
+                        <div class="multi-select" id="priorityFilterContainer">
+                            <div class="multi-select-header" onclick="toggleDropdown('priorityDropdown')">
+                                <span class="placeholder">Select Priorities</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="multi-select-dropdown" id="priorityDropdown">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="priorityHigh" value="high">
+                                    <label for="priorityHigh">High</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="priorityMedium" value="medium">
+                                    <label for="priorityMedium">Medium</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="priorityLow" value="low">
+                                    <label for="priorityLow">Low</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="priorityUrgent" value="urgent">
+                                    <label for="priorityUrgent">Urgent</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Status Filter -->
+                    <div class="filter-group">
+                        <label>Status</label>
+                        <div class="multi-select" id="statusFilterContainer">
+                            <div class="multi-select-header" onclick="toggleDropdown('statusDropdown')">
+                                <span class="placeholder">Select Statuses</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="multi-select-dropdown" id="statusDropdown">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="statusNotStarted" value="Not Started" checked>
+                                    <label for="statusNotStarted">Not Started</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="statusInProgress" value="In Progress" checked>
+                                    <label for="statusInProgress">In Progress</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="statusCompleted" value="Completed">
+                                    <label for="statusCompleted">Completed</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="statusStalled" value="Stalled">
+                                    <label for="statusStalled">Stalled</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="statusCancelled" value="Cancelled">
+                                    <label for="statusCancelled">Cancelled</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="statusOverdue" value="Overdue">
+                                    <label for="statusOverdue">Overdue</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="statusOnHold" value="On-Hold">
+                                    <label for="statusOnHold">On Hold</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Department Filter -->
+                    <div class="filter-group">
+                        <label>Department</label>
+                        <div class="multi-select" id="departmentFilterContainer">
+                            <div class="multi-select-header" onclick="toggleDropdown('departmentDropdown')">
+                                <span class="placeholder">Select Departments</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="multi-select-dropdown" id="departmentDropdown">
+                                {% for department in departments %}
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="department{{ forloop.counter }}" value="{{ department.name }}">
+                                        <label for="department{{ forloop.counter }}">{{ department.name }}</label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Assignor Department Filter -->
+                    <div class="filter-group">
+                        <label>Assignor Department</label>
+                        <div class="multi-select" id="assignorDepartmentFilterContainer">
+                            <div class="multi-select-header" onclick="toggleDropdown('assignorDepartmentDropdown')">
+                                <span class="placeholder">Select Departments</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="multi-select-dropdown" id="assignorDepartmentDropdown">
+                                {% for department in departments %}
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="assignorDepartment{{ forloop.counter }}" value="{{ department.name }}">
+                                        <label for="assignorDepartment{{ forloop.counter }}">{{ department.name }}</label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Assigned By Filter -->
+                    <div class="filter-group">
+                        <label>Assigned By</label>
+                        <div class="multi-select" id="assignedByFilterContainer">
+                            <div class="multi-select-header" onclick="toggleDropdown('assignedByDropdown')">
+                                <span class="placeholder">Select Users</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="multi-select-dropdown" id="assignedByDropdown">
+                                {% for user in users %}
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="assignedBy{{ forloop.counter }}" value="{{ user.get_full_name }}">
+                                        <label for="assignedBy{{ forloop.counter }}">{{ user.get_full_name }}</label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Assigned To Filter -->
+                    <div class="filter-group">
+                        <label>Assigned To</label>
+                        <div class="multi-select" id="assignedToFilterContainer">
+                            <div class="multi-select-header" onclick="toggleDropdown('assignedToDropdown')">
+                                <span class="placeholder">Select Users</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="multi-select-dropdown" id="assignedToDropdown">
+                                {% for user in users %}
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="assignedTo{{ forloop.counter }}" value="{{ user.get_full_name }}">
+                                        <label for="assignedTo{{ forloop.counter }}">{{ user.get_full_name }}</label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Deadline Filter -->
+                    <div class="filter-group">
+                        <label>Deadline</label>
+                        <input type="date" id="deadlineFilter" class="date-input">
+                    </div>
+
+                    <!-- Quick Deadline Filter -->
+                    <div class="filter-group">
+                        <label>Quick Deadline Filter</label>
+                        <div class="deadline-quick-filter">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="deadlineNext24Hours" value="next24">
+                                <label for="deadlineNext24Hours">Next 24 Hours</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="deadlinePassed" value="passed">
+                                <label for="deadlinePassed">Deadline Passed</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="filter-buttons">
+                        <button class="filter-btn" onclick="applyFilters()">Apply Filters</button>
+                        <button class="reset-btn" onclick="resetFilters()">Reset</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Task Table Section -->
+            <div class="table-section">
+                <div class="table-header">
+                    <div class="table-title">
+                        <h2>Tasks Overview</h2>
+                        <span class="task-count" id="taskCount">0 tasks</span>
+                    </div>
+                    <button class="toggle-filters-btn" onclick="toggleFilterPanel()">
+                        <i class="fas fa-filter"></i>
+                        <span>Filters</span>
+                    </button>
+                </div>
+
+                <!-- Task Table -->
+                <div class="task-table-container">
+                    <table id="taskTable">
+                        <thead>
+                            <tr>
+                                <th>Keyword</th>
+                                <th>Subject</th>
+                                <th>Priority</th>
+                                <th>Status</th>
+                                <th>Department</th>
+                                <th>Deadline</th>
+                                <th>Assigned By</th>
+                                <th>Assigned To</th>
+                                <th>Assignor Department</th>
+                                <th>Revised Deadline</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for task in tasks %}
+                                <tr>
+                                    <td><a href="{% url 'task_detail' task.task_id %}" class="task-keyword-link" target="_blank">{{ task.task_id }}</a></td>
+                                    <td>{{ task.subject }}</td>
+                                    <td>
+                                        <span class="priority-badge {{ task.priority|lower }}">
+                                            {{ task.priority }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="status-badge {{ task.status|slugify }}">
+                                            {{ task.status }}
+                                        </span>
+                                    </td>
+                                    <td>{{ task.department.name }}</td>
+                                    <td>{{ task.deadline }}</td>
+                                    <td>{{ task.assigned_by.get_full_name }}</td>
+                                    <td>{{ task.assigned_to.get_full_name }}</td>
+                                    <td>{{ task.assigned_by.userprofile.department.name }}</td>
+                                    <td>{{ task.revised_completion_date|default:"NA" }}</td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="10">
+                                        <div class="no-tasks">
+                                            <i class="fas fa-clipboard-list"></i>
+                                            <p>No tasks available.</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Link to Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
+
+    body {
+        background-color: #f5f7fb;
+        color: #333;
+    }
+
+    .task-manager-container {
+        display: flex;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    /* Compressed Sidebar */
+    .sidebar {
+        width: 60px;
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        z-index: 20;
+        transition: width 0.3s ease;
+        position: relative;
+    }
+
+    .sidebar.expanded {
+        width: 240px;
+    }
+
+    .logo-container {
+        padding: 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        text-align: center;
+    }
+
+    .logo-full {
+        font-size: 24px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        display: none;
+    }
+
+    .sidebar.expanded .logo-full {
+        display: block;
+    }
+
+    .sidebar.expanded .logo-compact {
+        display: none;
+    }
+
+    .logo-compact {
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    .logo-container h2 span {
+        color: #3ee9e5;
+    }
+
+    .menu-container {
+        flex: 1;
+        padding: 15px 0;
+    }
+
+    .sidebar ul {
+        list-style: none;
+    }
+
+    .sidebar ul li {
+        margin: 5px 0;
+    }
+
+    .sidebar ul li a {
+        text-decoration: none;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 16px;
+        padding: 12px 20px;
+        display: flex;
+        align-items: center;
+        transition: all 0.3s ease;
+        border-left: 4px solid transparent;
+        white-space: nowrap;
+    }
+
+    .sidebar ul li a i {
+        margin-right: 10px;
+        font-size: 18px;
+        min-width: 20px;
+        text-align: center;
+    }
+
+    .sidebar ul li a span {
+        display: none;
+    }
+
+    .sidebar.expanded ul li a span {
+        display: inline;
+    }
+
+    .sidebar ul li a.active, .sidebar ul li a:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        border-left: 4px solid #3ee9e5;
+    }
+
+    .sidebar-toggle {
+        position: absolute;
+        top: 50%;
+        right: -15px;
+        transform: translateY(-50%);
+        background: #2a5298;
+        border: 2px solid #fff;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        z-index: 25;
+    }
+
+    .sidebar-toggle:hover {
+        background: #1e3c72;
+    }
+
+    .sidebar-toggle i {
+        color: #fff;
+        font-size: 12px;
+        transition: transform 0.3s ease;
+    }
+
+    .sidebar.expanded .sidebar-toggle i {
+        transform: rotate(180deg);
+    }
+
+    /* Main Content */
+    .main-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        background-color: #f5f7fb;
+        overflow: hidden;
+    }
+
+    .header-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 30px;
+        background: white;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        z-index: 10;
+    }
+
+    .greeting h1 {
+        font-size: 24px;
+        color: #333;
+        margin-bottom: 5px;
+    }
+
+    .greeting p {
+        color: #666;
+        font-size: 14px;
+    }
+
+    .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .user-actions {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .notification {
+        position: relative;
+        cursor: pointer;
+    }
+
+    .notification i {
+        font-size: 20px;
+        color: #666;
+    }
+
+    .user {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+        object-fit: cover;
+        border: 2px solid #fff;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .user span {
+        font-size: 14px;
+        font-weight: 500;
+        margin-right: 10px;
+    }
+
+    .create-task-btn {
+        background: linear-gradient(135deg, #43cea2, #185a9d);
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(67, 206, 162, 0.3);
+    }
+
+    .create-task-btn:hover {
+        background: linear-gradient(135deg, #3ab890, #12497d);
+        transform: translateY(-2px);
+    }
+
+    /* Content Wrapper */
+    .content-wrapper {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+    position: relative; /* Add this for absolute positioning context */
+}
+    /* Vertical Filter Panel */
+    .filter-panel {
+    width: 300px;
+    background: white;
+    border-right: 1px solid #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+    position: absolute;
+    left: -300px; /* Hide it completely off-screen */
+    top: 0;
+    bottom: 0;
+    transition: left 0.3s ease;
+    z-index: 15;
+}
+
+.filter-panel.active {
+    left: 0; /* Slide it into view */
+}
+
+    .filter-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        border-bottom: 1px solid #e0e0e0;
+        background: #f8f9fa;
+    }
+
+    .filter-header h3 {
+        font-size: 16px;
+        color: #333;
+        display: flex;
+        align-items: center;
+        margin: 0;
+    }
+
+    .filter-header h3 i {
+        margin-right: 8px;
+        color: #2a5298;
+    }
+
+    .close-filters-btn {
+        background: none;
+        border: none;
+        color: #666;
+        font-size: 16px;
+        cursor: pointer;
+        padding: 5px;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+    }
+
+    .close-filters-btn:hover {
+        background: #e0e0e0;
+        color: #333;
+    }
+
+    .filter-content {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+    }
+
+    .filter-group {
+        margin-bottom: 20px;
+    }
+
+    .filter-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 14px;
+        color: #666;
+        font-weight: 500;
+    }
+
+    /* Multi-select dropdown */
+    .multi-select {
+        position: relative;
+        width: 100%;
+    }
+
+    .multi-select-header {
+        padding: 10px 12px;
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        background-color: #fff;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 14px;
+        transition: border-color 0.3s ease;
+    }
+
+    .multi-select-header:hover {
+        border-color: #2a5298;
+    }
+
+    .multi-select-header .placeholder {
+        color: #666;
+    }
+
+    .multi-select-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        margin-top: 2px;
+        max-height: 200px;
+        overflow-y: auto;
+        z-index: 100;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        display: none;
+    }
+
+    .checkbox-item {
+        padding: 8px 12px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        font-size: 14px;
+    }
+
+    .checkbox-item:hover {
+        background-color: #f5f7fb;
+    }
+
+    .checkbox-item input[type="checkbox"] {
+        margin-right: 8px;
+        cursor: pointer;
+        accent-color: #2a5298;
+    }
+
+    .checkbox-item label {
+        color: #333;
+        cursor: pointer;
+        margin-bottom: 0;
+        font-size: 14px;
+    }
+
+    .date-input {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        font-size: 14px;
+        color: #333;
+        transition: border-color 0.3s ease;
+    }
+
+    .date-input:focus {
+        border-color: #2a5298;
+        outline: none;
+    }
+
+    .deadline-quick-filter {
+        background-color: #f8f9fa;
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        padding: 8px;
+    }
+
+    .deadline-quick-filter .checkbox-item {
+        padding: 6px 8px;
+    }
+
+    .filter-buttons {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .filter-btn, .reset-btn {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .filter-btn {
+        background: #2a5298;
+        color: white;
+    }
+
+    .filter-btn:hover {
+        background: #1e3c72;
+    }
+
+    .reset-btn {
+        background: #f5f5f5;
+        color: #666;
+    }
+
+    .reset-btn:hover {
+        background: #e5e5e5;
+    }
+
+    /* Table Section */
+    .table-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    width: 100%; /* Ensure it takes full width */
+}
+
+    .table-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 30px;
+        background: white;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .table-title {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .table-title h2 {
+        font-size: 20px;
+        color: #333;
+        margin: 0;
+    }
+
+    .task-count {
+        background: #f0f0f0;
+        color: #666;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .toggle-filters-btn {
+        background: #f5f7fb;
+        color: #2a5298;
+        border: 1px solid #e0e0e0;
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .toggle-filters-btn:hover {
+        background: #e0e5f0;
+    }
+
+    /* Task Table */
+    .task-table-container {
+        flex: 1;
+        overflow: auto;
+        background: white;
+        margin: 0 30px 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    #taskTable {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+    #taskTable th, #taskTable td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #eee;
+    }
+
+    #taskTable th {
+        background-color: #f8f9fa;
+        color: #555;
+        font-weight: 600;
+        font-size: 14px;
+        position: sticky;
+        top: 0;
+        z-index: 5;
+    }
+
+    #taskTable th:first-child {
+        border-top-left-radius: 10px;
+    }
+
+    #taskTable th:last-child {
+        border-top-right-radius: 10px;
+    }
+
+    #taskTable tr {
+        transition: background-color 0.2s;
+    }
+
+    #taskTable tbody tr:hover {
+        background-color: #f9fafc;
+    }
+
+    #taskTable td {
+        border-bottom: 1px solid #eee;
+        font-size: 14px;
+        color: #333;
+    }
+
+    /* Custom task link styling */
+    .task-keyword-link {
+        color: #1e3c72;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.2s;
+    }
+
+    .task-keyword-link:hover {
+        color: #3ee9e5;
+        text-decoration: underline;
+    }
+
+    /* Priority and Status badges */
+    .priority-badge, .status-badge {
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+        display: inline-block;
+    }
+
+    .priority-badge.high {
+        background-color: #ffebee;
+        color: #e53935;
+    }
+
+    .priority-badge.medium {
+        background-color: #fff8e1;
+        color: #ffb300;
+    }
+
+    .priority-badge.low {
+        background-color: #e8f5e9;
+        color: #43a047;
+    }
+
+    .priority-badge.urgent {
+        background-color: #fce4ec;
+        color: #d81b60;
+    }
+
+    .status-badge.not-started {
+        background-color: #e3f2fd;
+        color: #1976d2;
+    }
+
+    .status-badge.in-progress {
+        background-color: #e8f5e9;
+        color: #43a047;
+    }
+
+    .status-badge.completed {
+        background-color: #e0f2f1;
+        color: #00897b;
+    }
+
+    .status-badge.stalled {
+        background-color: #ede7f6;
+        color: #7b1fa2;
+    }
+
+    .status-badge.cancelled {
+        background-color: #fafafa;
+        color: #757575;
+    }
+    .status-badge.overdue {
+        background-color: #fafafa;
+        color: #757575;
+    }
+    .status-badge.onhold {
+        background-color: #fafafa;
+        color: #757575;
+    }
+
+    /* No tasks message */
+    .no-tasks {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 40px;
+        color: #bbb;
+    }
+
+    .no-tasks i {
+        font-size: 48px;
+        margin-bottom: 10px;
+    }
+
+    .no-tasks p {
+        font-size: 16px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 1200px) {
+        .filters {
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        }
+    }
+
+    @media (max-width: 768px) {
+        .sidebar {
+            width: 70px;
+        }
+
+        .logo-container h2 {
+            display: none;
+        }
+
+        .sidebar ul li a span {
+            display: none;
+        }
+
+        .sidebar ul li a i {
+            margin-right: 0;
+        }
+
+        .filters {
+            grid-template-columns: 1fr;
+        }
+
+        .filter-buttons {
+            justify-content: center;
+        }
+
+        .create-task-btn {
+            position: static;
+            margin-top: 15px;
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
+
+<!-- JavaScript for filters -->
+<script>
+    // Toggle dropdown menus
+    function toggleDropdown(dropdownId) {
+        const dropdown = document.getElementById(dropdownId);
+        
+        // Close all other dropdowns first
+        const allDropdowns = document.querySelectorAll('.multi-select-dropdown');
+        allDropdowns.forEach(element => {
+            if (element.id !== dropdownId) {
+                element.style.display = 'none';
+            }
+        });
+        
+        // Toggle the selected dropdown
+        if (dropdown.style.display === 'block') {
+            dropdown.style.display = 'none';
+        } else {
+            dropdown.style.display = 'block';
+        }
+    }
+
+    // Handle window clicks to close dropdowns when clicking outside
+    window.addEventListener('click', function(e) {
+        if (!e.target.closest('.multi-select')) {
+            const allDropdowns = document.querySelectorAll('.multi-select-dropdown');
+            allDropdowns.forEach(dropdown => {
+                dropdown.style.display = 'none';
+            });
+        }
+    }, true);
+
+    // Toggle filters visibility
+    function toggleFilters() {
+        const filtersContainer = document.getElementById('filtersContainer');
+        const toggleText = document.getElementById('toggleText');
+        
+        filtersContainer.classList.toggle('collapsed');
+        
+        if (filtersContainer.classList.contains('collapsed')) {
+            toggleText.textContent = 'Show Filters';
+            document.querySelector('.task-table-container').style.height = 'calc(100vh - 200px)';
+        } else {
+            toggleText.textContent = 'Hide Filters';
+            document.querySelector('.task-table-container').style.height = 'calc(100vh - 320px)';
+        }
+    }
+
+    // Update placeholder text based on selections
+    function updatePlaceholder(containerId, selectedValues) {
+        const container = document.getElementById(containerId);
+        const placeholder = container.querySelector('.placeholder');
+        
+        if (selectedValues.length === 0) {
+            // Set default text based on filter type
+            switch(containerId) {
+                case 'statusFilterContainer':
+                    placeholder.textContent = 'Select Statuses';
+                    break;
+                case 'priorityFilterContainer':
+                    placeholder.textContent = 'Select Priorities';
+                    break;
+                case 'departmentFilterContainer':
+                    placeholder.textContent = 'Select Departments';
+                    break;
+                case 'assignorDepartmentFilterContainer':
+                    placeholder.textContent = 'Select Departments';
+                    break;
+                case 'assignedByFilterContainer':
+                    placeholder.textContent = 'Select Users';
+                    break;
+                case 'assignedToFilterContainer':
+                    placeholder.textContent = 'Select Users';
+                    break;
+                default:
+                    placeholder.textContent = 'Select Options';
+            }
+        } else if (selectedValues.length === 1) {
+            placeholder.textContent = selectedValues[0];
+        } else {
+            placeholder.textContent = `${selectedValues.length} selected`;
+        }
+    }
+
+    // Apply filters to table
+    function applyFilters() {
+        // Get all filter values
+        const priorityValues = getSelectedCheckboxValues('priorityDropdown');
+        const statusValues = getSelectedCheckboxValues('statusDropdown');
+        const departmentValues = getSelectedCheckboxValues('departmentDropdown');
+        const assignorDepartmentValues = getSelectedCheckboxValues('assignorDepartmentDropdown');
+        const assignedByValues = getSelectedCheckboxValues('assignedByDropdown');
+        const assignedToValues = getSelectedCheckboxValues('assignedToDropdown');
+        const deadlineFilter = document.getElementById('deadlineFilter').value;
+        
+        // Get quick deadline filter values
+        const next24HoursElement = document.getElementById('deadlineNext24Hours');
+        const deadlinePassedElement = document.getElementById('deadlinePassed');
+        const next24HoursChecked = next24HoursElement ? next24HoursElement.checked : false;
+        const deadlinePassedChecked = deadlinePassedElement ? deadlinePassedElement.checked : false;
+        
+        // Update placeholders
+        updatePlaceholder('priorityFilterContainer', priorityValues);
+        updatePlaceholder('statusFilterContainer', statusValues);
+        updatePlaceholder('departmentFilterContainer', departmentValues);
+        updatePlaceholder('assignorDepartmentFilterContainer', assignorDepartmentValues);
+        updatePlaceholder('assignedByFilterContainer', assignedByValues);
+        updatePlaceholder('assignedToFilterContainer', assignedToValues);
+        
+        // Get today and tomorrow dates for comparison
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        
+        // Filter the table
+        const table = document.getElementById('taskTable');
+        const rows = table.getElementsByTagName('tr');  
+        
+        for (let i = 1; i < rows.length; i++) {
+            const cells = rows[i].getElementsByTagName('td');
+            if (cells.length > 0) {
+                const priority = cells[2].textContent.trim();
+                const status = cells[3].textContent.trim();
+                const department = cells[4].textContent.trim();
+                const deadline = cells[5].textContent.trim();
+                const assignedBy = cells[6].textContent.trim();
+                const assignedTo = cells[7].textContent.trim();
+                const assignorDepartment = cells[8].textContent.trim();
+                const revisedDeadline = cells[9].textContent.trim();
+                
+                let displayRow = true;
+                
+                // Multi-select filter logic - if any filters are selected, row must match at least one selected value
+                if (priorityValues.length > 0 && !priorityValues.includes(priority)) displayRow = false;
+                if (statusValues.length > 0 && !statusValues.includes(status)) displayRow = false;
+                if (departmentValues.length > 0 && !departmentValues.includes(department)) displayRow = false;
+                if (assignorDepartmentValues.length > 0 && !assignorDepartmentValues.includes(assignorDepartment)) displayRow = false;
+                if (assignedByValues.length > 0 && !assignedByValues.includes(assignedBy)) displayRow = false;
+                if (assignedToValues.length > 0 && !assignedToValues.includes(assignedTo)) displayRow = false;
+                
+                // Use revised deadline if available, otherwise use original deadline
+                let effectiveDeadline = deadline;
+                if (revisedDeadline && revisedDeadline !== 'NA') {
+                    effectiveDeadline = revisedDeadline;
+                }
+                
+                // Parse the deadline and handle filtering
+                try {
+                    const deadlineDate = new Date(effectiveDeadline);
+                    
+                    // Check if date is valid before proceeding with date comparisons
+                    if (!isNaN(deadlineDate.getTime())) {
+                        // Set hours to beginning of day for proper comparison
+                        deadlineDate.setHours(0, 0, 0, 0);
+                        
+                        // Date filter for specific date
+                        if (deadlineFilter) {
+                            const selectedDate = new Date(deadlineFilter);
+                            selectedDate.setHours(0, 0, 0, 0);
+                            if (deadlineDate.getTime() !== selectedDate.getTime()) {
+                                displayRow = false;
+                            }
+                        }
+                        
+                        // Handle quick deadline filters with OR relationship between them
+                        if (next24HoursChecked || deadlinePassedChecked) {
+                            let meetsDeadlineCondition = false;
+                            
+
+                            // Next 24 Hours filter (today or tomorrow)
+                            if (next24HoursChecked) {
+                                const deadlineTime = deadlineDate.getTime();
+                                if (deadlineTime === today.getTime() || deadlineTime === tomorrow.getTime()) {
+                                    meetsDeadlineCondition = true;
+                                }
+                            }
+                            
+                            // Deadline Passed filter
+                            if (deadlinePassedChecked) {
+                                if (deadlineDate.getTime() < today.getTime()) {
+                                    meetsDeadlineCondition = true;
+                                }
+                            }
+                            
+                            // If neither condition is met, don't display the row
+                            if (!meetsDeadlineCondition) {
+                                displayRow = false;
+                            }
+                        }
+                    } else if (next24HoursChecked || deadlinePassedChecked) {
+                        // If invalid date and quick filters are active, hide the row
+                        displayRow = false;
+                    }
+                } catch (error) {
+                    console.error(`Error processing date: ${effectiveDeadline}`, error);
+                    if (next24HoursChecked || deadlinePassedChecked) {
+                        displayRow = false;
+                    }
+                }
+                
+                rows[i].style.display = displayRow ? '' : 'none';
+            }
+        }
+        
+        // Close all dropdowns
+        const allDropdowns = document.querySelectorAll('.multi-select-dropdown');
+        allDropdowns.forEach(dropdown => {
+            dropdown.style.display = 'none';
+        });
+        updateTaskCount();
+    }
+
+    // Get all selected values from a multi-select dropdown
+    function getSelectedCheckboxValues(dropdownId) {
+        const dropdown = document.getElementById(dropdownId);
+        const checkboxes = dropdown.querySelectorAll('input[type="checkbox"]');
+        const values = [];
+        
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                values.push(checkbox.value);
+            }
+        });
+        
+        return values;
+    }
+    // Toggle sidebar
+function toggleSidebar() {
+    const sidebar = document.getElementById('mainSidebar');
+    sidebar.classList.toggle('expanded');
+}
+
+// Toggle filter panel
+function toggleFilterPanel() {
+    const filterPanel = document.getElementById('filterPanel');
+    filterPanel.classList.toggle('active');
+}function updateTaskCount() {
+    const table = document.getElementById('taskTable');
+    const rows = table.getElementsByTagName('tr');
+    let visibleCount = 0;
+    
+    for (let i = 1; i < rows.length; i++) {
+        if (rows[i].style.display !== 'none') {
+            visibleCount++;
+        }
+    }
+    
+    document.getElementById('taskCount').textContent = `${visibleCount} tasks`;
+}
+
+    // Reset all filters
+    function resetFilters() {
+        // Uncheck all checkboxes except for default "Not Started" and "In Progress"
+        const allCheckboxes = document.querySelectorAll('.multi-select-dropdown input[type="checkbox"]');
+        allCheckboxes.forEach(checkbox => {
+            if (checkbox.id === 'statusNotStarted' || checkbox.id === 'statusInProgress' || checkbox.id === 'statusOverdue') {
+                checkbox.checked = true;
+            } else {
+                checkbox.checked = false;
+            }
+        });
+        
+        // Reset date filter
+        document.getElementById('deadlineFilter').value = '';
+        
+        // Reset quick deadline filters - check if elements exist first
+        const next24HoursElement = document.getElementById('deadlineNext24Hours');
+        const deadlinePassedElement = document.getElementById('deadlinePassed');
+        if (next24HoursElement) next24HoursElement.checked = false;
+        if (deadlinePassedElement) deadlinePassedElement.checked = false;
+        
+        // Reset placeholders
+        updatePlaceholder('priorityFilterContainer', []);
+        updatePlaceholder('statusFilterContainer', ['Not Started', 'In Progress']);
+        updatePlaceholder('departmentFilterContainer', []);
+        updatePlaceholder('assignorDepartmentFilterContainer', []);
+        updatePlaceholder('assignedByFilterContainer', []);
+        updatePlaceholder('assignedToFilterContainer', []);
+        
+        // Apply the default filters (Not Started and In Progress)
+        applyFilters();
+    }
+
+    // Initialize the page with default filters (Not Started and In Progress)
+    document.addEventListener('DOMContentLoaded', function() {
+        // Make sure Not Started and In Progress are checked by default
+        const notStartedElement = document.getElementById('statusNotStarted');
+        const inProgressElement = document.getElementById('statusInProgress');
+        
+        if (notStartedElement) notStartedElement.checked = true;
+        if (inProgressElement) inProgressElement.checked = true;
+        
+        // Set the default values in the placeholder
+        updatePlaceholder('statusFilterContainer', ['Not Started', 'In Progress']);
+        
+        // Apply the default filters
+        applyFilters();
+        updateTaskCount();
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: 1px solid #e4e4e4;
+        }
+
+        .email-header {
+            background: #4CAF50;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 20px;
+        }
+
+        .email-body {
+            padding: 20px;
+        }
+
+        .email-body p {
+            line-height: 1.6;
+            margin: 10px 0;
+        }
+
+        .email-body strong {
+            color: #4CAF50;
+        }
+
+        .email-button {
+            display: inline-block;
+            background: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .email-footer {
+            text-align: center;
+            padding: 10px;
+            background: #f4f4f4;
+            font-size: 12px;
+            color: #888;
+        }
+
+        .email-footer a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="email-header">
+            Task Management System
+        </div>
+        <div class="email-body">
+            <p>Hi {{ user.get_full_name }},</p>
+            <p>A new ticket has been created.</p>
+            <p><strong>Ticket number:</strong> {{ ticket.task_id }}</p>
+            <p><strong>Subject:</strong> {{ ticket.subject }}</p>
+            <p><strong>Ticket type:</strong> {{ ticket.ticket_type }}</p>
+            <a href="{{ view_ticket_url }}" class="email-button">View Ticket</a>
+            <p>Thank you!<br>Manager</p>
+        </div>
+        
+    </div>
+</body>
+</html>

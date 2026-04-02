@@ -1,0 +1,213 @@
+<!-- task_app/templates/registration/profile.html -->
+
+{% extends 'base_generic.html' %}
+
+{% block content %}
+  <style>
+    /* Inline CSS for Profile Page */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    h2, h3, h4 {
+      color: #4CAF50;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      font-size: 28px;
+    }
+
+    h3, h4 {
+      font-size: 22px;
+    }
+
+    p {
+      font-size: 16px;
+      margin: 10px 0;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    ul li {
+      margin: 10px 0;
+      padding: 10px;
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    ul li a {
+      color: #1ABC9C;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    ul li a:hover {
+      text-decoration: underline;
+    }
+
+    .status {
+      color: #333;
+      font-size: 14px;
+      margin-left: 10px;
+    }
+
+    /* Form styling */
+    form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    select, button {
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    /* Empty State Styling */
+    .empty-state {
+      color: #e74c3c;
+      font-weight: bold;
+    }
+
+    /* Navbar Styling */
+    .navbar a {
+      margin-right: 15px;
+      color: white;
+      padding: 8px 12px;
+      background-color: #34495E;
+      text-decoration: none;
+      border-radius: 4px;
+    }
+
+    .navbar a:hover {
+      background-color: #1ABC9C;
+    }
+  </style>
+
+  <h2>User Profile</h2>
+  <p>Welcome, {{ user.username }}!</p>
+  <p>Email: {{ user.email }}</p>
+
+  {% if is_manager %}
+    <h3>Task Management System Manager Dashboard</h3>
+    <p>You have full access to all tasks and user permissions.</p>
+
+    <!-- Filtering Form -->
+    <form method="get" action="{% url 'profile' %}">
+      <label for="department">Filter by Department:</label>
+      <select name="department" id="department">
+        <option value="">All Departments</option>
+        {% for department in departments %}
+          <option value="{{ department.id }}" {% if request.GET.department == department.id|stringformat:"s" %}selected{% endif %}>{{ department.name }}</option>
+        {% endfor %}
+      </select>
+
+      <label for="person">Filter by Person:</label>
+      <select name="person" id="person">
+        <option value="">All Persons</option>
+        {% for user in all_users %}
+          <option value="{{ user.user.id }}" {% if request.GET.person == user.user.id|stringformat:"s" %}selected{% endif %}>{{ user.user.username }}</option>
+        {% endfor %}
+      </select>
+
+      <label for="ageing_days">Filter by Ageing:</label>
+      <select name="ageing_days" id="ageing_days">
+        <option value="">All</option>
+        <option value="7" {% if request.GET.ageing_days == '7' %}selected{% endif %}>Open for 7 days</option>
+        <option value="30" {% if request.GET.ageing_days == '30' %}selected{% endif %}>Open for 30 days</option>
+        <option value="overdue" {% if request.GET.ageing_days == 'overdue' %}selected{% endif %}>Overdue</option>
+      </select>
+
+      <label for="status">Filter by Status:</label>
+      <select name="status" id="status">
+        <option value="">All Statuses</option>
+        {% for status, label in status_choices %}
+          <option value="{{ status }}" {% if request.GET.status == status %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+
+      <button type="submit">Apply Filters</button>
+    </form>
+
+    <h4>All Tasks</h4>
+    <ul>
+      {% for task in all_tasks %}
+        <li>
+          <a href="{% url 'task_detail' task.task_id %}">{{ task.task_id }}</a>
+          (Assigned to: {{ task.assigned_to.username }}, Status: {{ task.status_update_assignee }})
+        </li>
+      {% empty %}
+        <p class="empty-state">No tasks available for the selected filters.</p>
+      {% endfor %}
+    </ul>
+
+    <h4>All Users and Permissions</h4>
+    <ul>
+      {% for user in all_users %}
+        <li>{{ user.user.username }} - Role: {{ user.category }} (Department: {{ user.department.name }})</li>
+      {% endfor %}
+    </ul>
+
+    <h4>System Logs and Technical Issues</h4>
+    <p><a href="{% url 'view_system_logs' %}">View system logs and discrepancies</a></p>
+
+  {% else %}
+    <!-- Section for tasks created by the user -->
+    <h3>Tasks Created by You</h3>
+    {% if created_tasks %}
+      <ul>
+        {% for task in created_tasks %}
+          <li>
+            <a href="{% url 'task_detail' task.task_id %}">{{ task.task_id }}</a>
+            <span class="status">({{ task.status_update_assignee }})</span>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="empty-state">You haven't created any tasks.</p>
+    {% endif %}
+
+    <!-- Section for tasks assigned to the user -->
+    <h3>Your Assigned Tasks</h3>
+    {% if assigned_tasks %}
+      <ul>
+        {% for task in assigned_tasks %}
+          <li>
+            <a href="{% url 'task_detail' task.task_id %}">{{ task.task_id }}</a>
+            <span class="status">({{ task.status_update_assignee }})</span>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="empty-state">No tasks have been assigned to you.</p>
+    {% endif %}
+  {% endif %}
+
+{% endblock %}

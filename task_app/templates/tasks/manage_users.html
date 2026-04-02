@@ -1,0 +1,951 @@
+{% extends 'base_generic.html' %}
+{% load static %}
+
+{% block content %}
+<div class="task-manager-container">
+    <!-- Compressed Sidebar -->
+    <div class="sidebar" id="mainSidebar">
+        <div class="logo-container">
+            <h2 class="logo-full">Task<span>Flow</span></h2>
+            <h2 class="logo-compact">TF</h2>
+        </div>
+        <div class="menu-container">
+            <ul>
+                {% with request.user.userprofile as profile %}
+                    {% if profile.category == 'Task Management System Manager' %}
+                        <li><a href="{% url 'activity' %}" class="{% if request.resolver_match.url_name == 'activity' %}active{% endif %}" title="Activity">
+                            <i class="fas fa-chart-line"></i> <span>Activity</span>
+                        </a></li>
+                        <li><a href="{% url 'metrics' %}" class="{% if request.resolver_match.url_name == 'metrics' %}active{% endif %}" title="Metrics">
+                            <i class="fas fa-tachometer-alt"></i> <span>Metrics</span>
+                        </a></li>
+                        <li><a href="{% url 'user_profile' %}" class="{% if request.resolver_match.url_name == 'user_profile' %}active{% endif %}" title="User Profile">
+                            <i class="fas fa-user"></i> <span>User Profile</span>
+                        </a></li>
+                    {% else %}
+                        {% if profile.category == "Departmental Manager" %}
+                            <li><a href="{% url 'home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}" title="Home">
+                                <i class="fas fa-home"></i> <span>Home</span>
+                            </a></li>
+                            <li><a href="{% url 'manage_users' %}" class="{% if request.resolver_match.url_name == 'manage_users' %}active{% endif %}" title="Users">
+                                <i class="fas fa-users"></i> <span>Users</span>
+                            </a></li>
+                        {% endif %}
+                        <li><a href="{% url 'assigned_to_me' %}" class="{% if request.resolver_match.url_name == 'assigned_to_me' %}active{% endif %}" title="Assigned To Me">
+                            <i class="fas fa-tasks"></i> <span>Assigned To Me</span>
+                        </a></li>
+                        <li><a href="{% url 'assigned_by_me' %}" class="{% if request.resolver_match.url_name == 'assigned_by_me' %}active{% endif %}" title="Assigned By Me">
+                            <i class="fas fa-project-diagram"></i> <span>Assigned By Me</span>
+                        </a></li>
+                        <li><a href="{% url 'user_profile' %}" class="{% if request.resolver_match.url_name == 'user_profile' %}active{% endif %}" title="User Profile">
+                            <i class="fas fa-user"></i> <span>User Profile</span>
+                        </a></li>
+                    {% endif %}
+                {% endwith %}
+            </ul>
+        </div>
+        <div class="sidebar-toggle" onclick="toggleSidebar()">
+            <i class="fas fa-chevron-left" id="sidebarToggleIcon"></i>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="header-section">
+            <div class="greeting">
+                <h1>Manage Users</h1>
+                <p>Manage users in your department</p>
+            </div>
+            <div class="header-actions">
+                <div class="user-actions">
+                    <div class="notification">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <div class="user">
+                        <img src="{% static 'task_app\images/user-icon.png' %}" alt="User Avatar" class="avatar" />
+                        <span>{{ request.user.get_full_name }}</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </div>
+                <button class="create-user-btn" onclick="showAddUserForm()">
+                    <i class="fas fa-plus"></i> Add User
+                </button>
+            </div>
+        </div>
+
+        <div class="content-wrapper">
+            <!-- User Management Section -->
+            <div class="user-management-section">
+                <div class="section-header">
+                    <div class="section-title">
+                        <h2>Department Users</h2>
+                        <span class="user-count" id="userCount">{{ users|length }} users</span>
+                    </div>
+                </div>
+
+                <!-- User Table -->
+                <div class="user-table-container">
+                    <table id="userTable">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Full Name</th>
+                                <th>Email</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in users %}
+                                <tr>
+                                    <td>{{ user.username }}</td>
+                                    <td>{{ user.get_full_name }}</td>
+                                    <td>{{ user.email }}</td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="edit-btn" onclick="editUser({{ user.id }}, '{{ user.username }}', '{{ user.first_name }}', '{{ user.last_name }}', '{{ user.email }}')">
+                                                <i class="fas fa-edit"></i> Edit
+                                            </button>
+                                            <button class="delete-btn" onclick="confirmDelete({{ user.id }}, '{{ user.username }}')">
+                                                <i class="fas fa-trash"></i> Delete
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="4">
+                                        <div class="no-users">
+                                            <i class="fas fa-users"></i>
+                                            <p>No users found in your department.</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add User Modal -->
+<div id="addUserModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Add New User</h2>
+            <button class="close-btn" onclick="closeAddUserForm()">&times;</button>
+        </div>
+        <form method="POST" action="{% url 'manage_users' %}" class="user-form">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="add">
+            
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username" required>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="first_name">First Name</label>
+                    <input type="text" name="first_name" id="first_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="last_name">Last Name</label>
+                    <input type="text" name="last_name" id="last_name" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" required>
+            </div>
+            
+            <div class="form-group">
+    <label for="password">Password</label>
+    <div class="password-input-container">
+        <input type="password" name="password" id="password" required>
+        <button type="button" class="password-toggle" onclick="togglePassword('password')">
+            <i class="fas fa-eye" id="password-icon"></i>
+        </button>
+    </div>
+</div>
+            
+            <div class="form-buttons">
+                <button type="submit" class="submit-btn">Add User</button>
+                <button type="button" class="cancel-btn" onclick="closeAddUserForm()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Edit User Modal -->
+<div id="editUserModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Edit User</h2>
+            <button class="close-btn" onclick="closeEditModal()">&times;</button>
+        </div>
+        <form method="POST" action="{% url 'manage_users' %}" class="user-form">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="edit">
+            <input type="hidden" name="user_id" id="editUserId">
+            
+            <div class="form-group">
+                <label for="editUsername">Username</label>
+                <input type="text" name="username" id="editUsername" required>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="editFirstName">First Name</label>
+                    <input type="text" name="first_name" id="editFirstName" required>
+                </div>
+                <div class="form-group">
+                    <label for="editLastName">Last Name</label>
+                    <input type="text" name="last_name" id="editLastName" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="editEmail">Email</label>
+                <input type="email" name="email" id="editEmail" required>
+            </div>
+            
+            <div class="form-buttons">
+                <button type="submit" class="submit-btn">Update User</button>
+                <button type="button" class="cancel-btn" onclick="closeEditModal()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Confirmation Modal -->
+<div id="confirmModal" class="modal">
+    <div class="modal-content confirmation-modal">
+        <div class="modal-header">
+            <h2>Confirm Delete</h2>
+        </div>
+        <div class="modal-body">
+            <div class="warning-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <p>Are you sure you want to delete the user <strong id="deleteUsername"></strong>?</p>
+            <p class="warning-text">This action cannot be undone.</p>
+        </div>
+        <div class="modal-footer">
+            <button class="cancel-btn" onclick="closeConfirmModal()">Cancel</button>
+            <button class="confirm-delete-btn" onclick="deleteUser()">Delete</button>
+        </div>
+    </div>
+</div>
+
+<!-- Hidden delete form -->
+<form id="deleteForm" method="POST" action="{% url 'manage_users' %}" style="display: none;">
+    {% csrf_token %}
+    <input type="hidden" name="action" value="delete">
+    <input type="hidden" name="user_id" id="deleteUserId">
+</form>
+
+<!-- Link to Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
+
+    body {
+        background-color: #f5f7fb;
+        color: #333;
+    }
+
+    .task-manager-container {
+        display: flex;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    /* Sidebar Styles (same as home.html) */
+    .sidebar {
+        width: 60px;
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        z-index: 20;
+        transition: width 0.3s ease;
+        position: relative;
+    }
+
+    .sidebar.expanded {
+        width: 240px;
+    }
+
+    .logo-container {
+        padding: 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        text-align: center;
+    }
+
+    .logo-full {
+        font-size: 24px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        display: none;
+    }
+
+    .sidebar.expanded .logo-full {
+        display: block;
+    }
+
+    .sidebar.expanded .logo-compact {
+        display: none;
+    }
+
+    .logo-compact {
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    .logo-container h2 span {
+        color: #3ee9e5;
+    }
+
+    .menu-container {
+        flex: 1;
+        padding: 15px 0;
+    }
+
+    .sidebar ul {
+        list-style: none;
+    }
+
+    .sidebar ul li {
+        margin: 5px 0;
+    }
+
+    .sidebar ul li a {
+        text-decoration: none;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 16px;
+        padding: 12px 20px;
+        display: flex;
+        align-items: center;
+        transition: all 0.3s ease;
+        border-left: 4px solid transparent;
+        white-space: nowrap;
+    }
+
+    .sidebar ul li a i {
+        margin-right: 10px;
+        font-size: 18px;
+        min-width: 20px;
+        text-align: center;
+    }
+
+    .sidebar ul li a span {
+        display: none;
+    }
+
+    .sidebar.expanded ul li a span {
+        display: inline;
+    }
+
+    .sidebar ul li a.active, .sidebar ul li a:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        border-left: 4px solid #3ee9e5;
+    }
+
+    .sidebar-toggle {
+        position: absolute;
+        top: 50%;
+        right: -15px;
+        transform: translateY(-50%);
+        background: #2a5298;
+        border: 2px solid #fff;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        z-index: 25;
+    }
+
+    .sidebar-toggle:hover {
+        background: #1e3c72;
+    }
+
+    .sidebar-toggle i {
+        color: #fff;
+        font-size: 12px;
+        transition: transform 0.3s ease;
+    }
+
+    .sidebar.expanded .sidebar-toggle i {
+        transform: rotate(180deg);
+    }
+
+    /* Main Content */
+    .main-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        background-color: #f5f7fb;
+        overflow: hidden;
+    }
+
+    .header-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 30px;
+        background: white;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        z-index: 10;
+    }
+
+    .greeting h1 {
+        font-size: 24px;
+        color: #333;
+        margin-bottom: 5px;
+    }
+
+    .greeting p {
+        color: #666;
+        font-size: 14px;
+    }
+
+    .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .user-actions {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .notification {
+        position: relative;
+        cursor: pointer;
+    }
+
+    .notification i {
+        font-size: 20px;
+        color: #666;
+    }
+
+    .user {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+        object-fit: cover;
+        border: 2px solid #fff;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .user span {
+        font-size: 14px;
+        font-weight: 500;
+        margin-right: 10px;
+    }
+
+    .create-user-btn {
+        background: linear-gradient(135deg, #43cea2, #185a9d);
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(67, 206, 162, 0.3);
+    }
+
+    .create-user-btn:hover {
+        background: linear-gradient(135deg, #3ab890, #12497d);
+        transform: translateY(-2px);
+    }
+
+    /* Content Wrapper */
+    .content-wrapper {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    /* User Management Section */
+    .user-management-section {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 30px;
+        background: white;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .section-title {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .section-title h2 {
+        font-size: 20px;
+        color: #333;
+        margin: 0;
+    }
+
+    .user-count {
+        background: #f0f0f0;
+        color: #666;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    /* User Table */
+    .user-table-container {
+        flex: 1;
+        overflow: auto;
+        background: white;
+        margin: 0 30px 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    #userTable {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+    .password-input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-input-container input {
+    padding-right: 40px;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #666;
+    font-size: 16px;
+    padding: 5px;
+    transition: color 0.3s ease;
+}
+
+.password-toggle:hover {
+    color: #333;
+}
+    #userTable th, #userTable td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #eee;
+    }
+
+    #userTable th {
+        background-color: #f8f9fa;
+        color: #555;
+        font-weight: 600;
+        font-size: 14px;
+        position: sticky;
+        top: 0;
+        z-index: 5;
+    }
+
+    #userTable th:first-child {
+        border-top-left-radius: 10px;
+    }
+
+    #userTable th:last-child {
+        border-top-right-radius: 10px;
+    }
+
+    #userTable tr {
+        transition: background-color 0.2s;
+    }
+
+    #userTable tbody tr:hover {
+        background-color: #f9fafc;
+    }
+
+    #userTable td {
+        border-bottom: 1px solid #eee;
+        font-size: 14px;
+        color: #333;
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+        display: flex;
+        gap: 8px;
+    }
+
+    .edit-btn, .delete-btn {
+        padding: 6px 12px;
+        border: none;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 500;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        transition: all 0.3s ease;
+    }
+
+    .edit-btn {
+        background: #e3f2fd;
+        color: #1976d2;
+    }
+
+    .edit-btn:hover {
+        background: #bbdefb;
+    }
+
+    .delete-btn {
+        background: #ffebee;
+        color: #e53935;
+    }
+
+    .delete-btn:hover {
+        background: #ffcdd2;
+    }
+
+    /* No users message */
+    .no-users {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 40px;
+        color: #bbb;
+    }
+
+    .no-users i {
+        font-size: 48px;
+        margin-bottom: 10px;
+    }
+
+    .no-users p {
+        font-size: 16px;
+    }
+
+    /* Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 5% auto;
+        padding: 0;
+        border-radius: 8px;
+        width: 500px;
+        max-width: 90%;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    .confirmation-modal {
+        width: 400px;
+    }
+
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        border-bottom: 1px solid #e0e0e0;
+        background: #f8f9fa;
+        border-radius: 8px 8px 0 0;
+    }
+
+    .modal-header h2 {
+        margin: 0;
+        font-size: 18px;
+        color: #333;
+    }
+
+    .close-btn {
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        color: #666;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+    }
+
+    .close-btn:hover {
+        background: #e0e0e0;
+        color: #333;
+    }
+
+    .modal-body {
+        padding: 20px;
+        text-align: center;
+    }
+
+    .warning-icon {
+        font-size: 48px;
+        color: #ff9800;
+        margin-bottom: 15px;
+    }
+
+    .warning-text {
+        color: #e53935;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+
+    .modal-footer {
+        padding: 20px;
+        border-top: 1px solid #e0e0e0;
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+
+    /* Form Styles */
+    .user-form {
+        padding: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-row {
+        display: flex;
+        gap: 15px;
+    }
+
+    .form-row .form-group {
+        flex: 1;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-size: 14px;
+        color: #555;
+        font-weight: 500;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        font-size: 14px;
+        color: #333;
+        transition: border-color 0.3s ease;
+    }
+
+    .form-group input:focus {
+        border-color: #2a5298;
+        outline: none;
+    }
+
+    .form-buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .submit-btn, .cancel-btn, .confirm-delete-btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .submit-btn {
+        background: #2a5298;
+        color: white;
+    }
+
+    .submit-btn:hover {
+        background: #1e3c72;
+    }
+
+    .cancel-btn {
+        background: #f5f5f5;
+        color: #666;
+    }
+
+    .cancel-btn:hover {
+        background: #e5e5e5;
+    }
+
+    .confirm-delete-btn {
+        background: #e53935;
+        color: white;
+    }
+
+    .confirm-delete-btn:hover {
+        background: #c62828;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .sidebar {
+            width: 70px;
+        }
+
+        .logo-container h2 {
+            display: none;
+        }
+
+        .sidebar ul li a span {
+            display: none;
+        }
+
+        .sidebar ul li a i {
+            margin-right: 0;
+        }
+
+        .modal-content {
+            width: 95%;
+        }
+
+        .form-row {
+            flex-direction: column;
+            gap: 0;
+        }
+    }
+</style>
+
+<script>
+    // Toggle sidebar
+    function toggleSidebar() {
+        const sidebar = document.getElementById('mainSidebar');
+        sidebar.classList.toggle('expanded');
+    }
+    // Toggle password visibility
+// Toggle password visibility
+function togglePassword(inputId) {
+    const passwordInput = document.getElementById(inputId);
+    const passwordIcon = document.getElementById(inputId + '-icon');
+    
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        passwordIcon.classList.remove('fa-eye');
+        passwordIcon.classList.add('fa-eye-slash');
+    } else {
+        passwordInput.type = 'password';
+        passwordIcon.classList.remove('fa-eye-slash');
+        passwordIcon.classList.add('fa-eye');
+    }
+}
+
+    // Show add user form
+    function showAddUserForm() {
+        document.getElementById('addUserModal').style.display = 'block';
+    }
+
+    // Close add user form
+    function closeAddUserForm() {
+        document.getElementById('addUserModal').style.display = 'none';
+        // Reset form
+        document.querySelector('#addUserModal form').reset();
+    }
+
+    // Edit user
+    function editUser(id, username, firstName, lastName, email) {
+        document.getElementById('editUserId').value = id;
+        document.getElementById('editUsername').value = username;
+        document.getElementById('editFirstName').value = firstName;
+        document.getElementById('editLastName').value = lastName;
+        document.getElementById('editEmail').value = email;
+        document.getElementById('editUserModal').style.display = 'block';
+    }
+
+    // Close edit modal
+    function closeEditModal() {
+        document.getElementById('editUserModal').style.display = 'none';
+    }
+
+    // Confirm delete
+    function confirmDelete(userId, username) {
+        document.getElementById('deleteUserId').value = userId;
+        document.getElementById('deleteUsername').textContent = username;
+        document.getElementById('confirmModal').style.display = 'block';
+    }
+
+    // Close confirmation modal
+    function closeConfirmModal() {
+        document.getElementById('confirmModal').style.display = 'none';
+    }
+
+    // Delete user
+    function deleteUser() {
+        document.getElementById('deleteForm').submit();
+    }
+
+    // Close modals when clicking outside
+    window.onclick = function(event) {
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(modal => {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    }
+</script>
+{% endblock %}

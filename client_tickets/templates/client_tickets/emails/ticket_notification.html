@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<body style="font-family: Arial, sans-serif; color: #1f2933; line-height: 1.5;">
+    <h2 style="margin-bottom: 8px;">{{ subject }}</h2>
+    <p>{{ intro }}</p>
+
+    <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+        <tr>
+            <td style="padding: 8px; border: 1px solid #d9e2ec;"><strong>Ticket Number</strong></td>
+            <td style="padding: 8px; border: 1px solid #d9e2ec;">{{ ticket.ticket_number }}</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px; border: 1px solid #d9e2ec;"><strong>Title</strong></td>
+            <td style="padding: 8px; border: 1px solid #d9e2ec;">{{ ticket.title }}</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px; border: 1px solid #d9e2ec;"><strong>Description</strong></td>
+            <td style="padding: 8px; border: 1px solid #d9e2ec;">{{ ticket.description|linebreaksbr }}</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px; border: 1px solid #d9e2ec;"><strong>Ticket Type</strong></td>
+            <td style="padding: 8px; border: 1px solid #d9e2ec;">{{ ticket.ticket_type_label }}</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px; border: 1px solid #d9e2ec;"><strong>Requester</strong></td>
+            <td style="padding: 8px; border: 1px solid #d9e2ec;">{{ ticket.requester_name }} | {{ ticket.requester_email }} | {{ ticket.requester_number }}</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px; border: 1px solid #d9e2ec;"><strong>To</strong></td>
+            <td style="padding: 8px; border: 1px solid #d9e2ec;">{{ ticket.assigned_to.get_full_name|default:ticket.assigned_to.username }}</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px; border: 1px solid #d9e2ec;"><strong>Project Manager</strong></td>
+            <td style="padding: 8px; border: 1px solid #d9e2ec;">{{ ticket.project_manager.get_full_name|default:ticket.project_manager.username }}</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px; border: 1px solid #d9e2ec;"><strong>Source System</strong></td>
+            <td style="padding: 8px; border: 1px solid #d9e2ec;">{{ ticket.get_source_system_display }}</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px; border: 1px solid #d9e2ec;"><strong>Priority</strong></td>
+            <td style="padding: 8px; border: 1px solid #d9e2ec;">
+                <span style="display: inline-block; padding: 4px 8px; border-radius: 999px; background: {{ priority_color }}; color: #fff;">
+                    {{ ticket.get_priority_display }}
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 8px; border: 1px solid #d9e2ec;"><strong>Overall Status</strong></td>
+            <td style="padding: 8px; border: 1px solid #d9e2ec;">{{ ticket.get_status_display|default:"---------" }}</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px; border: 1px solid #d9e2ec;"><strong>Inditech Status</strong></td>
+            <td style="padding: 8px; border: 1px solid #d9e2ec;">{{ ticket.get_inditech_status_display|default:"---------" }}</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px; border: 1px solid #d9e2ec;"><strong>Client Status</strong></td>
+            <td style="padding: 8px; border: 1px solid #d9e2ec;">{{ ticket.get_client_status_display|default:"---------" }}</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px; border: 1px solid #d9e2ec;"><strong>Ticket Link</strong></td>
+            <td style="padding: 8px; border: 1px solid #d9e2ec;"><a href="{{ ticket_url }}">{{ ticket_url }}</a></td>
+        </tr>
+    </table>
+
+    {% if update %}
+        <h3>Latest Update</h3>
+        <p><strong>Updated By:</strong> {{ update.get_actor_type_display }}</p>
+        {% if update.message %}
+            <p><strong>Message:</strong><br>{{ update.message|linebreaksbr }}</p>
+        {% endif %}
+    {% endif %}
+
+    <h3>Attachments</h3>
+    {% if attachments %}
+        <ul>
+            {% for attachment in attachments %}
+                <li>{{ attachment.role }}: <a href="{{ attachment.url }}">{{ attachment.name }}</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No attachments uploaded yet.</p>
+    {% endif %}
+</body>
+</html>

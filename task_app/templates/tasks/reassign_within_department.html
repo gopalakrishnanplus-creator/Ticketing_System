@@ -1,0 +1,526 @@
+{% extends 'base_generic.html' %}
+{% load static %}
+
+{% block content %}
+<div class="task-manager-container">
+    <!-- Sidebar (kept from main template) -->
+    <div class="sidebar">
+        <div class="logo-container">
+            <h2>Task<span>Flow</span></h2>
+        </div>
+        <div class="menu-container">
+            <ul>
+                {% with request.user.userprofile as profile %}
+                    {% if profile.category == 'Task Management System Manager' %}
+                        <li><a href="{% url 'activity' %}" class="{% if request.resolver_match.url_name == 'activity' %}active{% endif %}">
+                            <i class="fas fa-chart-line"></i> Activity
+                        </a></li>
+                        <li><a href="{% url 'metrics' %}" class="{% if request.resolver_match.url_name == 'metrics' %}active{% endif %}">
+                            <i class="fas fa-tachometer-alt"></i> Metrics
+                        </a></li>
+                        <li><a href="{% url 'user_profile' %}" class="{% if request.resolver_match.url_name == 'user_profile' %}active{% endif %}">
+                            <i class="fas fa-user"></i> User Profile
+                        </a></li>
+                    {% else %}
+                        {% if profile.category == "Departmental Manager" %}
+                            <li><a href="{% url 'home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">
+                                <i class="fas fa-home"></i> Home
+                            </a></li>
+                        {% endif %}
+                        <li><a href="{% url 'assigned_to_me' %}" class="{% if request.resolver_match.url_name == 'assigned_to_me' %}active{% endif %}">
+                            <i class="fas fa-tasks"></i> Assigned To Me
+                        </a></li>
+                        <li><a href="{% url 'assigned_by_me' %}" class="{% if request.resolver_match.url_name == 'assigned_by_me' %}active{% endif %}">
+                            <i class="fas fa-project-diagram"></i> Assigned By Me
+                        </a></li>
+                        <li><a href="{% url 'user_profile' %}" class="{% if request.resolver_match.url_name == 'user_profile' %}active{% endif %}">
+                            <i class="fas fa-user"></i> User Profile
+                        </a></li>
+                    {% endif %}
+                {% endwith %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="header">
+            <div class="greeting">
+                <h1>Reassign Task</h1>
+                <p>Change task assignment within department</p>
+            </div>
+            <div class="user-actions">
+                <div class="notification">
+                    <i class="fas fa-bell"></i>
+                </div>
+                <div class="user">
+                    <img src="{% static 'task_app\images/user-icon.png' %}" alt="User Avatar" class="avatar" />
+                    <span>{{ request.user.get_full_name }}</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reassign Task Form Card -->
+        <div class="reassign-task-card">
+            <div class="task-info">
+                <div class="task-info-header">
+                    <i class="fas fa-exchange-alt"></i>
+                    <h2>Task Reassignment</h2>
+                </div>
+                
+                <div class="task-detail-row">
+                    <div class="task-detail-label">Task ID:</div>
+                    <div class="task-detail-value">
+                        <span class="task-id">{{ task.task_id }}</span>
+                    </div>
+                </div>
+                
+                <div class="task-detail-row">
+                    <div class="task-detail-label">Subject:</div>
+                    <div class="task-detail-value">{{ task.subject }}</div>
+                </div>
+                
+                <div class="task-detail-row">
+                    <div class="task-detail-label">Current Assignee:</div>
+                    <div class="task-detail-value">
+                        <span class="current-assignee">{{ task.assigned_to.get_full_name }}</span>
+                    </div>
+                </div>
+                
+                <div class="task-detail-row">
+                    <div class="task-detail-label">Department:</div>
+                    <div class="task-detail-value">{{ task.department.name }}</div>
+                </div>
+                
+                <div class="task-detail-row">
+                    <div class="task-detail-label">Priority:</div>
+                    <div class="task-detail-value">
+                        <span class="priority-badge {{ task.priority|lower }}">
+                            {{ task.priority }}
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="task-detail-row">
+                    <div class="task-detail-label">Deadline:</div>
+                    <div class="task-detail-value">{{ task.deadline }}</div>
+                </div>
+            </div>
+            
+            <form method="post" class="reassign-form">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="new_assignee">Select New Assignee:</label>
+                    <div class="select-wrapper">
+                        <select id="new_assignee" name="assigned_to" required>
+                            <option value="" disabled selected>-- Select Non-Management User --</option>
+                            {% for user in non_management_users %}
+                                <option value="{{ user.user.id }}">{{ user.user.get_full_name }}</option>
+                            {% endfor %}
+                        </select>
+                        <i class="fas fa-chevron-down select-icon"></i>
+                    </div>
+                </div>
+                
+                <div class="reassign-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-user-edit"></i> Reassign Task
+                    </button>
+                    <a href="{% url 'task_detail' task.task_id %}" class="btn btn-secondary">
+                        <i class="fas fa-times"></i> Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Link to Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<!-- Inline CSS -->
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
+
+    body {
+        background-color: #f5f7fb;
+        color: #333;
+    }
+
+    .task-manager-container {
+        display: flex;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    /* Modern Sidebar */
+    .sidebar {
+        width: 240px;
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        z-index: 10;
+    }
+
+    .logo-container {
+        padding: 25px 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .logo-container h2 {
+        font-size: 24px;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    .logo-container h2 span {
+        color: #3ee9e5;
+    }
+
+    .menu-container {
+        flex: 1;
+        padding: 15px 0;
+    }
+
+    .sidebar ul {
+        list-style: none;
+    }
+    
+    .sidebar ul li {
+        margin: 5px 0;
+    }
+
+    .sidebar ul li a {
+        text-decoration: none;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 16px;
+        padding: 12px 20px;
+        display: flex;
+        align-items: center;
+        transition: all 0.3s ease;
+        border-left: 4px solid transparent;
+    }
+
+    .sidebar ul li a i {
+        margin-right: 10px;
+        font-size: 18px;
+    }
+
+    .sidebar ul li a.active, .sidebar ul li a:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        border-left: 4px solid #3ee9e5;
+    }
+
+    /* Main Content */
+    .main-content {
+        flex: 1;
+        padding: 20px 30px;
+        background-color: #f5f7fb;
+        overflow-y: auto;
+    }
+
+    /* Header */
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .greeting h1 {
+        font-size: 24px;
+        color: #333;
+        margin-bottom: 5px;
+    }
+
+    .greeting p {
+        color: #666;
+        font-size: 14px;
+    }
+
+    .user-actions {
+        display: flex;
+        align-items: center;
+    }
+
+    .notification {
+        position: relative;
+        margin-right: 25px;
+        cursor: pointer;
+    }
+
+    .notification i {
+        font-size: 20px;
+        color: #666;
+    }
+
+    .badge {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background: linear-gradient(135deg, #ff416c, #ff4b2b);
+        color: white;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        font-size: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .user {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+        object-fit: cover;
+        border: 2px solid #fff;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .user span {
+        font-size: 14px;
+        font-weight: 500;
+        margin-right: 10px;
+    }
+
+    /* Reassign Task Card */
+    .reassign-task-card {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+
+    .task-info {
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .task-info-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .task-info-header i {
+        font-size: 24px;
+        color: #2a5298;
+        margin-right: 15px;
+    }
+
+    .task-info-header h2 {
+        font-size: 22px;
+        color: #333;
+        font-weight: 600;
+    }
+
+    .task-detail-row {
+        display: flex;
+        margin-bottom: 15px;
+    }
+
+    .task-detail-label {
+        flex: 0 0 150px;
+        font-weight: 500;
+        color: #666;
+    }
+
+    .task-detail-value {
+        flex: 1;
+        color: #333;
+    }
+
+    .task-id {
+        font-weight: 600;
+        color: #1e3c72;
+    }
+
+    .current-assignee {
+        font-weight: 500;
+    }
+
+    /* Priority badges */
+    .priority-badge {
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+        display: inline-block;
+    }
+
+    .priority-badge.high {
+        background-color: #ffebee;
+        color: #e53935;
+    }
+
+    .priority-badge.medium {
+        background-color: #fff8e1;
+        color: #ffb300;
+    }
+
+    .priority-badge.low {
+        background-color: #e8f5e9;
+        color: #43a047;
+    }
+
+    .priority-badge.urgent {
+        background-color: #fce4ec;
+        color: #d81b60;
+    }
+
+    /* Form styling */
+    .reassign-form {
+        max-width: 600px;
+    }
+
+    .form-group {
+        margin-bottom: 25px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 15px;
+        color: #555;
+        font-weight: 500;
+    }
+
+    .select-wrapper {
+        position: relative;
+    }
+
+    .select-wrapper select {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        background-color: #fff;
+        font-size: 15px;
+        color: #333;
+        appearance: none;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        transition: border-color 0.3s;
+    }
+
+    .select-wrapper select:focus {
+        border-color: #2a5298;
+        outline: none;
+    }
+
+    .select-icon {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #666;
+        pointer-events: none;
+    }
+
+    /* Button styling */
+    .reassign-actions {
+        display: flex;
+        gap: 15px;
+        margin-top: 30px;
+    }
+
+    .btn {
+        padding: 12px 25px;
+        border: none;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+    }
+
+    .btn i {
+        margin-right: 8px;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        color: white;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .btn-secondary {
+        background-color: #f5f5f5;
+        color: #666;
+        text-decoration: none;
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(135deg, #2a5298, #1e3c72);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+
+    .btn-secondary:hover {
+        background-color: #e5e5e5;
+        transform: translateY(-2px);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 1200px) {
+        .task-detail-row {
+            flex-direction: column;
+        }
+        
+        .task-detail-label {
+            margin-bottom: 5px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .sidebar {
+            width: 70px;
+        }
+        
+        .logo-container h2 {
+            display: none;
+        }
+        
+        .sidebar ul li a span {
+            display: none;
+        }
+        
+        .sidebar ul li a i {
+            margin-right: 0;
+        }
+        
+        .reassign-actions {
+            flex-direction: column;
+        }
+        
+        .btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
+{% endblock %}

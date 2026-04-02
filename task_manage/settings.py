@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'client_tickets',
     'task_app',
 ]
 
@@ -149,6 +150,10 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+CLIENT_TICKETS_BASE_URL = os.environ.get('CLIENT_TICKETS_BASE_URL', 'http://127.0.0.1:5467')
+CLIENT_TICKETS_API_TOKEN = os.environ.get('CLIENT_TICKETS_API_TOKEN', '')
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
