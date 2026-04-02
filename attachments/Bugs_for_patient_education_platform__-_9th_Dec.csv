@@ -1,9 +1,0 @@
-Sr no,Link,Bug,Expected Outcome,Reference photo
-Admin Side Testing,,,,
-1,http://43.205.232.16/admin/campaigns/campaign/add/,Both Start Date and End Date are plain text input boxes.,"Ideally they should be date picker from calender or input feild seperated by ""/"" eg. __/__/__",Screenshot 2025-12-10 at 2.30.36 PM.png
-2,http://43.205.232.16/admin/campaigns/campaign/add/,"Clicking on Save, Save and Add Another, or Save and Continue Editing doesn’t trigger any action and the campaign isn’t saved.","A popup should appear saying ""The campaign is created"", the campaign details should be stored in the database, and the user should be redirected to a fresh form to create a new campaign",Screenshot 2025-12-10 at 2.30.36 PM.png
-3,http://43.205.232.16/admin/campaigns/campaign/add/?_to_field=id&_popup=1,"To select a brand that isn’t already listed, I need to create a new brand along with its corresponding slug first, and only then it appears in the dropdown.","The brand entry field should function as a text + dropdown input, allowing users to either select an existing brand or type a new one, which can be saved for future selection. The ""slug"" is of no importance here",Screenshot 2025-12-10 at 2.47.10 PM.png
-4,http://43.205.232.16/admin/content/subtopic/add/?_to_field=id&_popup=1,"in Add subtopic page, theraphy area section user need to add ""Sort order"" and ""Slug""",Sort order and slug values are not necessay to add a subtopic,Screenshot 2025-12-10 at 2.52.43 PM.png
-Sr no,Link,Bug,Expected Outcome,Reference photo
-Field rep Side Testing,,,,
-5,http://43.205.232.16/admin/campaigns/doctorcampaign/add/,"User Needs to enter ""End date snapshot:"" ",No need of that,
