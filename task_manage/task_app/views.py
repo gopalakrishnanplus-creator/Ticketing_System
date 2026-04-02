@@ -107,7 +107,44 @@ def assigned_by_me(request):
 def user_profile(request):
     # Display user profile details
     user_profile = UserProfile.objects.get(user=request.user)
-    return render(request, 'tasks/user_profile.html', {'user_profile': user_profile})
+    client_ticket_summary = {
+        'assigned_to_me': 0,
+        'project_managed': 0,
+        'created_by_me': 0,
+        'open_related': 0,
+    }
+    try:
+        from client_tickets.models import ClientTicket
+
+        related_tickets = ClientTicket.objects.filter(
+            Q(assigned_to=request.user) |
+            Q(project_manager=request.user) |
+            Q(created_by=request.user)
+        ).distinct()
+
+        client_ticket_summary = {
+            'assigned_to_me': ClientTicket.objects.filter(assigned_to=request.user).count(),
+            'project_managed': ClientTicket.objects.filter(project_manager=request.user).count(),
+            'created_by_me': ClientTicket.objects.filter(created_by=request.user).count(),
+            'open_related': related_tickets.exclude(
+                status__in=[
+                    ClientTicket.STATUS_CLOSED,
+                    ClientTicket.STATUS_AUTO_CLOSED,
+                    ClientTicket.STATUS_CANCELLED,
+                ]
+            ).count(),
+        }
+    except ImportError:
+        pass
+
+    return render(
+        request,
+        'tasks/user_profile.html',
+        {
+            'user_profile': user_profile,
+            'client_ticket_summary': client_ticket_summary,
+        }
+    )
 
 @login_required
 def view_system_logs(request):

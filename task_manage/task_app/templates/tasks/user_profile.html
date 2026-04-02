@@ -114,6 +114,37 @@
                     </div>
                 </div>
             </div>
+
+            <div class="profile-card client-tickets-card">
+                <div class="profile-header">
+                    <h2>Client Tickets Overview</h2>
+                </div>
+                <div class="profile-body">
+                    <div class="client-ticket-metrics">
+                        <div class="client-ticket-metric">
+                            <label>Open Related Tickets</label>
+                            <p>{{ client_ticket_summary.open_related }}</p>
+                        </div>
+                        <div class="client-ticket-metric">
+                            <label>Assigned To Me</label>
+                            <p>{{ client_ticket_summary.assigned_to_me }}</p>
+                        </div>
+                        <div class="client-ticket-metric">
+                            <label>Project Managed</label>
+                            <p>{{ client_ticket_summary.project_managed }}</p>
+                        </div>
+                        <div class="client-ticket-metric">
+                            <label>Created By Me</label>
+                            <p>{{ client_ticket_summary.created_by_me }}</p>
+                        </div>
+                    </div>
+                    <div class="client-ticket-actions">
+                        <a href="{% url 'client_tickets:dashboard' %}" class="client-ticket-action primary">Client Tickets Dashboard</a>
+                        <a href="{% url 'client_tickets:ticket_list' %}" class="client-ticket-action secondary">All Client Tickets</a>
+                        <a href="{% url 'client_tickets:create_ticket' %}" class="client-ticket-action secondary">Create Client Ticket</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -289,6 +320,8 @@
         display: flex;
         justify-content: center;
         align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 24px;
         margin-top: 20px;
     }
 
@@ -362,6 +395,70 @@
         justify-content: center;
     }
 
+    .client-tickets-card {
+        max-width: 440px;
+    }
+
+    .client-ticket-metrics {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(140px, 1fr));
+        gap: 14px;
+        margin-bottom: 20px;
+    }
+
+    .client-ticket-metric {
+        background: #f5f9ff;
+        border: 1px solid #dbe7f5;
+        border-radius: 14px;
+        padding: 16px;
+    }
+
+    .client-ticket-metric label {
+        display: block;
+        font-size: 13px;
+        color: #5b6b7f;
+        margin-bottom: 8px;
+        font-weight: 600;
+    }
+
+    .client-ticket-metric p {
+        font-size: 28px;
+        font-weight: 700;
+        color: #1e3c72;
+        margin: 0;
+    }
+
+    .client-ticket-actions {
+        display: grid;
+        gap: 12px;
+    }
+
+    .client-ticket-action {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        padding: 12px 16px;
+        border-radius: 12px;
+        font-weight: 600;
+        transition: all 0.2s ease;
+    }
+
+    .client-ticket-action.primary {
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        color: #fff;
+    }
+
+    .client-ticket-action.secondary {
+        background: #eef3fb;
+        color: #1e3c72;
+    }
+
+    .client-ticket-action:hover {
+        transform: translateY(-1px);
+        text-decoration: none;
+    }
+
     .logout-btn {
         padding: 12px 30px;
         background: linear-gradient(135deg, #1e3c72, #2a5298);
@@ -431,6 +528,10 @@
         
         .profile-icon {
             margin-bottom: 15px;
+        }
+
+        .client-ticket-metrics {
+            grid-template-columns: 1fr;
         }
     }
 </style>
