@@ -132,3 +132,52 @@ class TicketModeNavigationTests(TestCase):
         next_page = self.client.get(reverse("assigned_by_me"))
         self.assertContains(next_page, "External reporting ticket")
         self.assertNotContains(next_page, "Internal launch task")
+
+
+@override_settings(CLIENT_TICKETS_BASE_URL="http://127.0.0.1:5467")
+class ManagerTicketVisibilityTests(TestCase):
+    def setUp(self):
+        self.department = Department.objects.create(name="Operations")
+        self.manager = User.objects.create_user(
+            username="deptmanager",
+            email="manager@example.com",
+            password="password123",
+            first_name="Dept",
+            last_name="Manager",
+        )
+        self.staff = User.objects.create_user(
+            username="staffmember",
+            email="staff@example.com",
+            password="password123",
+            first_name="Staff",
+            last_name="Member",
+        )
+        UserProfile.objects.create(
+            user=self.manager,
+            category="Departmental Manager",
+            department=self.department,
+        )
+        UserProfile.objects.create(
+            user=self.staff,
+            category="Non-Management",
+            department=self.department,
+        )
+
+        Task.objects.create(
+            department=self.department,
+            assigned_by=self.staff,
+            assigned_to=self.staff,
+            deadline=date.today() + timedelta(days=3),
+            ticket_type="Testing",
+            priority="medium",
+            status="In Progress",
+            subject="Department scoped task",
+            request_details="Should be visible to the department manager.",
+        )
+
+    def test_department_manager_can_see_department_tasks_on_assigned_page(self):
+        self.client.force_login(self.manager)
+        response = self.client.get(reverse("assigned_to_me"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Department scoped task")

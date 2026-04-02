@@ -192,6 +192,67 @@ def _external_summary(queryset):
         'urgent': queryset.filter(priority=ClientTicket.PRIORITY_URGENT).count(),
     }
 
+
+def _internal_assigned_to_queryset(user, user_profile):
+    queryset = Task.objects.select_related('department', 'assigned_by', 'assigned_to')
+    if user_profile.category == 'Task Management System Manager':
+        return queryset.all()
+    if user_profile.category == 'Departmental Manager' and user_profile.department_id:
+        department = user_profile.department
+        return queryset.filter(
+            Q(assigned_to=user) |
+            Q(assigned_to__userprofile__department=department) |
+            Q(assigned_by__userprofile__department=department) |
+            Q(department=department)
+        ).distinct()
+    return queryset.filter(assigned_to=user)
+
+
+def _internal_assigned_by_queryset(user, user_profile):
+    queryset = Task.objects.select_related('department', 'assigned_by', 'assigned_to')
+    if user_profile.category == 'Task Management System Manager':
+        return queryset.all()
+    if user_profile.category == 'Departmental Manager' and user_profile.department_id:
+        department = user_profile.department
+        return queryset.filter(
+            Q(assigned_by=user) |
+            Q(assigned_by__userprofile__department=department) |
+            Q(department=department)
+        ).distinct()
+    return queryset.filter(assigned_by=user)
+
+
+def _external_assigned_to_queryset(user, user_profile):
+    queryset = ClientTicket.objects.select_related('assigned_to', 'project_manager', 'department', 'ticket_type')
+    if user_profile.category == 'Task Management System Manager':
+        return queryset.all()
+    if user_profile.category == 'Departmental Manager' and user_profile.department_id:
+        department = user_profile.department
+        return queryset.filter(
+            Q(assigned_to=user) |
+            Q(project_manager=user) |
+            Q(department=department) |
+            Q(assigned_to__userprofile__department=department) |
+            Q(project_manager__userprofile__department=department)
+        ).distinct()
+    return queryset.filter(Q(assigned_to=user) | Q(project_manager=user)).distinct()
+
+
+def _external_assigned_by_queryset(user, user_profile):
+    queryset = ClientTicket.objects.select_related('assigned_to', 'project_manager', 'department', 'ticket_type')
+    if user_profile.category == 'Task Management System Manager':
+        return queryset.all()
+    if user_profile.category == 'Departmental Manager' and user_profile.department_id:
+        department = user_profile.department
+        return queryset.filter(
+            Q(created_by=user) |
+            Q(project_manager=user) |
+            Q(department=department) |
+            Q(created_by__userprofile__department=department) |
+            Q(project_manager__userprofile__department=department)
+        ).distinct()
+    return queryset.filter(Q(created_by=user) | Q(project_manager=user)).distinct()
+
 @login_required
 def home(request):
     user_profile = UserProfile.objects.get(user=request.user)
@@ -220,11 +281,10 @@ def home(request):
 
 @login_required
 def assigned_to_me(request):
+    user_profile = UserProfile.objects.select_related('department').get(user=request.user)
     mode = get_ticket_ui_mode(request)
     if mode == TICKET_MODE_EXTERNAL:
-        queryset = ClientTicket.objects.select_related(
-            'assigned_to', 'project_manager', 'department', 'ticket_type'
-        ).filter(assigned_to=request.user)
+        queryset = _external_assigned_to_queryset(request.user, user_profile)
         queryset, selected_filters = _apply_external_filters(queryset, request)
         page_obj = _paginate_records(request, queryset.order_by('-updated_at', '-created_at'))
         return render(request, 'tasks/assigned_to_me.html', {
@@ -242,10 +302,7 @@ def assigned_to_me(request):
             'filter_query': _query_string_without_page(request),
         })
 
-    queryset = Task.objects.filter(
-        assigned_to=request.user,
-        assigned_date__date__lte=date.today(),
-    ).select_related('department', 'assigned_by', 'assigned_to')
+    queryset = _internal_assigned_to_queryset(request.user, user_profile)
     queryset, selected_filters = _apply_internal_filters(queryset, request)
     page_obj = _paginate_records(request, queryset.order_by('-assigned_date', '-deadline'))
 
@@ -264,11 +321,10 @@ def assigned_to_me(request):
 
 @login_required
 def assigned_by_me(request):
+    user_profile = UserProfile.objects.select_related('department').get(user=request.user)
     mode = get_ticket_ui_mode(request)
     if mode == TICKET_MODE_EXTERNAL:
-        queryset = ClientTicket.objects.select_related(
-            'assigned_to', 'project_manager', 'department', 'ticket_type'
-        ).filter(created_by=request.user)
+        queryset = _external_assigned_by_queryset(request.user, user_profile)
         queryset, selected_filters = _apply_external_filters(queryset, request)
         page_obj = _paginate_records(request, queryset.order_by('-updated_at', '-created_at'))
         return render(request, 'tasks/assigned_by_me.html', {
@@ -286,10 +342,7 @@ def assigned_by_me(request):
             'filter_query': _query_string_without_page(request),
         })
 
-    queryset = Task.objects.filter(
-        assigned_by=request.user,
-        assigned_date__date__lte=date.today(),
-    ).select_related('department', 'assigned_by', 'assigned_to')
+    queryset = _internal_assigned_by_queryset(request.user, user_profile)
     queryset, selected_filters = _apply_internal_filters(queryset, request)
     page_obj = _paginate_records(request, queryset.order_by('-assigned_date', '-deadline'))
 
@@ -316,7 +369,17 @@ def set_ticket_mode(request, mode):
 @login_required
 def user_profile(request):
     # Display user profile details
-    user_profile = UserProfile.objects.get(user=request.user)
+    user_profile = UserProfile.objects.select_related('department').get(user=request.user)
+    internal_assigned_to_queryset = _internal_assigned_to_queryset(request.user, user_profile)
+    internal_assigned_by_queryset = _internal_assigned_by_queryset(request.user, user_profile)
+
+    internal_ticket_summary = {
+        'assigned_to_me': internal_assigned_to_queryset.count(),
+        'assigned_by_me': internal_assigned_by_queryset.count(),
+        'open_related': internal_assigned_to_queryset.exclude(status__in=['Completed', 'Cancelled']).count(),
+        'urgent_related': internal_assigned_to_queryset.filter(priority='urgent').count(),
+    }
+
     client_ticket_summary = {
         'assigned_to_me': 0,
         'project_managed': 0,
@@ -352,6 +415,7 @@ def user_profile(request):
         'tasks/user_profile.html',
         {
             'user_profile': user_profile,
+            'internal_ticket_summary': internal_ticket_summary,
             'client_ticket_summary': client_ticket_summary,
         }
     )
