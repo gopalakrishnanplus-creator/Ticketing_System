@@ -1,0 +1,63 @@
+<table role="presentation" style="width:100%;border-collapse:separate;border-spacing:0 12px;">
+    <tr>
+        <td style="width:180px;padding:14px 16px;border:1px solid #e7ecf4;border-radius:16px 0 0 16px;background:#f9fbff;color:#667085;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Subject</td>
+        <td style="padding:14px 16px;border:1px solid #e7ecf4;border-left:0;border-radius:0 16px 16px 0;background:#ffffff;color:#101828;font-size:15px;font-weight:700;">{{ ticket.subject }}</td>
+    </tr>
+    <tr>
+        <td style="width:180px;padding:14px 16px;border:1px solid #e7ecf4;border-radius:16px 0 0 16px;background:#f9fbff;color:#667085;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Ticket Type</td>
+        <td style="padding:14px 16px;border:1px solid #e7ecf4;border-left:0;border-radius:0 16px 16px 0;background:#ffffff;color:#101828;">{{ ticket.ticket_type }}</td>
+    </tr>
+    <tr>
+        <td style="width:180px;padding:14px 16px;border:1px solid #e7ecf4;border-radius:16px 0 0 16px;background:#f9fbff;color:#667085;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Priority / Status</td>
+        <td style="padding:14px 16px;border:1px solid #e7ecf4;border-left:0;border-radius:0 16px 16px 0;background:#ffffff;color:#101828;">{{ ticket.get_priority_display }} / {{ ticket.status }}</td>
+    </tr>
+    <tr>
+        <td style="width:180px;padding:14px 16px;border:1px solid #e7ecf4;border-radius:16px 0 0 16px;background:#f9fbff;color:#667085;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Routing</td>
+        <td style="padding:14px 16px;border:1px solid #e7ecf4;border-left:0;border-radius:0 16px 16px 0;background:#ffffff;color:#101828;">
+            Assigned by {{ ticket.assigned_by.get_full_name|default:ticket.assigned_by.username|default:"Unassigned" }}<br>
+            Assigned to {{ ticket.assigned_to.get_full_name|default:ticket.assigned_to.username|default:"Unassigned" }}
+        </td>
+    </tr>
+    <tr>
+        <td style="width:180px;padding:14px 16px;border:1px solid #e7ecf4;border-radius:16px 0 0 16px;background:#f9fbff;color:#667085;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Department / Deadline</td>
+        <td style="padding:14px 16px;border:1px solid #e7ecf4;border-left:0;border-radius:0 16px 16px 0;background:#ffffff;color:#101828;">
+            {{ ticket.department.name|default:"Unassigned" }}<br>
+            {% if ticket.revised_completion_date %}
+                Revised deadline: {{ ticket.revised_completion_date|date:"d M Y" }}
+            {% else %}
+                Deadline: {{ ticket.deadline|date:"d M Y" }}
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <td style="width:180px;padding:14px 16px;border:1px solid #e7ecf4;border-radius:16px 0 0 16px;background:#f9fbff;color:#667085;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Request Details</td>
+        <td style="padding:14px 16px;border:1px solid #e7ecf4;border-left:0;border-radius:0 16px 16px 0;background:#ffffff;color:#101828;line-height:1.7;">
+            {{ ticket.request_details|default:"No request details were added."|linebreaksbr }}
+        </td>
+    </tr>
+    {% if ticket.comments_by_assignee %}
+        <tr>
+            <td style="width:180px;padding:14px 16px;border:1px solid #e7ecf4;border-radius:16px 0 0 16px;background:#f9fbff;color:#667085;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Assignee Comment</td>
+            <td style="padding:14px 16px;border:1px solid #e7ecf4;border-left:0;border-radius:0 16px 16px 0;background:#ffffff;color:#101828;line-height:1.7;">
+                {{ ticket.comments_by_assignee|linebreaksbr }}
+            </td>
+        </tr>
+    {% endif %}
+</table>
+
+<div style="margin-top:22px;">
+    <div style="margin-bottom:12px;color:#667085;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Attachments</div>
+    {% if ticket_attachment_links %}
+        {% for attachment in ticket_attachment_links %}
+            <div style="margin-bottom:12px;padding:14px 16px;border:1px solid #e7ecf4;border-radius:18px;background:#f9fbff;">
+                <div style="font-size:15px;font-weight:700;color:#101828;">{{ attachment.name }}</div>
+                <div style="margin-top:6px;color:#667085;line-height:1.6;">{{ attachment.meta }}</div>
+                <div style="margin-top:12px;">
+                    <a href="{{ attachment.url }}" style="display:inline-block;padding:10px 14px;border-radius:999px;background:#2447d4;color:#ffffff;text-decoration:none;font-weight:700;">Download Attachment</a>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div style="padding:14px 16px;border:1px dashed #d5dce8;border-radius:18px;background:#f9fbff;color:#667085;">No attachments uploaded yet.</div>
+    {% endif %}
+</div>

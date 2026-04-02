@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<body style="margin:0;padding:24px;background:#f4f6fb;font-family:Arial,sans-serif;color:#1f2937;">
+    <div style="max-width:720px;margin:0 auto;background:#ffffff;border:1px solid #e7ecf4;border-radius:24px;overflow:hidden;">
+        <div style="padding:28px 30px;background:linear-gradient(135deg,#2447d4 0%,#101828 100%);color:#ffffff;">
+            <div style="font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;opacity:0.8;">TaskFlow Notification</div>
+            <h1 style="margin:14px 0 8px;font-size:28px;line-height:1.1;letter-spacing:-0.04em;">{% block email_heading %}Ticket Update{% endblock %}</h1>
+            <p style="margin:0;opacity:0.84;line-height:1.6;">Internal task details with the same summary structure used in the web UI.</p>
+            <div style="margin-top:18px;display:inline-block;padding:10px 14px;border-radius:999px;background:rgba(255,255,255,0.12);font-size:13px;font-weight:700;">
+                {{ ticket.task_id }}
+            </div>
+        </div>
+
+        <div style="padding:28px 30px;">
+            <div style="margin:0 0 22px;color:#475467;line-height:1.7;">
+                {% block email_intro %}{% endblock %}
+            </div>
+
+            {% include "emails/_internal_ticket_summary.html" %}
+
+            {% block email_after_summary %}{% endblock %}
+
+            <div style="margin-top:26px;">
+                <a href="{{ view_ticket_url }}" style="display:inline-block;padding:13px 18px;border-radius:999px;background:#2447d4;color:#ffffff;text-decoration:none;font-weight:700;">Open Ticket</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

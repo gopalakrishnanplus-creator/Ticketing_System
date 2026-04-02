@@ -1,6 +1,8 @@
-<p>Hi {{ manager.get_full_name }},</p>
-<p>The following ticket is overdue:</p>
-<p><strong>Ticket number:</strong> {{ ticket.task_id }}</p>
-<p><strong>Subject:</strong> {{ ticket.subject }}</p>
-<a href="{{ view_ticket_url }}" style="background: #4CAF50; color: white; padding: 10px 15px; text-decoration: none;">View Ticket</a>
-<p>Thank you!<br>System</p>
+{% extends "emails/internal_ticket_email_base.html" %}
+
+{% block email_heading %}Overdue Ticket Alert{% endblock %}
+
+{% block email_intro %}
+    Hi {{ manager.get_full_name|default:manager.username }},<br>
+    The ticket below is now overdue. The full details and available attachments are included so you can review and follow up quickly.
+{% endblock %}

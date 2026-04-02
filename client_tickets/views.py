@@ -17,6 +17,7 @@ from task_app.models import Department
 from .forms import ClientTicketClientUpdateForm, ClientTicketForm, ClientTicketInditechUpdateForm
 from .models import ClientContact, ClientTicket, ClientTicketType, ClientTicketUpdate
 from .services import (
+    attachment_items as build_client_attachment_items,
     create_ticket_update,
     notify_ticket_created,
     notify_ticket_updated,
@@ -214,7 +215,7 @@ def ticket_detail(request, ticket_number):
     request.session["ticket_ui_mode"] = "external"
     ticket = get_object_or_404(
         ClientTicket.objects.select_related("assigned_to", "project_manager", "department", "ticket_type", "requester")
-        .prefetch_related("attachments", "updates")
+        .prefetch_related("attachments", "updates__attachments")
         .all(),
         ticket_number=ticket_number,
     )
@@ -260,6 +261,7 @@ def ticket_detail(request, ticket_number):
         "ticket": ticket,
         "inditech_form": inditech_form,
         "client_form": client_form,
+        "mail_attachments": build_client_attachment_items(ticket),
     }
     return render(request, "client_tickets/ticket_detail.html", context)
 

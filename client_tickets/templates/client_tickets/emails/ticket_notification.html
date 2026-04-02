@@ -1,85 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
-<body style="font-family: Arial, sans-serif; color: #1f2933; line-height: 1.5;">
-    <h2 style="margin-bottom: 8px;">{{ subject }}</h2>
-    <p>{{ intro }}</p>
+<body style="margin:0;padding:24px;background:#f4f6fb;font-family:Arial,sans-serif;color:#1f2937;">
+    <div style="max-width:720px;margin:0 auto;background:#ffffff;border:1px solid #e7ecf4;border-radius:24px;overflow:hidden;">
+        <div style="padding:28px 30px;background:linear-gradient(135deg,#d14d4d 0%,#111827 100%);color:#ffffff;">
+            <div style="font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;opacity:0.8;">Client Ticket Update</div>
+            <h1 style="margin:14px 0 8px;font-size:28px;line-height:1.1;letter-spacing:-0.04em;">{{ ticket.title }}</h1>
+            <p style="margin:0;opacity:0.84;line-height:1.6;">{{ intro }}</p>
+            <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;">
+                <span style="display:inline-block;padding:10px 14px;border-radius:999px;background:rgba(255,255,255,0.12);font-size:13px;font-weight:700;">{{ ticket.ticket_number }}</span>
+                <span style="display:inline-block;padding:10px 14px;border-radius:999px;background:rgba(255,255,255,0.12);font-size:13px;font-weight:700;">{{ ticket.get_priority_display }}</span>
+                <span style="display:inline-block;padding:10px 14px;border-radius:999px;background:rgba(255,255,255,0.12);font-size:13px;font-weight:700;">{{ ticket.get_status_display|default:"---------" }}</span>
+            </div>
+        </div>
 
-    <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
-        <tr>
-            <td style="padding: 8px; border: 1px solid #d9e2ec;"><strong>Ticket Number</strong></td>
-            <td style="padding: 8px; border: 1px solid #d9e2ec;">{{ ticket.ticket_number }}</td>
-        </tr>
-        <tr>
-            <td style="padding: 8px; border: 1px solid #d9e2ec;"><strong>Title</strong></td>
-            <td style="padding: 8px; border: 1px solid #d9e2ec;">{{ ticket.title }}</td>
-        </tr>
-        <tr>
-            <td style="padding: 8px; border: 1px solid #d9e2ec;"><strong>Description</strong></td>
-            <td style="padding: 8px; border: 1px solid #d9e2ec;">{{ ticket.description|linebreaksbr }}</td>
-        </tr>
-        <tr>
-            <td style="padding: 8px; border: 1px solid #d9e2ec;"><strong>Ticket Type</strong></td>
-            <td style="padding: 8px; border: 1px solid #d9e2ec;">{{ ticket.ticket_type_label }}</td>
-        </tr>
-        <tr>
-            <td style="padding: 8px; border: 1px solid #d9e2ec;"><strong>Requester</strong></td>
-            <td style="padding: 8px; border: 1px solid #d9e2ec;">{{ ticket.requester_name }} | {{ ticket.requester_email }} | {{ ticket.requester_number }}</td>
-        </tr>
-        <tr>
-            <td style="padding: 8px; border: 1px solid #d9e2ec;"><strong>To</strong></td>
-            <td style="padding: 8px; border: 1px solid #d9e2ec;">{{ ticket.assigned_to.get_full_name|default:ticket.assigned_to.username }}</td>
-        </tr>
-        <tr>
-            <td style="padding: 8px; border: 1px solid #d9e2ec;"><strong>Project Manager</strong></td>
-            <td style="padding: 8px; border: 1px solid #d9e2ec;">{{ ticket.project_manager.get_full_name|default:ticket.project_manager.username }}</td>
-        </tr>
-        <tr>
-            <td style="padding: 8px; border: 1px solid #d9e2ec;"><strong>Source System</strong></td>
-            <td style="padding: 8px; border: 1px solid #d9e2ec;">{{ ticket.get_source_system_display }}</td>
-        </tr>
-        <tr>
-            <td style="padding: 8px; border: 1px solid #d9e2ec;"><strong>Priority</strong></td>
-            <td style="padding: 8px; border: 1px solid #d9e2ec;">
-                <span style="display: inline-block; padding: 4px 8px; border-radius: 999px; background: {{ priority_color }}; color: #fff;">
-                    {{ ticket.get_priority_display }}
-                </span>
-            </td>
-        </tr>
-        <tr>
-            <td style="padding: 8px; border: 1px solid #d9e2ec;"><strong>Overall Status</strong></td>
-            <td style="padding: 8px; border: 1px solid #d9e2ec;">{{ ticket.get_status_display|default:"---------" }}</td>
-        </tr>
-        <tr>
-            <td style="padding: 8px; border: 1px solid #d9e2ec;"><strong>Inditech Status</strong></td>
-            <td style="padding: 8px; border: 1px solid #d9e2ec;">{{ ticket.get_inditech_status_display|default:"---------" }}</td>
-        </tr>
-        <tr>
-            <td style="padding: 8px; border: 1px solid #d9e2ec;"><strong>Client Status</strong></td>
-            <td style="padding: 8px; border: 1px solid #d9e2ec;">{{ ticket.get_client_status_display|default:"---------" }}</td>
-        </tr>
-        <tr>
-            <td style="padding: 8px; border: 1px solid #d9e2ec;"><strong>Ticket Link</strong></td>
-            <td style="padding: 8px; border: 1px solid #d9e2ec;"><a href="{{ ticket_url }}">{{ ticket_url }}</a></td>
-        </tr>
-    </table>
+        <div style="padding:28px 30px;">
+            <div style="margin:0 0 22px;color:#475467;line-height:1.7;">
+                {{ subject }}
+            </div>
 
-    {% if update %}
-        <h3>Latest Update</h3>
-        <p><strong>Updated By:</strong> {{ update.get_actor_type_display }}</p>
-        {% if update.message %}
-            <p><strong>Message:</strong><br>{{ update.message|linebreaksbr }}</p>
-        {% endif %}
-    {% endif %}
+            <table role="presentation" style="width:100%;border-collapse:separate;border-spacing:0 12px;">
+                <tr>
+                    <td style="width:180px;padding:14px 16px;border:1px solid #e7ecf4;border-radius:16px 0 0 16px;background:#f9fbff;color:#667085;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Title</td>
+                    <td style="padding:14px 16px;border:1px solid #e7ecf4;border-left:0;border-radius:0 16px 16px 0;background:#ffffff;color:#101828;font-size:15px;font-weight:700;">{{ ticket.title }}</td>
+                </tr>
+                <tr>
+                    <td style="width:180px;padding:14px 16px;border:1px solid #e7ecf4;border-radius:16px 0 0 16px;background:#f9fbff;color:#667085;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Description</td>
+                    <td style="padding:14px 16px;border:1px solid #e7ecf4;border-left:0;border-radius:0 16px 16px 0;background:#ffffff;color:#101828;line-height:1.7;">{{ ticket.description|linebreaksbr }}</td>
+                </tr>
+                <tr>
+                    <td style="width:180px;padding:14px 16px;border:1px solid #e7ecf4;border-radius:16px 0 0 16px;background:#f9fbff;color:#667085;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Ticket Type</td>
+                    <td style="padding:14px 16px;border:1px solid #e7ecf4;border-left:0;border-radius:0 16px 16px 0;background:#ffffff;color:#101828;">{{ ticket.ticket_type_label }}</td>
+                </tr>
+                <tr>
+                    <td style="width:180px;padding:14px 16px;border:1px solid #e7ecf4;border-radius:16px 0 0 16px;background:#f9fbff;color:#667085;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Requester</td>
+                    <td style="padding:14px 16px;border:1px solid #e7ecf4;border-left:0;border-radius:0 16px 16px 0;background:#ffffff;color:#101828;">{{ ticket.requester_name }}<br>{{ ticket.requester_email }}<br>{{ ticket.requester_number }}</td>
+                </tr>
+                <tr>
+                    <td style="width:180px;padding:14px 16px;border:1px solid #e7ecf4;border-radius:16px 0 0 16px;background:#f9fbff;color:#667085;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Routing</td>
+                    <td style="padding:14px 16px;border:1px solid #e7ecf4;border-left:0;border-radius:0 16px 16px 0;background:#ffffff;color:#101828;">
+                        To: {{ ticket.assigned_to.get_full_name|default:ticket.assigned_to.username|default:"Unassigned" }}<br>
+                        Project Manager: {{ ticket.project_manager.get_full_name|default:ticket.project_manager.username|default:"Unassigned" }}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:180px;padding:14px 16px;border:1px solid #e7ecf4;border-radius:16px 0 0 16px;background:#f9fbff;color:#667085;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Classification</td>
+                    <td style="padding:14px 16px;border:1px solid #e7ecf4;border-left:0;border-radius:0 16px 16px 0;background:#ffffff;color:#101828;">
+                        Department: {{ ticket.department.name|default:"Unassigned" }}<br>
+                        User Type: {{ ticket.get_user_type_display }}<br>
+                        Source: {{ ticket.get_source_system_display }}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:180px;padding:14px 16px;border:1px solid #e7ecf4;border-radius:16px 0 0 16px;background:#f9fbff;color:#667085;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Status</td>
+                    <td style="padding:14px 16px;border:1px solid #e7ecf4;border-left:0;border-radius:0 16px 16px 0;background:#ffffff;color:#101828;">
+                        Overall: {{ ticket.get_status_display|default:"---------" }}<br>
+                        Inditech: {{ ticket.get_inditech_status_display|default:"---------" }}<br>
+                        Client: {{ ticket.get_client_status_display|default:"---------" }}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:180px;padding:14px 16px;border:1px solid #e7ecf4;border-radius:16px 0 0 16px;background:#f9fbff;color:#667085;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Timestamps</td>
+                    <td style="padding:14px 16px;border:1px solid #e7ecf4;border-left:0;border-radius:0 16px 16px 0;background:#ffffff;color:#101828;">
+                        Created: {{ ticket.created_at|date:"d M Y, h:i A" }}<br>
+                        Updated: {{ ticket.updated_at|date:"d M Y, h:i A" }}
+                    </td>
+                </tr>
+            </table>
 
-    <h3>Attachments</h3>
-    {% if attachments %}
-        <ul>
-            {% for attachment in attachments %}
-                <li>{{ attachment.role }}: <a href="{{ attachment.url }}">{{ attachment.name }}</a></li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No attachments uploaded yet.</p>
-    {% endif %}
+            {% if update %}
+                <div style="margin-top:22px;padding:18px 20px;border:1px solid #e7ecf4;border-radius:20px;background:#f9fbff;">
+                    <div style="margin-bottom:8px;color:#667085;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Latest Update</div>
+                    <div style="font-size:15px;font-weight:700;color:#101828;">{{ update.get_actor_type_display }}</div>
+                    <div style="margin-top:8px;color:#475467;">Overall: {{ update.get_status_display|default:"---------" }} | Inditech: {{ update.get_inditech_status_display|default:"---------" }} | Client: {{ update.get_client_status_display|default:"---------" }}</div>
+                    {% if update.message %}
+                        <div style="margin-top:10px;color:#101828;line-height:1.7;">{{ update.message|linebreaksbr }}</div>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            <div style="margin-top:22px;">
+                <div style="margin-bottom:12px;color:#667085;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Attachments</div>
+                {% if attachments %}
+                    {% for attachment in attachments %}
+                        <div style="margin-bottom:12px;padding:14px 16px;border:1px solid #e7ecf4;border-radius:18px;background:#f9fbff;">
+                            <div style="font-size:15px;font-weight:700;color:#101828;">{{ attachment.name }}</div>
+                            <div style="margin-top:6px;color:#667085;line-height:1.6;">Uploaded by {{ attachment.role }}</div>
+                            <div style="margin-top:12px;">
+                                <a href="{{ attachment.url }}" style="display:inline-block;padding:10px 14px;border-radius:999px;background:#d14d4d;color:#ffffff;text-decoration:none;font-weight:700;">Download Attachment</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div style="padding:14px 16px;border:1px dashed #d5dce8;border-radius:18px;background:#f9fbff;color:#667085;">No attachments uploaded yet.</div>
+                {% endif %}
+            </div>
+
+            <div style="margin-top:26px;">
+                <a href="{{ ticket_url }}" style="display:inline-block;padding:13px 18px;border-radius:999px;background:#d14d4d;color:#ffffff;text-decoration:none;font-weight:700;">Open Ticket</a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

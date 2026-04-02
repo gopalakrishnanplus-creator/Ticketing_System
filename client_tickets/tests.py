@@ -2,14 +2,15 @@ from datetime import timedelta
 
 from django.contrib.auth.models import User
 from django.core import mail
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, override_settings
 from django.urls import reverse
 from django.utils import timezone
 
 from task_app.models import Department
 
-from .models import ClientContact, ClientTicket, ClientTicketType
-from .services import auto_close_stale_tickets, send_unchecked_ticket_reminders
+from .models import ClientContact, ClientTicket, ClientTicketAttachment, ClientTicketType
+from .services import auto_close_stale_tickets, notify_ticket_created, send_unchecked_ticket_reminders
 
 
 @override_settings(
@@ -124,3 +125,46 @@ class ClientTicketTests(TestCase):
         self.assertEqual(closed_count, 1)
         self.assertEqual(ticket.status, ClientTicket.STATUS_AUTO_CLOSED)
         self.assertIsNotNone(ticket.auto_closed_at)
+
+    def test_client_ticket_email_and_detail_show_download_actions(self):
+        contact = ClientContact.objects.create(
+            name="Rutu Client",
+            email="rutu@example.com",
+            phone_number="7777766666",
+        )
+        ticket = ClientTicket.objects.create(
+            title="Attachment rich client ticket",
+            description="Client ticket body for the email summary.",
+            requester=contact,
+            requester_name=contact.name,
+            requester_email=contact.email,
+            requester_number=contact.phone_number,
+            assigned_to=self.assigned_to,
+            project_manager=self.project_manager,
+            department=self.department,
+            ticket_type=self.ticket_type,
+            priority=ClientTicket.PRIORITY_HIGH,
+            status=ClientTicket.STATUS_OPEN,
+        )
+        ClientTicketAttachment.objects.create(
+            ticket=ticket,
+            uploaded_by=self.project_manager,
+            uploaded_by_role=ClientTicketAttachment.UPLOADER_PM,
+            file=SimpleUploadedFile("proof.pdf", b"proof", content_type="application/pdf"),
+        )
+
+        notify_ticket_created(ticket)
+
+        self.assertEqual(len(mail.outbox), 1)
+        html_body = mail.outbox[0].alternatives[0][0]
+        self.assertIn("Attachment rich client ticket", html_body)
+        self.assertIn("proof.pdf", html_body)
+        self.assertIn("Download Attachment", html_body)
+
+        self.client.force_login(self.assigned_to)
+        response = self.client.get(reverse("client_tickets:ticket_detail", args=[ticket.ticket_number]))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Ticket Body")
+        self.assertContains(response, "proof.pdf")
+        self.assertContains(response, "Download")

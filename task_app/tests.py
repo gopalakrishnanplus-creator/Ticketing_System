@@ -1,6 +1,7 @@
 from datetime import date, timedelta
 
 from django.contrib.auth.models import User
+from django.core import mail
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, override_settings
 from django.urls import reverse
@@ -229,6 +230,11 @@ class InternalTaskAttachmentTests(TestCase):
         task = Task.objects.get(subject="Attachment test task")
         self.assertEqual(task.attachments.count(), 2)
         self.assertEqual(task.viewers, [self.user.email])
+        email_html = "\n".join(message.alternatives[0][0] for message in mail.outbox if message.alternatives)
+        self.assertIn("Attachment test task", email_html)
+        self.assertIn("brief.txt", email_html)
+        self.assertIn("design.txt", email_html)
+        self.assertIn("Download Attachment", email_html)
 
     def test_internal_task_attachment_size_limit_is_enforced(self):
         oversized_attachment = SimpleUploadedFile(
@@ -256,3 +262,29 @@ class InternalTaskAttachmentTests(TestCase):
         self.assertContains(response, "file size exceeds 5 MB", status_code=400)
         self.assertFalse(Task.objects.filter(subject="Oversized attachment task").exists())
         self.assertEqual(TaskAttachment.objects.count(), 0)
+
+    def test_task_detail_page_shows_mail_style_attachment_downloads(self):
+        task = Task.objects.create(
+            department=self.department,
+            assigned_by=self.user,
+            assigned_to=self.user,
+            deadline=date.today() + timedelta(days=2),
+            ticket_type="Testing",
+            priority="medium",
+            status="In Progress",
+            subject="Mail style detail task",
+            request_details="Need a polished detail page.",
+            comments_by_assignee="Comment for detail page.",
+        )
+        TaskAttachment.objects.create(
+            task=task,
+            uploaded_by=self.user,
+            file=SimpleUploadedFile("handoff.txt", b"handoff", content_type="text/plain"),
+        )
+
+        response = self.client.get(reverse("task_detail", args=[task.task_id]))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Request Body")
+        self.assertContains(response, "handoff.txt")
+        self.assertContains(response, "Download")

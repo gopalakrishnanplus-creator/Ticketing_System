@@ -162,10 +162,10 @@
                     <tbody>
                         {% for record in records %}
                             <tr>
-                                <td>
+                                <td data-label="Ticket ID">
                                     <a class="record-link" href="{% url 'client_tickets:ticket_detail' record.ticket_number %}">{{ record.ticket_number }}</a>
                                 </td>
-                                <td>
+                                <td data-label="Client / Subject">
                                     <div class="record-main">
                                         <span class="record-avatar">{{ record.requester_name|slice:":1"|upper }}</span>
                                         <div>
@@ -174,24 +174,24 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td>
+                                <td data-label="Priority">
                                     <span class="record-badge record-badge--priority-{{ record.priority }}">{{ record.get_priority_display }}</span>
                                     <small class="record-meta">{{ record.get_status_display|default:"---------" }}</small>
                                 </td>
-                                <td>
+                                <td data-label="Source System">
                                     <strong>{{ record.get_source_system_display }}</strong>
                                     <small class="record-meta">{{ record.department.name|default:"Unassigned" }}</small>
                                 </td>
-                                <td>
+                                <td data-label="Deadline / Updated">
                                     <strong>{% if record.closed_at %}Closed{% else %}{{ record.updated_at|date:"d M Y" }}{% endif %}</strong>
                                     <small class="record-meta">{{ record.project_manager.get_full_name|default:record.project_manager.username }}</small>
                                 </td>
-                                <td>
+                                <td data-label="Action">
                                     <a href="{% url 'client_tickets:ticket_detail' record.ticket_number %}" class="table-action">Details</a>
                                 </td>
                             </tr>
                         {% empty %}
-                            <tr>
+                            <tr class="workspace-empty-row">
                                 <td colspan="6" class="workspace-empty">No external client tickets matched the current filters.</td>
                             </tr>
                         {% endfor %}
@@ -211,10 +211,10 @@
                     <tbody>
                         {% for record in records %}
                             <tr>
-                                <td>
+                                <td data-label="Ticket ID">
                                     <a class="record-link" href="{% url 'task_detail' record.task_id %}">{{ record.task_id }}</a>
                                 </td>
-                                <td>
+                                <td data-label="Subject">
                                     <div class="record-main">
                                         <span class="record-avatar">{{ record.assigned_by.get_full_name|default:record.assigned_by.username|slice:":1"|upper }}</span>
                                         <div>
@@ -223,15 +223,15 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td>
+                                <td data-label="Priority">
                                     <span class="record-badge record-badge--priority-{{ record.priority }}">{{ record.get_priority_display }}</span>
                                     <small class="record-meta">{{ record.status }}</small>
                                 </td>
-                                <td>
+                                <td data-label="Department">
                                     <strong>{{ record.department.name|default:"Unassigned" }}</strong>
                                     <small class="record-meta">{{ record.ticket_type }}</small>
                                 </td>
-                                <td>
+                                <td data-label="Deadline">
                                     <strong>{{ record.deadline|date:"d M Y" }}</strong>
                                     {% if record.revised_completion_date %}
                                         <small class="record-meta">Revised: {{ record.revised_completion_date|date:"d M Y" }}</small>
@@ -239,7 +239,7 @@
                                 </td>
                             </tr>
                         {% empty %}
-                            <tr>
+                            <tr class="workspace-empty-row">
                                 <td colspan="5" class="workspace-empty">No internal tickets matched the current filters.</td>
                             </tr>
                         {% endfor %}

@@ -1,38 +1,55 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from .models import Task, UserProfile, Department, TaskChat, TaskAttachment
-from django.contrib.auth.decorators import login_required
-from .forms import TaskForm, TaskChatForm
-from django.core.exceptions import PermissionDenied
-from django.core.paginator import Paginator
-from django.contrib.auth.models import User
-from django.utils import timezone
-from django.db.models import Q,F
+import json
+import logging
+import os
+from datetime import date
 from datetime import datetime, timedelta
-from django.http import JsonResponse
-from django.http import HttpResponse
-from .models import ActivityLog
+from urllib.parse import urljoin
+
 import csv
 import pandas as pd
-from django.db.models import Count
-from .forms import TaskStatusUpdateForm
-from django.core.mail import send_mail
-from django.core.mail import EmailMultiAlternatives
-from django.template.loader import render_to_string
-from django.utils.timezone import now
-from .tasks import send_deadline_reminders_logic, notify_overdue_tasks_logic
+from django.conf import settings
 from django.contrib import messages
-from datetime import date
-from django.views.decorators.http import require_http_methods
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.core.exceptions import PermissionDenied
 from django.core.exceptions import ValidationError
+from django.core.mail import EmailMultiAlternatives
+from django.core.mail import send_mail
+from django.core.paginator import Paginator
+from django.db.models import Count
+from django.db.models import F
+from django.db.models import Q
+from django.http import HttpResponse
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+from django.shortcuts import redirect
+from django.shortcuts import render
+from django.template.loader import render_to_string
+from django.urls import reverse
+from django.utils import timezone
 from django.utils.dateparse import parse_date
 from django.utils.http import url_has_allowed_host_and_scheme
-from django.urls import reverse
-import logging
-import json
+from django.utils.timezone import now
+from django.views.decorators.http import require_http_methods
+
+from .forms import TaskChatForm
+from .forms import TaskForm
+from .forms import TaskStatusUpdateForm
+from .models import ActivityLog
+from .models import Department
+from .models import Task
+from .models import TaskAttachment
+from .models import TaskChat
+from .models import UserProfile
 
 from client_tickets.forms import ClientTicketForm
 from client_tickets.models import ClientTicket, ClientTicketType, ClientTicketUpdate
-from client_tickets.services import create_ticket_update, notify_ticket_created, upsert_client_contact
+from client_tickets.services import (
+    create_ticket_update,
+    notify_ticket_created,
+    upsert_client_contact,
+)
+from .tasks import send_deadline_reminders_logic, notify_overdue_tasks_logic
 
 logger = logging.getLogger(__name__)
 
@@ -40,13 +57,93 @@ TICKET_MODE_INTERNAL = 'internal'
 TICKET_MODE_EXTERNAL = 'external'
 TICKET_MODE_CHOICES = {TICKET_MODE_INTERNAL, TICKET_MODE_EXTERNAL}
 
+
+def _support_base_url():
+    return getattr(settings, "CLIENT_TICKETS_BASE_URL", "http://127.0.0.1:5467").rstrip("/")
+
+
+def _absolute_support_url(value):
+    if not value:
+        return f"{_support_base_url()}/"
+    if str(value).startswith(("http://", "https://")):
+        return str(value)
+    return urljoin(f"{_support_base_url()}/", str(value).lstrip("/"))
+
+
+def _task_attachment_items(task):
+    items = []
+    seen = set()
+
+    def add_item(name, url, meta):
+        if not url:
+            return
+        absolute_url = _absolute_support_url(url)
+        key = (name, absolute_url)
+        if key in seen:
+            return
+        seen.add(key)
+        items.append({
+            "name": name,
+            "url": absolute_url,
+            "meta": meta,
+        })
+
+    for attachment in task.attachments.all():
+        uploader_name = ""
+        if attachment.uploaded_by:
+            uploader_name = attachment.uploaded_by.get_full_name() or attachment.uploaded_by.username
+        if uploader_name:
+            meta = f"Uploaded by {uploader_name} on {attachment.uploaded_at:%d %b %Y, %I:%M %p}"
+        else:
+            meta = f"Uploaded on {attachment.uploaded_at:%d %b %Y, %I:%M %p}"
+        add_item(attachment.filename, attachment.file.url, meta)
+
+    if task.attach_file:
+        add_item(os.path.basename(task.attach_file.name), task.attach_file.url, "Original ticket attachment")
+
+    if task.attachment_by_assignee:
+        add_item(
+            os.path.basename(task.attachment_by_assignee.name),
+            task.attachment_by_assignee.url,
+            "Attachment uploaded by assignee",
+        )
+
+    return items
+
+
+def _task_viewer_items(task):
+    viewer_emails = [email.strip().lower() for email in (task.viewers or []) if email and email.strip()]
+    if not viewer_emails:
+        return []
+
+    users_by_email = {
+        (user.email or "").strip().lower(): user
+        for user in User.objects.filter(email__in=viewer_emails)
+    }
+    items = []
+    for email in viewer_emails:
+        user = users_by_email.get(email)
+        label = email
+        if user:
+            label = user.get_full_name() or user.username or email
+        items.append({"label": label, "email": email})
+    return items
+
 def send_email_notification(subject, template_name, context, recipient_email, cc_emails=None):
     """Utility function to send email notifications (with CC)."""
+    context = dict(context or {})
+    if context.get("view_ticket_url"):
+        context["view_ticket_url"] = _absolute_support_url(context["view_ticket_url"])
+
+    ticket = context.get("ticket")
+    if isinstance(ticket, Task):
+        context.setdefault("ticket_attachment_links", _task_attachment_items(ticket))
+
     email_body = render_to_string(template_name, context)
     msg = EmailMultiAlternatives(
         subject=subject,
         body='',
-        from_email='no-reply@yourdomain.com',
+        from_email=getattr(settings, "DEFAULT_FROM_EMAIL", "no-reply@yourdomain.com"),
         to=[recipient_email],
         cc=list({e.strip().lower() for e in (cc_emails or [])}),
     )
@@ -665,13 +762,11 @@ def task_detail(request, task_id):
     """
     Task detail view with chat functionality
     """
-    # Fetch the task
     task = get_object_or_404(
         Task.objects.select_related('assigned_by', 'assigned_to', 'department').prefetch_related('attachments'),
         task_id=task_id,
     )
-    
-    # Check if user has permission to view this task
+
     user_profile = UserProfile.objects.get(user=request.user)
     is_viewer = request.user.email and request.user.email.lower() in (task.viewers or [])
     has_permission = (
@@ -683,9 +778,8 @@ def task_detail(request, task_id):
     
     if not has_permission:
         messages.error(request, "You do not have permission to view this task.")
-        return redirect('assigned_to_me')  # Redirect to a default view
+        return redirect('assigned_to_me')
 
-    # Handle chat message submission
     if request.method == 'POST':
         chat_form = TaskChatForm(request.POST)
         if chat_form.is_valid():
@@ -699,13 +793,49 @@ def task_detail(request, task_id):
     else:
         chat_form = TaskChatForm()
 
-    # Fetch all chat messages for this task
-    chat_messages = TaskChat.objects.filter(task=task).order_by('timestamp')
+    chat_messages = TaskChat.objects.filter(task=task).select_related('sender').order_by('timestamp')
+    activity_entries = ActivityLog.objects.filter(task=task).select_related('user').order_by('-timestamp')[:8]
+    attachment_items = _task_attachment_items(task)
+    viewer_items = _task_viewer_items(task)
+
+    assigned_to_profile = UserProfile.objects.filter(user=task.assigned_to).first() if task.assigned_to else None
+    assigned_by_profile = UserProfile.objects.filter(user=task.assigned_by).first() if task.assigned_by else None
+    can_update_task = (
+        task.assigned_to == request.user or (
+            user_profile.category == 'Departmental Manager'
+            and assigned_to_profile
+            and assigned_to_profile.department_id == user_profile.department_id
+        )
+    )
+    can_edit_task = (
+        task.assigned_by == request.user or (
+            user_profile.category == 'Departmental Manager'
+            and assigned_by_profile
+            and assigned_by_profile.department_id == user_profile.department_id
+        )
+    )
+    can_reassign_within_department = (
+        user_profile.category == 'Departmental Manager'
+        and assigned_to_profile
+        and assigned_to_profile.category == 'Departmental Manager'
+    )
+
+    if task.assigned_by == request.user and task.assigned_to != request.user and not is_viewer:
+        back_url = reverse('assigned_by_me')
+    else:
+        back_url = reverse('assigned_to_me')
 
     context = {
         'task': task,
         'chat_form': chat_form,
         'chat_messages': chat_messages,
+        'activity_entries': activity_entries,
+        'attachment_items': attachment_items,
+        'viewer_items': viewer_items,
+        'back_url': back_url,
+        'can_update_task': can_update_task,
+        'can_edit_task': can_edit_task,
+        'can_reassign_within_department': can_reassign_within_department,
     }
     return render(request, 'tasks/task_detail.html', context)
 def send_new_message_notification(request, task, chat_message):
