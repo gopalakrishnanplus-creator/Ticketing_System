@@ -1,0 +1,19 @@
+Zuventus (Florina) Report format,,,,,,,,,,,,
+State,Empcode,Position Code,Empname,HQ,Emp Mob No.,MCL No,Doctors Name,Mobile,Collateral Shared with Dr.,Collateral Viewed by Dr.,Collateral Viewed by Dr. Duration of Time,Date when Viewed
+,,,,,,,,,,,,
+Zuventus (Florina) Report 2 Format,,,,,,,,,,,,
+State,Empcode,Position Code,Empname,HQ,Emp Mob No.,MCL No,Number of Drs,Collateral Shared with Dr.,Collateral Viewed by Drs.,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+Zuventus (healthcare) report format,,,,,,,,,,,,
+State,Empcode,Position Code,Empname,HQ,Emp Mob No.,MCL No,Doctors Name,Mobile,Collateral Shared with Dr. (Hours:Minutes:Seconds),Video Viewed by Dr.,Video Viewed by Dr. Duration of Time,Date when Video Viewed
+,,,,,,,,,,,,
+Zuventus (healthcare) Report 2 Format,,,,,,,,,,,,
+State,Empcode,Position Code,Empname,HQ,Emp Mob No.,MCL No,Number of Drs,Collateral Shared with Dr.,Collateral Viewed by Drs.,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+Zuventus (athena) report format,,,,,,,,,,,,
+State,Empcode,Position Code,Empname,HQ,Emp Mob No.,MCL No,Doctors Name,Mobile,Collateral Shared with Dr. (Hours:Minutes:Seconds),Collateral Video Viewed by Dr.,Collateral Video Viewed by Dr. Duration of Time,Date when Video Viewed
+,,,,,,,,,,,,
+Zuventus (athena) report 2 format,,,,,,,,,,,,
+State,Empcode,Position Code,Empname,HQ,Emp Mob No.,MCL No,Number of Drs,Collateral Shared with Dr.,Collateral Viewed by Drs.,,,

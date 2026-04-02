@@ -1,0 +1,456 @@
+ ,Screening Tool for Constipation,,,,,
+Purpose of Screening Tool,"The purpose of this screening tool is to help identify red flags in children with constipation that may indicate a special condition. The screening tool is not a diagnostic test, but a way to be alerted to the presence of a redflag and decide on the appropriate course of action.
+",,,,,
+Usage,To be used as many times as sent  by your doctor,,,,,
+Sr No,Question,Options,Red Flag Trigger,Redflag response,At-a-glance information,RED FLAG ID
+1,"Does your child have a history of large, hard, dry stool or shows difficulty passing stool?",Yes,Yes,"Child with constipation with history of large, hard, dry stool or shows difficulty passing stool","Possible Conditions
+
+Common: Functional Constipation
+Special: Hirschsprung Disease (in infants and young children)
+Rare: Cystic Fibrosis
+Differentiating Tests/Assessments
+
+Rectal Examination: Check for impacted stool.
+Abdominal X-ray: Assess stool load in the colon.
+Anorectal Manometry: Especially if Hirschsprung disease is suspected.
+Sweat Chloride Test: If Cystic Fibrosis is considered.
+First Line Therapy & Basic Management
+
+Dietary Changes: Increase fiber and water intake.
+Stool Softeners: Laxatives like polyethylene glycol.
+Manual Disimpaction: In cases of severe impaction.
+Referral to a Specialist
+
+If suspected Hirschsprung disease, refer to pediatric surgery.
+For recurrent severe constipation not responsive to standard treatments, consider a pediatric gastroenterologist.",10600011
+,,No,,,,
+,,,,,,
+2,"
+
+Does your child have a history of incomplete evacuation/ tenesmus/ blood in stools? (choose all that apply)",Incomplete evacuation or feeling that not all the stool has passed completely,Yes,Child with constipation with history of incomplete evacuation,"Possible Conditions
+
+Common: Functional Constipation
+Special: Rectal Prolapse
+Rare: Anorectal Malformation
+Differentiating Tests/Assessments
+
+Rectal Examination: To assess for abnormalities and impaction.
+Defecography: To visualize evacuation process (in selected cases).
+Colonoscopy: If there's a concern for structural abnormalities.
+First Line Therapy & Basic Management
+
+Behavioral Modification: Toilet training and scheduling.
+Bowel Management: Laxatives and dietary changes.
+Referral to a Specialist
+
+If structural anomalies are suspected, refer to pediatric gastroenterology or surgery.
+For persistent symptoms, consider a pediatric gastroenterologist.",10600021
+,,"Tenesmus (feeling the urge pass stools constantly, even if bowel empty)",Yes,Child with constipation with history of tenesmus,"Possible Conditions
+
+Common: Functional Constipation
+Special: Proctitis or Anal Fissure
+Rare: Inflammatory Bowel Disease (IBD)
+Differentiating Tests/Assessments
+
+Rectal Examination: Look for fissures, hemorrhoids, or other abnormalities.
+Stool Tests: For infections or inflammation markers.
+Endoscopy: If IBD is suspected.
+First Line Therapy & Basic Management
+
+Manage Constipation: With laxatives and dietary adjustments.
+Topical Treatments: For fissures or inflammation.
+Referral to a Specialist
+
+For suspected IBD, refer to pediatric gastroenterology.
+If no improvement with initial treatment, consider referral for further evaluation.",10600022
+,,Blood in stools,Yes,Child with constipation with history of blood in stools along woth constipation,"Possible Conditions
+
+Common: Anal Fissure
+Special: Intestinal Polyps
+Rare: Meckel's Diverticulum
+Differentiating Tests/Assessments
+
+Rectal Examination: To identify fissures.
+Colonoscopy: For polyps or other intestinal abnormalities.
+Meckel's Scan: If Meckel's Diverticulum is suspected.
+First Line Therapy & Basic Management
+
+Treat Constipation: To prevent straining and fissures.
+Surgical Consultation: For polyps or Meckel's Diverticulum.
+Referral to a Specialist
+
+If bleeding persists or if structural abnormalities are suspected, refer to pediatric gastroenterology or surgery.",10600023
+,,No such history,,,,
+,,,,,,
+3,Does your child have a history of passing stools in undergarments and/or bedwetting?,Yes,Yes,Child with constipation with history of passing stools in undergarments and/or bedwetting in a child with constipation,"Possible Conditions
+
+Common: Functional Constipation with Overflow Incontinence
+Special: Encopresis
+Rare: Spinal Cord Anomalies
+Differentiating Tests/Assessments
+
+History and Physical Examination: To assess for signs of constipation and overflow.
+Abdominal X-ray: To evaluate fecal load.
+Spinal MRI: If a spinal cord anomaly is suspected.
+First Line Therapy & Basic Management
+
+Bowel Cleanout: Using high-dose laxatives.
+Maintenance Therapy: Laxatives and dietary modifications to prevent recurrence.
+Behavioral Interventions: Scheduled toilet times and positive reinforcement.
+Referral to a Specialist
+
+Pediatric Gastroenterologist: For ongoing management challenges.
+Pediatric Urologist or Neurologist: If underlying anatomical or neurological issues are suspected.",10600031
+,,No such history.,,,,
+,,,,,,
+4,Is your child's growth similar to other children on his age?,Yes,,,,
+,,No,Yes,Child with constipation with child’s physical growth and development is not in the normal percentile associated with constipation,"Possible Conditions
+
+Common: Functional Constipation affecting appetite
+Special: Celiac Disease
+Rare: Hypothyroidism
+Differentiating Tests/Assessments
+
+Growth Charts: To document growth patterns.
+Blood Tests: For celiac disease (tTG-IgA) and thyroid function (TSH, free T4).
+Nutritional Assessment: To evaluate dietary intake.
+First Line Therapy & Basic Management
+
+Treat Constipation: Addressing constipation may improve appetite and nutritional intake.
+Gluten-Free Diet: If celiac disease is diagnosed.
+Thyroid Hormone Replacement: For hypothyroidism.
+Referral to a Specialist
+
+Pediatric Gastroenterologist: For suspected celiac disease or complex constipation.
+Pediatric Endocrinologist: For hypothyroidism.",
+,,,,,,
+,,,,,,
+5,Does the child have stool holding behaviour/ gestures?,Yes,Yes,Child with constipation with child has stool holding behaviour/ gestures,"Possible Conditions
+
+Common: Behavioral Constipation
+Special: Psychological Distress or Anxiety
+Rare: Sexual Abuse
+Differentiating Tests/Assessments
+
+Clinical History and Observation: For behavioral patterns.
+Psychological Evaluation: To assess for anxiety or distress.
+Detailed Physical Examination: To rule out abuse.
+First Line Therapy & Basic Management
+
+Behavioral Strategies: Encouragement and positive reinforcement for bathroom use.
+Laxatives: To ease passage and reduce fear of painful defecation.
+Referral to a Specialist
+
+Pediatric Psychologist or Psychiatrist: For anxiety or distress.
+Child Protection Services: If abuse is suspected.",
+,,No,,,,
+,,,,,,
+6,Has there been any change in residence/ school/ teacher/ arrival of new sibling/ parental struggles?,Yes,Yes,Child with constipation with history of a change in residence/ school/ teacher/ arrival of new sibling/ parental struggles in a child with constipation,"Possible Conditions
+
+Common: Stress-Related Constipation
+Special: Adjustment Disorder
+Rare: Depression
+Differentiating Tests/Assessments
+
+Clinical Interview: To explore stressors and emotional state.
+Psychological Evaluation: For adjustment disorders or depression.
+First Line Therapy & Basic Management
+
+Supportive Care: Reassurance and emotional support.
+Behavioral Strategies: Routine establishment and relaxation techniques.
+Referral to a Specialist
+
+Pediatric Psychologist or Psychiatrist: For suspected adjustment disorder or depression.",10600061
+,,No,,,,
+,,,,,,
+7,"Does the child have any History of the following?
+",UTI,Yes,Child with constipation with history of RHD with UTI,"Possible Conditions
+
+Common: Functional Constipation with secondary UTI
+Special: Anatomical Anomalies of the Urinary Tract
+Rare: Neurogenic Bladder
+Differentiating Tests/Assessments
+
+Urinalysis and Culture: To confirm UTI.
+Ultrasound: Of the kidneys and bladder for anatomical anomalies.
+Voiding Cystourethrogram (VCUG): For vesicoureteral reflux or neurogenic bladder.
+First Line Therapy & Basic Management
+
+Antibiotics: For UTI.
+Bowel Management: To treat constipation and prevent UTI recurrence.
+Referral to a Specialist
+
+Pediatric Urologist: For anatomical anomalies or suspected neurogenic bladder.",10600071
+,,Abdominal Surgery,Yes,Child with constipation with history of Abdominal Surgery in a patient with constpation,"Possible Conditions
+
+Common: Postoperative Adynamic Ileus
+Special: Intestinal Obstruction due to Adhesions
+Rare: Anastomotic Stricture
+Differentiating Tests/Assessments
+
+Abdominal X-ray: To check for signs of obstruction.
+CT Scan: More detailed imaging to identify adhesions or strictures.
+Surgical History Review: To correlate symptoms with previous surgeries.
+First Line Therapy & Basic Management
+
+Observation: For adynamic ileus, with gradual reintroduction of diet.
+Laxatives: If no evidence of obstruction, to facilitate bowel movement.
+Surgical Consultation: For suspected obstruction or stricture.
+Referral to a Specialist
+
+Pediatric Surgeon: If symptoms suggest complications related to previous surgeries or require evaluation for potential adhesions or strictures.",10600072
+,,Drug history,Yes,Child with constipation with history of constipation,"Possible Conditions
+
+Common: Chronic Functional Constipation
+Special: Hirschsprung Disease (if not previously ruled out)
+Rare: Cystic Fibrosis (if other symptoms present)
+Differentiating Tests/Assessments
+
+Thorough Medical History and Physical Examination: To evaluate constipation pattern and identify red flags.
+Rectal Biopsy: For suspected Hirschsprung disease.
+Sweat Chloride Test: If Cystic Fibrosis is suspected.
+First Line Therapy & Basic Management
+
+Diet and Lifestyle Modifications: Increase dietary fiber and fluid intake; encourage regular physical activity.
+Medication: Laxatives and stool softeners as needed.
+Referral to a Specialist
+
+Pediatric Gastroenterologist: For persistent, severe, or complicated cases not responding to initial management.",10600073
+,,Family history of  constipation,Yes,Child with constipation with history of familial constipation,"Possible Conditions
+
+Common: Functional Constipation with Genetic Predisposition
+Special: Hereditary Disorders (e.g., Hirschsprung Disease)
+Rare: Metabolic or Connective Tissue Disorders
+Differentiating Tests/Assessments
+
+Family Medical History: To identify patterns or genetic disorders.
+Genetic Testing: For suspected hereditary conditions.
+Comprehensive Evaluation: Including physical and possibly, psychological assessment.
+First Line Therapy & Basic Management
+
+Lifestyle Modifications: Dietary changes, hydration, and physical activity.
+Behavioral Approaches: Encouraging regular toilet habits.
+Referral to a Specialist
+
+Genetics Specialist: For suspected genetic disorders.
+Pediatric Gastroenterologist: For ongoing issues despite initial interventions.",10600074
+,,Inflammatory bowel disease.,Yes,Child with constipation with history of inflammatory bowel disease with constipation,"Possible Conditions
+
+Common: Crohn's Disease (less commonly associated with constipation)
+Special: Ulcerative Colitis (if constipation occurs, may indicate complications)
+Rare: IBD-Unspecified with Predominant Constipation
+Differentiating Tests/Assessments
+
+Colonoscopy with Biopsy: To diagnose and assess the extent of IBD.
+Blood Tests: Inflammatory markers, including CRP and ESR.
+Imaging Studies: MRI or CT enterography for small bowel assessment.
+First Line Therapy & Basic Management
+
+IBD Management: Tailored medication regimen including anti-inflammatory drugs, immune modulators, and possibly biologics.
+Dietary Management: Adjustments to manage symptoms, possibly with the help of a dietitian.
+Referral to a Specialist
+
+Pediatric Gastroenterologist: For diagnosis, management, and follow-up of IBD.",10600075
+,,No such history,,,,
+,,,,,,
+8,"Does the child have high consumption of milk, cheese, sweet fruit juices, poor intake of fruits, vegetables, whole grains?","High consumption of milk, cheese, sweet fruit juices",Yes,"Child with constipation have high consumption of milk, cheese, sweet fruit juice","Possible Conditions
+
+Common: Diet-Induced Constipation
+Special: Lactose Intolerance (if symptoms correlate with dairy intake)
+Rare: Fructose Malabsorption
+Differentiating Tests/Assessments
+
+Dietary History: To identify patterns associated with symptoms.
+Lactose Tolerance Test: For suspected lactose intolerance.
+Hydrogen Breath Test: For fructose malabsorption.
+First Line Therapy & Basic Management
+
+Dietary Adjustments: Reducing intake of constipating foods, increasing fiber, and encouraging water consumption.
+
+Referral to a Specialist
+Pediatric Gastroenterologist or Nutritionist: For persistent symptoms, dietary management, and further evaluation of possible food intolerances or malabsorption issues.",10600081
+,,"Poor intake of fruits, vegetables, whole grains",Yes,"Child with constipation with poor intake of fruits, vegetables, whole grains","Possible Conditions
+
+Common: Diet-Related Constipation
+Special: Dietary Fiber Deficiency
+Rare: Specific Nutrient or Mineral Deficiencies affecting bowel movements
+Differentiating Tests/Assessments
+
+Dietary Assessment: To evaluate overall nutritional intake and identify gaps.
+Blood Tests: For specific nutrient deficiencies, if other symptoms present.
+First Line Therapy & Basic Management
+
+Dietary Modifications: Increase intake of dietary fiber through fruits, vegetables, and whole grains. Encourage hydration.
+Education: Counseling families on the importance of a balanced diet for digestive health.
+Referral to a Specialist
+
+Dietitian or Pediatric Gastroenterologist: For comprehensive dietary assessment and personalized nutrition plan to address constipation and any underlying nutrient deficiencies.",10600082
+,,Normal diet,,,,
+,,,,,,
+9,"Does your child have 
+(choose all that apply)",Recurrent abdominal pain,Yes,Child with constipation with recurrent abdominal pain,"Possible Conditions
+
+Common: Irritable Bowel Syndrome (IBS) with Constipation
+Special: Intestinal Obstruction
+Rare: Chronic Intestinal Pseudo-Obstruction
+Differentiating Tests/Assessments
+
+Abdominal Examination and History: To correlate pain with bowel movements.
+Abdominal Imaging: X-ray, ultrasound, or CT scan to rule out obstruction.
+Motility Studies: For suspected motility disorders.
+First Line Therapy & Basic Management
+
+Manage Constipation: Through diet, hydration, and appropriate use of laxatives.
+Pain Management: Non-pharmacological approaches and, if needed, appropriate medications under supervision.
+Referral to a Specialist
+
+Pediatric Gastroenterologist: For complex cases, recurrent pain not responsive to initial treatments, or suspicion of a motility disorder.",10600091
+,,Weight loss,Yes,Child with constipation with weight loss assicated with constipation,"Possible Conditions
+
+Common: Significant dietary restrictions due to constipation
+Special: Thyroid Disorders
+Rare: Gastrointestinal malignancies (extremely rare in children)
+Differentiating Tests/Assessments
+
+Comprehensive History and Physical Examination: To assess dietary intake and physical symptoms.
+Thyroid Function Tests: To screen for hypothyroidism.
+Further Diagnostic Workup: Depending on clinical suspicion (e.g., imaging, endoscopy).
+First Line Therapy & Basic Management
+
+Address Constipation: Dietary modifications, hydration, and laxatives as needed.
+Thyroid Management: If a thyroid disorder is diagnosed, appropriate treatment.
+Referral to a Specialist
+
+Pediatric Gastroenterologist or Endocrinologist: For further evaluation and management of underlying causes contributing to weight loss and constipation.",10600092
+,,Fever,Yes,Child with constipation with fever,"Possible Conditions
+
+Common: Infection-related Constipation
+Special: Appendicitis (if accompanied by right lower quadrant pain)
+Rare: Colitis or Enterocolitis
+Differentiating Tests/Assessments
+
+Clinical Evaluation: To identify potential sources of infection.
+Blood Tests: Complete blood count (CBC) to look for signs of infection.
+Imaging: Ultrasound or CT scan if appendicitis or other intra-abdominal processes are suspected.
+First Line Therapy & Basic Management
+
+Treat Underlying Infection: Antibiotics if bacterial infection is identified.
+Supportive Care: Hydration and management of constipation.
+Referral to a Specialist
+
+Pediatric Surgeon: If appendicitis is suspected.
+Pediatric Gastroenterologist: For suspected colitis or if fever persists without a clear source.",10600093
+,,Vomiting,Yes,Child with constipation with vomiting,"Possible Conditions
+
+Common: Gastroenteritis
+Special: Intestinal Obstruction
+Rare: Metabolic Disorders
+Differentiating Tests/Assessments
+
+Clinical History and Physical Examination: To assess for dehydration and possible causes of vomiting.
+Abdominal Imaging: To rule out obstruction.
+Blood Tests: For metabolic screening if indicated.
+First Line Therapy & Basic Management
+
+Hydration: Oral rehydration solutions or IV fluids if necessary.
+Nausea Management: Antiemetic medications under medical supervision.
+**Referral to a Specialist
+
+Pediatric Gastroenterologist: For ongoing vomiting not responsive to initial treatments, or if obstruction is suspected.
+Pediatric Endocrinologist: For suspected metabolic disorders.",10600094
+,,Bloating of abdomen,Yes,Child with constipation with bloated abdomen,"Possible Conditions
+
+Common: Functional Constipation
+Special: Intestinal Malrotation with Volvulus
+Rare: Celiac Disease
+Differentiating Tests/Assessments
+
+Abdominal Examination: To assess distension and palpate for masses.
+Abdominal X-ray and Ultrasound: To evaluate for obstruction, malrotation, or other abnormalities.
+Blood Tests: For celiac disease markers (tTG-IgA).
+First Line Therapy & Basic Management
+
+Dietary Management: For constipation, increase fiber and fluid intake.
+Surgical Evaluation: Urgently, if volvulus is suspected.
+Gluten-Free Diet: If celiac disease is confirmed.
+Referral to a Specialist
+
+Pediatric Surgeon: For suspected malrotation with volvulus.
+Pediatric Gastroenterologist: For celiac disease or complicated constipation cases.",10600095
+,,Unusually tired or weak recently,Yes,Child with constipation who gets Unusually tired or weak recently,"Possible Conditions
+
+Common: Dehydration due to Constipation
+Special: Anemia
+Rare: Thyroid Dysfunction
+Differentiating Tests/Assessments
+
+Clinical Evaluation: For signs of dehydration and general weakness.
+Blood Tests: CBC for anemia, thyroid function tests for hypothyroidism.
+First Line Therapy & Basic Management
+
+Hydration: To address dehydration.
+Iron Supplementation: If anemia is present.
+Thyroid Hormone Therapy: For diagnosed hypothyroidism.
+Referral to a Specialist
+
+Pediatric Endocrinologist: For suspected thyroid dysfunction.
+Pediatric Hematologist: For significant anemia requiring further evaluation.",
+,,"Increased irritability or been easily upset, especially in relation to bowel movements or bathroom habits",Yes,"Child with constipation with Increased irritability or been easily upset, especially in relation to bowel movements or bathroom habits","Possible Conditions
+
+Common: Behavioral Constipation
+Special: Encopresis
+Rare: Anxiety or Depression affecting bowel habits
+Differentiating Tests/Assessments
+
+Psychological Assessment: To evaluate for underlying anxiety or depression.
+Clinical History and Physical Exam: To assess for constipation and its management.
+First Line Therapy & Basic Management
+
+Behavioral Interventions: Positive reinforcement, establishing a routine for bowel movements.
+Medical Management: Laxatives for constipation relief.
+Referral to a Specialist
+
+Pediatric Psychologist or Psychiatrist: For significant behavioral issues, anxiety, or depression.
+Pediatric Gastroenterologist: For complicated constipation or encopresis.",
+,,No such history.,,,,
+,,,,,,
+10,Does the child have any abnormality in back/ spine/ anal region/ muscle power?,Yes,Yes,Child with constipation with abnormality in back/ spine/ anal region/ muscle power,"Possible Conditions
+
+Common: Anorectal Malformation
+Special: Spinal Cord Anomalies
+Rare: Sacral Agenesis
+Differentiating Tests/Assessments
+
+Physical Examination: For visible abnormalities and neurological function.
+Spinal MRI: To assess for spinal cord anomalies.
+Anorectal Manometry: For anorectal function assessment.
+First Line Therapy & Basic Management
+
+Surgical Consultation: For anorectal malformations.
+Neurological Management: As appropriate for spinal cord anomalies.
+Referral to a Specialist
+
+Pediatric Surgeon: For anorectal malformations.
+Pediatric Neurologist or Neurosurgeon: For spinal cord anomalies or sacral agenesis.",10600101
+,,No,,,,
+,,,,,,
+,"Have there been any significant delays in your child's developmental milestones, particularly those related to toilet habits or bowel movements?",Yes,Yes,"Child with constipation with significant delays in your child's developmental milestones, particularly those related to toilet habits or bowel movements","Possible Conditions
+
+Common: Developmental Disorders affecting toileting
+Special: Autism Spectrum Disorder (ASD)
+Rare: Neurological Disorders with Secondary Constipation
+Differentiating Tests/Assessments
+
+Developmental Screening and Assessment: To identify specific delays and their nature.
+Neurological Examination: For underlying neurological disorders.
+Evaluation by a Developmental Pediatrician: For comprehensive assessment.
+First Line Therapy & Basic Management
+
+Supportive Care: Tailored to the child's specific developmental needs, including occupational and physical therapy as needed.
+Behavioral Strategies: For managing constipation and toileting in children with developmental delays.
+
+Referral to a Specialist
+Developmental Pediatrician: For comprehensive evaluation and management of developmental delays and their impact on toileting habits and constipation.
+Pediatric Neurologist: If a neurological disorder is suspected to be contributing to constipation.
+Pediatric Gastroenterologist: For complex cases of constipation requiring specialized management.",
+,,No,,,,

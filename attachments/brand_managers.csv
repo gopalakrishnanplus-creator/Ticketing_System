@@ -1,0 +1,43 @@
+id,company_name,person_name,therapy_area,designation,phone_number,whatsapp_number,contact_email,brands,linkedin_url
+1,Acme Pharmaceuticals ,Amit Sharma ,"Dermatology, Cardiology",Manager,7882904831,7993822041,tisha.dubey@inditech.co.in,"Liptomax, Dermalife",https://linkedin.com/in/user1
+2,NovaCare Inc.,Priya Mehta,Dermatology ,Sr. Manager,7502938475,7145830291,tisha.dubey@inditech.co.in,"Neurofast, Cardiozol",https://linkedin.com/in/user2
+3,MediPrime Solutions,Rahul Roy,Cardiology,Assoc. Director,7563849201,7892041938,user3@example.com,"Glycocare, Oncogen",https://linkedin.com/in/user3
+4,HealthBridge Ltd.,Sonal Singh,Neurology,Executive,7983120485,7084918302,tisha.dubey@inditech.co.in,"PsychPlus, Gastrofix",https://linkedin.com/in/user4
+5,testing,test4,"	Neurology",3222,,,recavi5789@lovleo.com,test4,
+6,testing3,test3,"	Neurology",3222,,,garixe3969@hh7f.com,test3,
+7,test5,test5,"	Neurology",test,,,ttt@gmail.com,tt,
+8,AstraCure Labs,Radhika Rao,Gastroenterology,Assoc. Director,7910384029,7862039482,user8@example.com,"Oncogen, Liptomax",https://linkedin.com/in/user8
+9,Acme Pharmaceuticals,Suresh Pillai,Diabetology,Manager,7593021840,7719203845,garixe3969@hh7f.com,"Neurofast, Cardiozol",https://linkedin.com/in/user9
+10,NovaCare Inc.,Vineet Bansal,Cardiology,Sr. Manager,7738291043,7649201839,user10@example.com,"PsychPlus, Glycocare",https://linkedin.com/in/user10
+11,MediPrime Solutions,Farhan Shaikh,Dermatology,Assoc. Director,7493028471,7993810294,user11@example.com,"Liptomax, Gastrofix",https://linkedin.com/in/user11
+12,HealthBridge Ltd.,Ritika Bhatt,Neurology,Executive,7729031847,7903847201,garixe3969@hh7f.com,"Oncogen, Dermalife",https://linkedin.com/in/user12
+13,BioGenix Pharma,Ankur Sethi,Oncology,Marketing Manager,7992810348,7803912048,user13@example.com,"Liptomax, Neurofast",https://linkedin.com/in/user13
+14,LifeLine Medicos,Alok Mishra,Paediatrics,Manager,7119582304,7348290184,user14@example.com,"Cardiozol, PsychPlus",https://linkedin.com/in/user14
+15,MetroRx Brands,Mamta Dubey,Psychiatry,Sr. Manager,7001920348,7890382417,user15@example.com,"Gastrofix, Oncogen",https://linkedin.com/in/user15
+16,AstraCure Labs,Rajat Batra,Gastroenterology,Assoc. Director,7329840192,7719203492,user16@example.com,"Liptomax, Cardiozol",https://linkedin.com/in/user16
+17,Acme Pharmaceuticals,Sneha Nair,Cardiology,Manager,7928304910,7138291048,user17@example.com,"Dermalife, Oncogen",https://linkedin.com/in/user17
+18,NovaCare Inc.,Siddharth Rao,Diabetology,Sr. Manager,7902138402,7810923048,user18@example.com,"Glycocare, Gastrofix",https://linkedin.com/in/user18
+19,MediPrime Solutions,Arjun Singh,Dermatology,Assoc. Director,7092183048,7990312840,user19@example.com,"PsychPlus, Liptomax",https://linkedin.com/in/user19
+20,HealthBridge Ltd.,Shreya Verma,Cardiology,Executive,7920138402,7304928103,user20@example.com,"Neurofast, Cardiozol",https://linkedin.com/in/user20
+21,BioGenix Pharma,Utkarsh Pandey,Oncology,Marketing Manager,7981239041,7978013840,user21@example.com,"Gastrofix, Dermalife",https://linkedin.com/in/user21
+22,LifeLine Medicos,Deepa Sinha,Paediatrics,Manager,7820913048,7981203841,user22@example.com,"Oncogen, PsychPlus",https://linkedin.com/in/user22
+23,MetroRx Brands,Yogesh Rathi,Psychiatry,Sr. Manager,7079182034,7791203840,user23@example.com,"Glycocare, Liptomax",https://linkedin.com/in/user23
+24,AstraCure Labs,Simran Kaur,Gastroenterology,Assoc. Director,7981230491,7019283401,user24@example.com,"Neurofast, Cardiozol",https://linkedin.com/in/user24
+25,Acme Pharmaceuticals,Vinay Yadav,Cardiology,Manager,7019283048,7912038401,user25@example.com,"PsychPlus, Gastrofix",https://linkedin.com/in/user25
+26,NovaCare Inc.,Rajeev Sharma,Diabetology,Sr. Manager,7791032840,7019283841,user26@example.com,"Oncogen, Dermalife",https://linkedin.com/in/user26
+27,MediPrime Solutions,Ankita Khatri,Dermatology,Assoc. Director,7930284102,7981204318,user27@example.com,"Liptomax, Cardiozol",https://linkedin.com/in/user27
+28,HealthBridge Ltd.,Akash Sahu,Neurology,Executive,7920318402,7919285031,user28@example.com,"PsychPlus, Dermalife",https://linkedin.com/in/user28
+29,BioGenix Pharma,Megha Joshi,Oncology,Marketing Manager,7981203841,7701928403,user29@example.com,"Neurofast, Oncogen",https://linkedin.com/in/user29
+30,LifeLine Medicos,Mukul Gupta,Paediatrics,Manager,7019284032,7981023841,user30@example.com,"Glycocare, Gastrofix",https://linkedin.com/in/user30
+31,MetroRx Brands,Jyoti Rawal,Psychiatry,Sr. Manager,7991308240,7291038401,user31@example.com,"Cardiozol, Dermalife",https://linkedin.com/in/user31
+32,AstraCure Labs,Zainab Ansari,Gastroenterology,Assoc. Director,7992034108,7902138401,user32@example.com,"Oncogen, PsychPlus",https://linkedin.com/in/user32
+33,Acme Pharmaceuticals,Tanvi Saxena,Cardiology,Manager,7982031482,7793012481,user33@example.com,"Glycocare, Oncogen",https://linkedin.com/in/user33
+34,NovaCare Inc.,Uma Menon,Diabetology,Sr. Manager,7972013840,7012389401,user34@example.com,"PsychPlus, Cardiozol",https://linkedin.com/in/user34
+35,MediPrime Solutions,Pankaj Sen,Dermatology,Assoc. Director,7798310428,7982034810,user35@example.com,"Liptomax, Neurofast",https://linkedin.com/in/user35
+36,BioGenix Pharma,Mayank Gupta,Oncology,Marketing Manager,7993842106,7683029843,user5@example.com,"Liptomax, Neurofast",https://linkedin.com/in/user5
+37,LifeLine Medicos,Neha Jain,Paediatrics,Manager,7773840923,7520394821,user6@example.com,"Cardiozol, PsychPlus",https://linkedin.com/in/user6
+38,MetroRx Brands,Vikas Kapoor,Psychiatry,Sr. Manager,7892304981,7013928493,user7@example.com,"Gastrofix, Dermalife",https://linkedin.com/in/user7
+40,testt,Testtisha2 ,Cardiology,ttt,09779365285,,tisha.dubey@inditech.co.in,,
+41,testt3,test3niomi,testnew,ttt,09779365285,,tisha.dubey@inditech.co.in,,
+44,testing6,test6,testnew,3222,7729031847,7903847201,tisha.dubey@inditech.co.in,test3,https://linkedin.com/in/user12
+47,testing6,test9,mbbs,3222,7729031847,7903847201,tisha.dubey@inditech.co.in,test3,https://linkedin.com/in/user12

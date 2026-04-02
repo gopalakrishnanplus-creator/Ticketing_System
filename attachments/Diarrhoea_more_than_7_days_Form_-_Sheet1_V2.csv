@@ -1,0 +1,60 @@
+Form title,Screening Tool for Diarrhoea more than 7 days,,,,
+Purpose of Screening Tool,"The purpose of this screening tool is to help identify red flags in children with Diarrhoea for more than 7 days that may indicate a special condition. The screening tool is not a diagnostic test, but a way to be alerted to the presence of a redflag and decide on the appropriate course of action.
+",,,,
+Usage,To be used as many times as sent  by your doctor,,,,
+Sr No,Question ,Option ,Red Flag Trigger,Redflag response,redflag id
+1,Does your child show signs of dehydration?,"Many signs (e.g., very thirsty, dry mouth, sunken eyes)",Yes,Diarrhoea for more than 7 days with Many signs of dehydration,11200011
+,,"A few signs (e.g., less active than usual)",,,
+,,No signs,,,
+,,,,,
+2,Is there blood in your child's stools?,Yes,Yes,Diarrhoea for more than 7 days with Blood in stool,11200021
+,,No,,,
+,,,,,
+3,How often and how much is your child passing stool?,More often and in large amounts,Yes,Diarrhoea for more than 7 days in patients who stool More often and in large amounts,11200031
+,,Less often and in small amounts,,,
+,,,,,
+4,Does your child have stomach pain and a need to rush to the toilet?,Yes,Yes,Diarrhoea for more than 7 days with Stomach pain and a need to rush to the toilet,11200041
+,,No,,,
+,,,,,
+5,Did your child's diarrhea improve when you stopped giving milk?,"Yes, it improved",,,
+,,"No, no change",Yes,Child's diarrhea does not improve when you stopped giving milk,11200052
+,,,,,
+6,Does your child's diarrhea seem related to specific foods?,After drinking animal milk,Yes,Child's diarrhea seems related to animal milk,11200061
+,,After eating wheat products,Yes,Child's diarrhea seems related to wheat products,11200062
+,,After eating high-fat foods,Yes,Child's diarrhea seems related to high-fat foods,11200063
+,,Only after regular meals,,,
+,,,,,
+7,Has your child had any of these other symptoms?,Frequent colds or chest infections,Yes,Diarrhoea for more than 7 days with Frequent colds or chest infections,11200071
+,,Skin rashes (like eczema),Yes,Diarrhoea for more than 7 days with Skin rashes (like eczema),11200072
+,,Joint pain,Yes,Diarrhoea for more than 7 days with Joint pain,11200073
+,,Mouth sores,Yes,Diarrhoea for more than 7 days with Mouth sores,11200073
+,,Weight loss,Yes,Diarrhoea for more than 7 days with Weight loss,11200073
+,,Frequent infections in parts of the body other than the intestine,Yes,Diarrhoea for more than 7 days with Frequent infections in parts of the body other than the intestine,11200074
+,,Other symptoms: [Free Text],,,
+,,,,,
+8,Does anyone in your family have these health issues?,"Family history of Celiac Disease, Crohn's Disease, Cystic Fibrosis",Yes,"Diarrhoea for more than 7 days with Family history of Celiac Disease, Crohn's Disease, Cystic Fibrosis","11200081, 11200082, 11200083"
+,,Family history of Food Allergies,Yes,Diarrhoea for more than 7 days with Family history of Food Allergies,11200084
+,,None,,,
+,,,,,
+9,Has your child had any surgeries?,"Yes, please describe: [Free Text]",Yes,Diarrhoea for more than 7 days with History of surgery: <free text>,
+,,No,,,
+,,,,,
+10,Does your child show signs of vitamin or mineral deficiency?,Signs of anemia (like looking pale),Yes,Diarrhoea for more than 7 days with Signs of anemia (like looking pale),11200111
+,,Symptoms of rickets (like bone pain or weak bones),Yes,Diarrhoea for more than 7 days with Symptoms of rickets (like bone pain or weak bones),11200112
+,,Signs of nerve problems (like weakness or pain in hands and feet),Yes,Diarrhoea for more than 7 days with Signs of nerve problems (like weakness or pain in hands and feet),11200113
+,,Other signs: [Free Text],,Other signs: [Free Text],11200114
+,,,,,
+11,Any of the followin found in child’s bottom area (around the anus)?,Skin picking or sores,Yes,Diarrhoea for more than 7 days with Skin picking or sores in child's bottom area,11200121
+,,Rash,Yes,Diarrhoea for more than 7 days with Rash in child's bottom area,11200122
+,,"Crack, skin tag, or small tunnel in the skin",Yes,"Diarrhoea for more than 7 days with Crack, skin tag, or small tunnel in the skin in child's bottom area",11200123
+,,,,,
+12,Are there any other family members or children having similar complaints?,Yes,,Diarrhoea for more than 7 days with other family members or children having similar complaints ,
+,,No,,,
+,,,,,
+13,Is the child playful/ prostrated (Physically weak) /listless (lacking energy) ?,Playful,,,
+,,Prostrated (Physically weak),Yes,Diarrhoea for more than 7 days with The child being prostrated (Physically weak),
+,,Listless (lacking energy),Yes,Diarrhoea for more than 7 days with The child being listless (lacking energy),
+,,,,,
+14,What is the child's willingness to eat or drink?,Good ,,,
+,,Reduced ,Yes,Diarrhoea for more than 7 days with reduced oral acceptance ,
+,,Poor or no willingness,Yes,Diarrhoea for more than 7 days with poor or no oral acceptance ,

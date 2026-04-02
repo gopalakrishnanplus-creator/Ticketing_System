@@ -1,0 +1,53 @@
+Form title,Screening Tool for Convulsion,,,,,
+Purpose of Screening Tool,"The purpose of this screening tool is to help identify red flags in children with convulsion that may indicate a special condition. The screening tool is not a diagnostic test, but a way to be alerted to the presence of a redflag and decide on the appropriate course of action.
+",,,,,
+Usage,To be used as many times as sent  by your doctor,,,,,
+,Sr No,Question,Options,Red Flag Trigger ,Redflag response,RED FLAG ID
+,1,"Is child currently having altered consiousness (unable to concentrate) with stiffening of body with active/ongoing jerky movements of limbs, trunk ?",Yes,Yes,Child is having altered consciousness (unable to concentrate) with stiffening of the  body with active/ongoing jerky movements of limbs and trunk,10100011
+,,,No,,,
+,,,,,,
+,2,Is seizures persisting for more than 5 - 15 minutes?,Yes,Yes,Child with convulsion and seizures are persisting for more than 5 - 15 minutes,10100021
+,,,No ,,,
+,,,,,,
+,3,Does the child have fever at the onset of convulsion/during the period of convulsions ?,Yes,Yes,child have fever at the onset of convulsion,10100032
+,,,No,,,
+,,,,,,
+,4,What kind of fever-related shaking (convulsion) did your child have?,"Complex Febrile Seizures:
+ These are less common and are characterized by:
+-Lasting longer than 15 minutes, recurring within a 24-hour period, or being focused on one part of the body.",Yes,Child have convulsion and it is Long Convulsion: The shaking lasts more than 15 minutes.,10100046
+,,,"Simple Febrile Seizures: 
+These are the most common type. They:
+-Last for less than 15 minutes and don’t recur within a 24-hour period.
+-Involve the whole body, typically both the torso and extremities (arms and legs) shaking.",,,
+,,,,,,
+,5,Is there a family history of seizures?, Yes ,Yes,Child have convulsion and there is family history of seizures ,10100051
+,,,No history,,,
+,,,,,,
+,6,Is there a history of head trauma/injury?,Yes,Yes,Child have convulsion  and there is hstory of head trauma/injury,10100061
+,,,No,,,
+,,,,,,
+,7,Does the child have convulsion with associated issues?,Breathing dificulties,Yes,Child have convulsion associated with Breathing difficulties,
+,,,Infections,Yes,Child have convulsion associated with Infections,10100073
+,,,Vomiting,Yes,Child have convulsion associated with Vomiting,10100075
+,,,Diarrhea,Yes,Child have convulsion associated with Diarrhea,10100076
+,,,others:   __________,,,
+,,,,,,
+,8,"Does the child have episodes where only one part of the body, like an arm or leg, starts shaking or twitching?",Yes,Yes,"Child have convulsion  and has episodes where only one part of the body, like an arm or leg, starts shaking or twitching",10100081
+,,,No,,,
+,,,,,,
+,9,"Does the child experience any unusual feelings (like sudden fear, a strange taste, or smells) or make unusual movements (like smacking lips, fumbling hands) before or during these shaking episodes?",Yes,Yes,Child have convulsion and the child experiences unusual feelings or make unusual movements  before or during these shaking episodes,10100091
+,,,No,,,
+,,,,,,
+,10,"During these shaking episodes, does the child seem confused, less responsive, or not fully aware of what’s happening around them?",Yes,Yes,"Child have convulsion  and during these shaking episodes, the child seem confused, less responsive, or not fully aware of what’s happening around them",10100101
+,,,No,,,
+,,,,,,
+,11,"Does the child feel sick to their stomach, become sweaty, or look unusually pale during these episodes?",Yes,Yes,"Child have convulsion and the child feels sick to their stomach, become sweaty, or look unusually pale during these episodes",10100111
+,,,No,,,
+,,,,,,
+,12,Does the child have convulsion with developmental delay?,Yes,Yes,Child have convulsion with developmental delay ,10100121
+,,,No,,,
+,,,,,,
+,13,Does the child have convulsion with Syndromic Features/abnormal body structures (abnormal body parts) ?,Yes,Yes,Child have convulsion with Syndromic Features/abnormal body structures (abnormal body parts) present,10100131
+,,,No,,,
+,,"Did you observe any unusual eye movements during your child's convulsion, such as eyes rolling back, staring to one side without moving, or blinking rapidly?",Yes,Yes,Child have convulsion and observed unusual eye movements during your child's convulsion,
+,,,No,,,

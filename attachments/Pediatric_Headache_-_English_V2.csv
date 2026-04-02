@@ -1,0 +1,754 @@
+\,Screening Tool for Headache,,,,,
+Purpose of Screening Tool,"The purpose of this screening tool is to help identify red flags in children with headache that may indicate a special condition. The screening tool is not a diagnostic test, but a way to be alerted to the presence of a redflag and decide on the appropriate course of action.
+",,,,,
+Usage,To be used as many times as sent  by your doctor,,,,,
+Sr No,Question,Options,Red Flag Trigger,Answer for patient,,redflag id
+1,At what age did the child start to get a headache?,<Free text>,,Child started getting headache from age of <Free text>,,10300011
+,,,,,,
+2,Does your child have any history of head injury?,Yes,Yes,The child with headache has history of head injury,"Conditions:
+* Concussion/Mild TBI
+* Skull Fracture
+* Intracranial Hemorrhage
+* Post-concussion Syndrome
+Tests:
+* Glasgow Coma Scale
+* CT scan (acute injury)
+* MRI (persistent symptoms)
+Management:
+* Immediate Care: Ensure airway, breathing, circulation
+* Concussion: Rest, gradual return to activities
+* Pain Relief: Acetaminophen (avoid NSAIDs)
+Referral:
+* ER: For severe symptoms (unconsciousness, vomiting, seizures)
+* Neurology/Neurosurgery: For worsening or persistent symptoms
+* Pediatrician Follow-up: For mild injuries",10300021
+,,No,,,,
+,,,,,,
+3,Has there ever been an emergency visit/ hospitalization for headache,Yes,Yes,The child with headache has history of emergency visit/ hospitalization for headache,"Conditions to Consider:
+* Migraine (with severe attacks requiring hospitalization)
+* Intracranial Hemorrhage (e.g., subdural or epidural hematoma)
+* Meningitis/Encephalitis (infection-related headaches)
+* Secondary Headaches (due to underlying conditions like tumors or stroke)
+Tests:
+* Medical History & Neurological Exam
+* MRI/CT scan (to rule out structural or vascular causes)
+* Blood Tests (for infection, inflammation)
+Management:
+* Pain Relief (appropriate analgesics)
+* Observation: Monitor for worsening symptoms or neurological changes
+* Address Underlying Cause (e.g., treat infections, manage vascular issues)
+Referral:
+* Pediatric Neurologist for recurrent or severe cases
+* Immediate ER Care if symptoms worsen (e.g., vomiting, altered consciousness, neurological deficits)",10300031
+,,No,,,,
+,,,,,,
+4,Is there headache in sleep?,Yes,Yes,The child with headache with headache in sleep ,"Conditions:
+* Sleep disorders (e.g., sleep apnea)
+* Hypertension (high blood pressure), Intracranial hypertension
+* Brain tumors or masses, Migraines
+Tests:
+* Sleep Study (for sleep apnea)
+* Blood Pressure Monitoring (for hypertension)
+* Neuroimaging (MRI/CT) (to detect intracranial issues)
+* Lumbar Puncture (to measure intracranial pressure)
+Management:
+* Sleep Disorders: Sleep hygiene, CPAP for apnea
+* Hypertension: Lifestyle changes, antihypertensives
+* Migraines: Avoid triggers, prophylactic medication
+* General: Hydration, pain relief, regular sleep
+Referral:
+* Sleep Specialist for confirmed sleep disorders
+* Pediatric Neurologist for unexplained or persistent headaches
+* Emergency Care if signs of increasing intracranial pressure (vomiting, altered consciousness)",10300041
+,,No,,,,
+,,,,,,
+5,Is there vomiting in the morning?,Yes,Yes,The child with headache with Vomiting in the morning,"Conditions:
+* Intracranial hypertension, Brain tumors or cysts
+* GERD, Infections (e.g., meningitis), Metabolic disorders
+Tests:
+* Neuroimaging (MRI/CT) for intracranial issues
+* Blood tests for infections or metabolic disorders
+* Lumbar puncture for intracranial pressure and infection
+* Upper GI Endoscopy for GERD
+Management:
+* GERD: Elevate head during sleep
+* Hydration and Nutrition
+* Medication: Antiemetics, PPIs for GERD, infection treatment
+* Monitoring: Track symptoms and vomiting frequency
+Referral:
+* Neurology/Pediatric Neurosurgery for intracranial pathology
+* Gastroenterologist for persistent GERD symptoms
+* Emergency Care for severe symptoms (headache, altered consciousness, neurological deficits)",10300051
+,,No,,,,
+,,,,,,
+6,"Does Headache worsen on cough, straining, change of positions or exercise ?",Yes,Yes,"The child with headache and headache worsen on cough, straining, change of positions, exercise","Conditions:
+* Chiari malformation, Intracranial hypertension, Cervical spine disorders
+* Primary cough headache, Brain tumors
+Tests:
+* MRI of Brain and Spine (for Chiari malformation, cervical issues, brain tumors)
+* CT Scan (if MRI is unavailable)
+* Lumbar Puncture (for intracranial pressure)
+* Orthostatic Blood Pressure Measurements (to assess blood pressure changes)
+Management:
+* Avoid triggers (e.g., heavy lifting, intense exercise)
+* Pain relief (use OTC meds with caution)
+* Hydration (to prevent dehydration)
+Referral:
+* Neurology/Neurosurgery for structural issues like Chiari or tumors
+* Pediatric Neurologist for cough headaches or intracranial hypertension
+* Immediate Care if symptoms worsen or include severe headache, altered consciousness, or neurological signs",10300061
+,,No,,,,
+,,,,,,
+7,Does child have worsening headache pattern?,Yes,Yes,"The child with headache has worsening headache pattern.
+","Conditions:
+* Migraine progression, Intracranial hypertension
+* Brain tumors or neoplasms, Chronic sinusitis
+* Secondary headache disorders (e.g., medication overuse)
+Tests:
+* Neuroimaging (MRI/CT) for tumors and abnormalities
+* Blood tests for infections and inflammation
+* Lumbar Puncture for intracranial pressure
+* Sinus Imaging for chronic sinusitis
+Management:
+* Migraine Management: Avoid triggers, prophylactic meds, acute pain relief
+* Hydration and Rest: Ensure fluid intake and sleep
+* Medication Review: Check for overuse contributing to headaches
+* Pain Relief: Non-NSAID pain relievers
+Referral:
+* Neurology Consultation for persistent or unclear headaches
+* Pediatric Neurosurgeon for tumors or structural issues
+* Headache Specialist for complex or intractable cases
+* Urgent Referral if rapid neurological decline occurs",10300071
+,,No,,,,
+,,,,,,
+8,Does child have Visual complaints?,Yes,Yes,The child with headache with Visual complaints,"Conditions:
+* Migraine with aura, Increased intracranial pressure (e.g., tumors, hydrocephalus)
+* Papilledema, Optic neuritis
+* Retinal pathology, Glaucoma
+Tests:
+* Ophthalmologic exam to check eye health.
+* Neuroimaging (MRI/CT) to detect structural issues.
+* Visual field test for vision deficits.
+* Lumbar puncture if intracranial pressure is suspected.
+Management:
+* Migraine: Avoid triggers, manage pain, and use prophylactic meds if frequent.
+* Monitor for changes in visual symptoms.
+* Optic neuritis: Treat with high-dose corticosteroids if confirmed.
+Referrals:
+* Ophthalmologist: Immediate evaluation for eye-related issues.
+* Neurologist: For suspected neurological causes.
+* Urgent referral for rapid progression (e.g., acute glaucoma, significant papilledema).",10300081
+,,No,,,,
+,,,,,,
+9,Is there any change in walking style / frequent fall / imbalance?,Yes,Yes,The child with headache with Change in walking style / frequent fall / imbalance,"Conditions:
+* Cerebellar tumor or lesion, Vestibular migraine
+* Intracranial hypertension, Neuroinfections (e.g., meningitis, encephalitis)
+* Chiari malformation, Posterior fossa tumor
+Tests:
+* Neurological exam to check coordination, balance, and gait.
+* Neuroimaging (MRI/CT) to detect tumors or lesions.
+* Lumbar puncture for intracranial pressure and infection signs.
+* Vestibular testing (e.g., VNG) for inner ear and motor function.
+Management:
+* Implement fall prevention strategies.
+* Manage headache and symptoms with medications, avoiding analgesic overuse.
+* Encourage hydration and rest.
+Referrals:
+* Pediatric neurologist or neurosurgeon for tumors or complex vestibular migraines.
+* Oncologist if a tumor is found.
+* Immediate medical attention if symptoms worsen, indicating an emergency.",10300091
+,,No,,,,
+,,,,,,
+10,How frequent is the headache (often does the headache occur)?,Daily: The child experiences headaches every day.,Yes,The child with headache and the child experiences headaches every day.,"Conditions:
+* Chronic Migraine: Frequent headaches with nausea, light sensitivity.
+* Tension-type Headache: Persistent, tight band-like pain.
+* New Daily Persistent Headache (NDPH): Sudden daily headaches lasting >4 hours.
+* Secondary Headaches: Due to sinusitis, dehydration, or intracranial issues.
+Tests:
+* Medical History & Neurological Exam
+* Neuroimaging (MRI/CT) if pattern changes
+* Blood Tests for infection or inflammation
+Management:
+* Hydration, Rest
+* Pain Relief (NSAIDs, triptans for migraines)
+* Lifestyle Changes (sleep, stress management)
+Referral:
+* Pediatric Neurologist for unclear or persistent headaches
+* Immediate Care if new, severe symptoms (fever, vomiting, visual changes)",10300101
+,,Several times a week: The headaches occur multiple times throughout a week but not every day.,Yes,The child with headache and headaches occur multiple times throughout a week but not every day.,"Conditions:
+* Chronic Migraine: Occurs several times a week, often with nausea or light sensitivity.
+* Tension-type Headache: Frequent, pressure-like pain, often related to stress or muscle tension.
+* Medication Overuse Headache: Due to frequent use of analgesics.
+* Secondary Headaches: Caused by conditions like sinusitis or neurological issues.
+Tests:
+* Medical History & Neurological Exam
+* Neuroimaging (MRI/CT) if new or worsening symptoms
+* Blood Tests for infection or systemic causes
+Management:
+* Hydration, Rest
+* Pain Relief (NSAIDs, migraine-specific meds)
+* Stress Management & Lifestyle Modifications
+Referral:
+* Pediatric Neurologist for persistent or unclear headaches
+* Immediate Care if headaches are associated with alarming symptoms (fever, vomiting, vision changes)",10300102
+,,Weekly: The child experiences a headache about once a week.,,Weekly: The child experiences a headache about once a week.,"Conditions:
+* Migraine: Occasional, often with nausea and light sensitivity
+* Tension-type Headache: Mild, pressure-like pain, linked to stress
+* Cluster Headaches: Rare, severe pain around one eye
+* Secondary Headaches: Due to sinusitis or other causes
+Tests:
+* Medical History & Neurological Exam
+* MRI/CT if symptoms worsen or are unusual
+Management:
+* Pain Relief (NSAIDs, acetaminophen)
+* Lifestyle Changes (hydration, sleep, stress management)
+Referral:
+* Pediatric Neurologist for unclear or recurrent cases
+* Immediate care if symptoms worsen with fever, neck stiffness, or vomiting",
+,,Several times a month: The headaches occur a few times each month.,,Several times a month: The headaches occur a few times each month.,"Conditions:
+* Migraine: Occasional, often with nausea, light sensitivity, and one-sided pain.
+* Tension-type Headache: Mild to moderate, pressure-like pain, often linked to stress.
+* Secondary Headaches: Can be caused by sinusitis or other underlying conditions.
+Tests:
+* Medical History & Neurological Exam
+* MRI/CT if symptoms change or worsen
+* Sinus Imaging if sinusitis is suspected
+Management:
+* Pain Relief (NSAIDs, acetaminophen)
+* Lifestyle Modifications (hydration, sleep, stress management)
+Referral:
+* Pediatric Neurologist for recurrent or unclear headaches
+* Immediate care if symptoms worsen or include alarming signs (fever, neck stiffness, vomiting)",
+,,Monthly: The child experiences a headache about once a month.,,Monthly: The child experiences a headache about once a month.,"Conditions:
+* Migraine: Occasional headaches, often with nausea, light sensitivity, or one-sided pain.
+* Tension-type Headache: Mild to moderate pressure-like pain, often related to stress.
+* Secondary Headaches: Caused by conditions like sinusitis, dehydration, or other underlying issues.
+Tests:
+* Medical History & Neurological Exam
+* MRI/CT if symptoms change or worsen
+* Sinus Imaging if sinusitis is suspected
+Management:
+* Pain Relief (NSAIDs, acetaminophen)
+* Hydration, rest, stress management
+* Monitor for triggers
+Referral:
+* Pediatric Neurologist for recurrent or unclear cases
+* Immediate care if headaches are accompanied by alarming symptoms (fever, neck stiffness, vomiting, vision changes)",
+,,Less than monthly: The headaches occur less frequently than once a month.,,Less than monthly: The headaches occur less frequently than once a month.,"Conditions:
+* Migraine: Infrequent, often with nausea or light sensitivity.
+* Tension-type Headache: Occasional, pressure-like pain, often linked to stress.
+* Secondary Headaches: Due to sinusitis or other underlying conditions.
+Tests:
+* Medical History & Neurological Exam
+* MRI/CT if symptoms are unusual or new
+Management:
+* Pain Relief (NSAIDs, acetaminophen)
+* Stress Management & Lifestyle Modifications
+Referral:
+* Pediatric Neurologist for persistent or unclear cases
+* Immediate care if symptoms worsen or include alarming signs (fever, neck stiffness, vomiting)",
+,,Rarely: The child experiences headaches only occasionally or in rare circumstances.,,Rarely: The child experiences headaches only occasionally or in rare circumstances.,"Conditions:
+* Migraine: Occasional, often with nausea, light sensitivity, or one-sided pain.
+* Tension-type Headache: Rare, mild pressure-like pain.
+* Secondary Headaches: Caused by rare conditions like sinusitis or other underlying issues.
+Tests:
+* Medical History & Neurological Exam
+* MRI/CT if new or unusual symptoms occur
+Management:
+* Pain Relief (NSAIDs, acetaminophen)
+* Monitor for triggers or changes
+Referral:
+* Pediatric Neurologist if symptoms are unusual or persistent
+* Immediate care if headaches are accompanied by alarming symptoms (fever, vomiting, neurological changes)",
+,,First time: This is the first occurrence of a headache.,,First time: This is the first occurrence of a headache.,"Conditions:
+* Migraine: Sudden onset, often with nausea, light sensitivity, or one-sided pain.
+* Tension-type Headache: Mild, pressure-like pain, often stress-related.
+* Secondary Headaches: Due to sinusitis, dehydration, or more serious conditions (e.g., intracranial pathology).
+Tests:
+* Medical History & Neurological Exam
+* MRI/CT if symptoms suggest a serious underlying condition (e.g., tumor, infection)
+* Sinus Imaging if sinusitis is suspected
+Management:
+* Pain Relief (NSAIDs, acetaminophen)
+* Hydration, rest, and stress management
+* Monitor for changes or recurrence
+Referral:
+* Pediatric Neurologist for unclear or severe first-time headaches
+* Immediate care if symptoms include fever, vomiting, neck stiffness, or neurological changes.",
+,,,,,,
+,How long does a headache last (on an average),30 min- 1hour,,,,
+,,1 - 4 hours,,,,
+,,More than 4 hours,Yes,The child with headache and child has headache for more than 4 hours,"Conditions:
+* Migraine (lasting 4-72 hours)
+* Tension-type headache (lasting hours to days)
+* New daily persistent headache (NDPH) (sudden onset, daily for over 4 hours)
+* Secondary headaches (due to sinusitis, dehydration, or intracranial issues)
+Tests:
+* Medical and headache history
+* Neurological exam
+* Neuroimaging (MRI/CT scan)
+* Blood tests (for infection, inflammation)
+Management:
+* Hydration, rest
+* Pain management (NSAIDs, triptans for migraines)
+* Lifestyle modifications (sleep, stress management, avoid triggers)
+Referral:
+* Pediatric Neurologist for persistent or unclear cases
+* Immediate care if headache changes significantly or is accompanied by alarming symptoms (fever, neck stiffness, rash, vomiting, vision changes)",10300113
+,,Variable (if the headache duration significantly varies from one episode to another),Yes,The child with headache and headache duration significantly varies from one episode to another,"Conditions:
+* Migraine (duration varies, often with nausea and sensitivity)
+* Tension-type headache (can last from hours to days)
+* Cluster headaches (typically short but intense, may vary)
+* Secondary headaches (due to underlying conditions like infections or intracranial issues)
+Tests:
+* Medical History & Neurological Exam
+* Neuroimaging (MRI/CT) if symptoms are unusual or worsening
+* Blood Tests for infections or metabolic issues
+Management:
+* Pain Relief (appropriate analgesics, consider medication overuse)
+* Hydration & Rest
+* Monitor Triggers (track headache patterns and triggers)
+Referral:
+* Pediatric Neurologist for unclear or persistent headaches
+* Immediate Care if headache worsens with neurological symptoms (fever, vomiting, visual changes)",10300114
+,,,,,,
+12,Choose the Type of Pain: ,Pulsating / throbbing,Yes,The child with headache with pulsating /throbbing headache,"Conditions:
+* Migraine (pulsating, often unilateral)
+* Cluster headaches (severe throbbing pain around one eye)
+* Secondary headaches (vascular abnormalities, increased intracranial pressure)
+Tests:
+* Medical and headache history
+* Neurological exam
+* Neuroimaging (MRI/CT scan)
+* Blood pressure measurement
+Management:
+* Migraine management (avoid triggers, NSAIDs/triptans, prophylaxis)
+* Hydration, rest, stress management (relaxation, biofeedback)
+Referral:
+* Pediatric Neurologist for persistent or poorly controlled cases
+* Immediate care for sudden ""thunderclap"" headache, fever, neck stiffness, seizures, or vomiting",10300121
+,,Constant pressure (like a band),Yes,The child with headache with experiences of constant pressure (like a band) headache,"Conditions:
+* Tension-type headache (pressing, tightening pain around the head)
+* Sinusitis (pressure in forehead, nose, cheeks)
+* Intracranial hypertension (constant, non-pulsatile pressure-like headache)
+Tests:
+* Medical and headache history
+* Neurological exam (for signs of intracranial pressure)
+* Sinus imaging (X-ray, CT scan)
+* Neuroimaging (MRI/CT scan if neurological cause suspected)
+Management:
+* Lifestyle modifications (stress management, hydration, sleep, exercise)
+* Pain relief (acetaminophen)
+* Sinusitis treatment (saline, decongestants, antibiotics)
+Referral:
+* Pediatric Neurologist for persistent or unclear cases
+* ENT Specialist for chronic sinusitis
+* Immediate care for headache with signs of increased intracranial pressure (vomiting, visual changes)",10300122
+,,Sharp / stabbing,Yes,The child with headache with Sharp /stabbing pain in the head,"Conditions:
+* Primary stabbing headache (brief, sharp pain, often idiopathic)
+* Trigeminal neuralgia (sharp pain along the trigeminal nerve)
+* Cluster headaches (sharp pain around one eye or temple)
+* Secondary headaches (due to structural or infectious issues)
+Tests:
+* Neurological exam
+* Neuroimaging (MRI/CT scan)
+* Dental/sinus evaluation (for sinusitis or dental issues)
+Management:
+* Symptomatic treatment (NSAIDs for primary stabbing headaches)
+* Pain relief (carbamazepine for trigeminal neuralgia)
+* Oxygen therapy/triptans (for cluster headaches, with specialist advice)
+Referral:
+* Pediatric Neurologist for recurrent or unclear cases
+* ENT Specialist or Dentist for sinus or dental issues
+* Immediate care if associated with fever, visual changes, or new headache patterns",10300123
+,,Other <free text>,,The child has other type of pain <free text>,,
+,,,,,,
+13,Where is the pain?,Left side,,The child with headache and pain on left side of head,"Conditions:
+* Migraine (commonly unilateral, often with nausea, light sensitivity)
+* Tension-type headache (can be unilateral, pressure-like pain)
+* Cluster headaches (severe, typically around one eye or temple)
+* Sinusitis (pain around the sinus areas, may be localized to one side)
+* Secondary headaches (due to brain tumors, infections, or vascular issues)
+Tests:
+* Medical History & Neurological Exam
+* Neuroimaging (MRI/CT) if symptoms suggest intracranial pathology
+* Sinus Imaging if sinusitis is suspected
+Management:
+* Pain Relief (NSAIDs or acetaminophen)
+* Hydration & Rest
+* Migraine Management (avoid triggers, acute treatments)
+Referral:
+* Pediatric Neurologist for recurrent or unclear cases
+* ENT Specialist for sinus-related issues
+* Immediate Care if associated with neurological symptoms (vomiting, vision changes, altered consciousness)",
+,,Right side,,The child with headache and pain on right side of head,"Conditions:
+* Migraine (commonly unilateral, often with nausea, light sensitivity)
+* Tension-type headache (pressure-like pain, may be unilateral)
+* Cluster headaches (severe, often localized around one eye or temple)
+* Sinusitis (pain around the sinus area, may be one-sided)
+* Secondary headaches (due to brain tumors, infections, or vascular issues)
+Tests:
+* Medical History & Neurological Exam
+* Neuroimaging (MRI/CT) if symptoms suggest intracranial pathology
+* Sinus Imaging if sinusitis is suspected
+Management:
+* Pain Relief (NSAIDs or acetaminophen)
+* Hydration & Rest
+* Migraine Management (avoid triggers, acute treatments)
+Referral:
+* Pediatric Neurologist for recurrent or unclear cases
+* ENT Specialist for sinus-related issues
+* Immediate Care if associated with neurological symptoms (vomiting, vision changes, altered consciousness)",
+,,Both sides,Yes,The child with headache with pain on both sides of head,"Conditions:
+* Tension-type headaches (pressing pain on both sides)
+* Migraines without aura (can be bilateral in children)
+* Sinusitis (pressure/pain in forehead, cheeks)
+* Medication overuse headaches (from chronic use of headache meds)
+Tests:
+* Medical and headache history
+* Neurological exam
+* Sinus imaging (X-ray, CT scan)
+* Neuroimaging (MRI/CT scan for red flags)
+Management:
+* Lifestyle modifications (sleep, hydration, stress management)
+* Pain relief (acetaminophen, ibuprofen)
+* Sinusitis treatment (saline irrigation, decongestants, antibiotics)
+Referral:
+* Pediatric Neurologist for unclear or resistant cases
+* ENT Specialist for chronic sinusitis
+* Immediate care if symptoms include fever, stiff neck, rash, or neurological changes",10300133
+,,Back of the head,Yes,The child with headache and pain in back of the head,"Conditions:
+* Occipital neuralgia (sharp, throbbing pain in upper neck/head)
+* Cervicogenic headaches (neck disorders causing pain in the back of the head)
+* Tension-type headaches (due to muscle tension)
+* Posterior fossa tumors (rare, causing persistent pain)
+Tests:
+* Neurological exam
+* MRI/CT scan (for structural issues)
+* Cervical spine imaging (X-rays or MRI)
+Management:
+* Pain relief (NSAIDs, acetaminophen)
+* Physical therapy (for cervicogenic headaches)
+* Warm compresses, muscle relaxation (for tension headaches)
+Referral:
+* Pediatric Neurologist for persistent pain
+* Orthopedist or Rehab Specialist for cervicogenic headaches
+* Immediate care if worsening symptoms or neurological changes are present",10300134
+,,Mention if any specific area <free text>,,<Free Text>,,
+,,,,,,
+14,"How severe is the pain (on most occasions), mention on a scale of 1(mild)-10(severe)?",<Free Text>,Yes if severity =>8,The child with headache and headache Pain severity = >8,"Conditions:
+* Migraines (pain, nausea, light/sound sensitivity)
+* Cluster headaches (severe pain around eye or temple)
+* Intracranial issues (tumors, hemorrhages, pressure)
+* Secondary headaches (infections, hypertension)
+Tests:
+* Neurological exam
+* MRI/CT scan
+* Blood pressure check
+* Lumbar puncture (if infection/pressure suspected)
+Management:
+* Pain relief (age-appropriate meds)
+* Hydration, rest, quiet room
+* Monitor patterns and treatments
+Referral:
+* Pediatric Neurologist for ongoing issues
+* Immediate care if severe pain with new symptoms (fever, neck stiffness, rash)",10300141
+,,,,,,
+15,Does the child experience any of the following?,Does not like light or prefers a dark room,Yes,The child with headache and during the headache the child does not like light or prefers a dark room,"Conditions:
+* Migraine (common with photophobia)
+* Meningitis (with fever, neck stiffness, vomiting)
+* Cluster headaches (rare in children, but can cause photophobia)
+Tests/Assessments:
+* Neurological exam (for additional symptoms)
+* Lumbar puncture (if meningitis suspected)
+* MRI/CT scan (for intracranial abnormalities)
+Management:
+* Dark, quiet room for relief
+* Acute pain management (analgesics, migraine meds)
+* Hydration and rest
+Referral:
+* Pediatric Neurologist for persistent or unclear cases
+* Immediate care if sudden, severe headache with fever, neck stiffness, rash, or altered consciousness (possible meningitis)",10300151
+,,Does not like noise or prefers a quiet room,Yes,The child with headache and during the headache the child does not like noise or prefers a quiet room,"Conditions:
+* Migraine (common with phonophobia)
+* Meningitis (with fever, neck stiffness, photophobia)
+* Cluster headaches (rare, but can cause phonophobia)
+Tests/Assessments:
+* Neurological exam (for neurological deficits)
+* Lumbar puncture (if meningitis suspected)
+* MRI/CT scan (for structural abnormalities)
+Management:
+* Quiet environment for relief
+* Acute medications (non-NSAID analgesics, migraine meds)
+* Rest and hydration
+Referral:
+* Pediatric Neurologist for persistent symptoms
+* Immediate care if sudden, severe headache with fever, neck stiffness, or rash (potential meningitis)",10300152
+,,Nausea / vomiting,Yes,The child with headache and during the headache the child has nausea / vomiting,"Conditions:
+* Migraine (common with nausea/vomiting)
+* Intracranial hypertension (causes headache with nausea/vomiting)
+* Brain tumors (headaches worse in the morning or waking the child)
+* Infections (meningitis, encephalitis with fever, systemic signs)
+Tests/Assessments:
+* Neurological exam (for signs of increased intracranial pressure)
+* MRI/CT scan (to check for brain abnormalities)
+* Lumbar puncture (if infection is suspected)
+* Blood tests (for infection or systemic conditions)
+Management:
+* Antiemetic medications (for nausea)
+* Hydration (to prevent dehydration)
+* Pain management (analgesics for headache)
+Referral:
+* Pediatric Neurologist for recurrent or persistent symptoms
+* Immediate care if signs of increased intracranial pressure or meningitis (fever, neck stiffness, rash) are present",10300153
+,,Other <free text>,,<Free Text>,,
+,,None,,,,
+16,"Before the headache, does the child: ","See halos, flickering or spots of light",Yes,"The child with headache and before the headache, the child sees halos, flickering or spots of light","Conditions:
+* Migraine with aura (visual disturbances before headache)
+* Ocular conditions (e.g., glaucoma, retinal detachment)
+* Neurological disorders (affecting visual pathways)
+Tests/Assessments:
+* Ophthalmologic examination (to rule out eye conditions)
+* Neurological exam
+* MRI/CT scan (for neurological causes)
+Management:
+* Migraine treatment (acute and preventive meds)
+* Monitor and track visual symptoms (headache diary)
+* Avoid triggers
+Referral:
+* Pediatric Neurologist for recurrent or severe migraines
+* Ophthalmologist for eye concerns
+* Immediate care if new, severe visual symptoms or signs of acute glaucoma (eye pain, nausea)",10300161
+,,Has loss of vision / black outs,Yes,"The child with headache and before the headache, the child has loss of vision/ black outs","Conditions:
+* Migraine with aura (temporary vision loss before headache)
+* Transient Ischemic Attack (TIA) (rare, causes temporary vision loss)
+* Intracranial hypertension (increased pressure causes visual obscurations)
+* Seizure disorders (temporary vision loss or blackouts before headache)
+Tests/Assessments:
+* Neurological exam
+* MRI/CT scan (for structural brain issues)
+* EEG (if seizures suspected)
+* Eye exam (fundoscopy for eye conditions)
+Management:
+* Migraine management (acute and preventive medications)
+* Monitoring and avoiding triggers
+* Hydration and rest
+Referral:
+* Pediatric Neurologist for severe or recurrent symptoms
+* Pediatric Ophthalmologist for eye-related concerns
+* Immediate care if sudden vision loss, blackouts, or alarming symptoms (severe headache, weakness, behavior changes)",10300162
+,,"Have Tingling, numbness",Yes,"The child with headache and before the headache, the child has tingling, numbness","Conditions:
+* Migraine with aura (tingling or numbness before headache)
+* Hemiplegic migraine (temporary paralysis or sensory disturbances)
+* Seizure disorders (tingling or numbness before seizures)
+* Transient Ischemic Attack (TIA) (rare in children, causes temporary numbness/weakness)
+Tests/Assessments:
+* Neurological exam
+* MRI/CT scan (to rule out brain lesions)
+* EEG (if seizures suspected)
+* Blood tests (to check for systemic causes)
+Management:
+* Symptomatic treatment (medications for migraines)
+* Monitoring symptoms (diary for triggers and treatments)
+* Avoiding identified triggers
+Referral:
+* Pediatric Neurologist for recurrent or severe symptoms
+* Immediate care if sudden numbness/weakness or alarming symptoms (e.g., difficulty speaking), to rule out TIA or stroke",10300163
+,,Have Difficulty in talking,Yes,"The child with headache and before the headache, the child feels difficulty in talking","Conditions:
+* Migraine with aura (speech issues during aura phase)
+* Hemiplegic migraine (temporary weakness or paralysis affecting speech)
+* Transient Ischemic Attack (TIA)
+* Seizure disorders (leading to speech disturbances)
+Tests/Assessments:
+* Neurological exam
+* MRI/CT scan (to exclude brain abnormalities or TIA)
+* EEG (if seizure suspected)
+* Speech and language evaluation
+Management:
+* Migraine treatment (acute and preventive meds)
+* Diary for tracking episodes
+* Safety measures (prevent injury during episodes)
+Referral:
+* Pediatric Neurologist for recurrent symptoms
+* Speech-Language Pathologist for ongoing difficulties
+* Immediate care if sudden or severe symptoms, to rule out TIA or stroke",10300164
+,,,,,,
+18,Choose the Time of a headache (most often),Early morning,Yes,The child with headache and has headache early in the morning,"Conditions:
+* Increased intracranial pressure
+* Migraine
+* Sleep disorders (e.g., sleep apnea)
+* Hypertension
+Tests/Assessments:
+* Neurological exam
+* MRI/CT scan (for intracranial pressure causes)
+* Sleep study (if sleep disorder suspected)
+* Blood pressure monitoring (morning readings)
+Management:
+* Treat underlying condition (CPAP for sleep apnea, meds for hypertension, intracranial pressure management)
+* Lifestyle modifications (sleep hygiene, stress management)
+* Hydration upon waking
+Referral:
+* Pediatric Neurologist for persistent headaches
+* Sleep Specialist if sleep disorder suspected
+* Immediate care if alarming symptoms (vomiting, vision changes, behavioral changes) are present
+
+
+",10300171
+,,During School,,Has headache during school,,
+,,After school / evening,,Has headache after school/evening,,
+,,Bedtime / during sleep,,Has headache at bedtime / during sleep,,
+,,,,,,
+19,What makes it better?,Sleep,,,,
+,,Paracetamol,,The child with headache and the child feels better after taking Paracetamol,,
+,,No relief with common medicines,Yes,The child with headache and there is no relief in headache with common analgesics,"Conditions:
+* Migraine (non-responsive to OTC analgesics)
+* Cluster headaches (excruciating, resistant to common analgesics)
+* Medication overuse headache
+* Secondary headaches (e.g., brain tumors, intracranial hypertension)
+Tests/Assessments:
+* Medical history and medication review
+* Neurological exam
+* MRI/CT scan (for secondary causes)
+* Blood tests (to rule out systemic conditions)
+Management:
+* Adjust medication regimen (discontinue overused analgesics)
+* Specific migraine treatments (e.g., triptans)
+* Lifestyle modifications (hydration, sleep, stress management)
+Referral:
+* Pediatric Neurologist/Headache Specialist
+* Immediate care for sudden, severe headaches or alarming symptoms (vision changes, weakness, seizures)",10300183
+,,Ibuprofen,,The child feels better after taking Ibuprofen,,
+,,Others : <free text>,,<Free Text>,,
+,,,,,,
+20,"How many times during headache episodes, he/she misses school or activity?",Never,,The child does not miss school/activity during headache,,
+,,Sometimes,,The child sometimes misses school/activity during headache,,
+,,Always,Yes,The child with headache and the child always misses school/activity during headache,"Conditions:
+* Chronic migraine
+* Medication overuse headache
+* Chronic tension-type headache
+* Secondary headaches (due to underlying conditions)
+Tests/Assessments:
+* Detailed headache history
+* Neurological exam
+* MRI/CT scan (to rule out brain disorders)
+* Headache diary/log
+Management:
+* Tailored treatment (medications, behavioral therapy)
+* Lifestyle changes (sleep, hydration, stress management)
+* School accommodations (modified schedule, breaks)
+Referral:
+* Pediatric Neurologist/Headache Specialist
+* Pediatric Psychologist (if affecting mental health)
+* Immediate care if sudden pattern change or alarming symptoms (vomiting, vision changes, seizures)",10300193
+,,,,,,
+21,Associated Complaints (choose all that apply),Fever,Yes,The child with headache and has headache associated with fever,"* Conditions:
+    * Infections (viral, bacterial, meningitis, encephalitis)
+    * Sinusitis
+    * Systemic illness (influenza, mononucleosis)
+* Tests/Assessments:
+    * Medical history and physical exam
+    * Blood tests (infection, inflammation)
+    * Lumbar puncture (for meningitis/enchephalitis)
+    * MRI/CT (for complications)
+    * Sinus imaging (for sinusitis)
+* Management:
+    * Symptomatic relief (antipyretics, hydration)
+    * Antibiotics/antivirals (if infection is confirmed)
+    * Rest
+* Referral:
+    * Pediatric Infectious Disease Specialist, Pediatric Neurologist
+    * Immediate care if symptoms worsen (e.g., stiff neck, altered consciousness, rash)
+
+
+",10300201
+,,Weight loss / gain,Yes,The child with headache and has headache associated with weight loss/gain,"Conditions:
+* Endocrine disorders (hypothyroidism, Cushing’s syndrome)
+* Intracranial hypertension (pseudotumor cerebri)
+* Malnutrition or eating disorders
+* Chronic illness
+Tests/Assessments:
+* Medical history and physical exam
+* Blood tests (endocrine disorders, nutritional deficiencies)
+* MRI/CT (for intracranial issues)
+* Nutritional assessment (for eating disorders)
+Management:
+* Treat underlying condition (endocrine, nutritional, intracranial)
+* Dietary management (balanced diet)
+* Medication adjustment (for endocrine-related headaches)
+Referral:
+* Endocrinologist, Pediatric Neurologist, Dietitian/Nutritionist
+* Immediate care if vision changes or severe symptoms are present
+
+
+",10300202
+,,Behavioural change,Yes,The child with headache and has headache associated with behavioural changes,"Conditions:
+* Intracranial pathology (tumors, abscesses, hemorrhage)
+* Infections (meningitis, encephalitis)
+* Psychiatric (depression, anxiety)
+* Concussion (head injury)
+Tests:
+* Neurological exam
+* MRI/CT for intracranial issues
+* Lumbar puncture for infections
+* Psychiatric evaluation
+Management:
+* Treat underlying cause (antibiotics, surgery, psychiatric care)
+* Supportive care (hydration, rest, pain management)
+* Behavioral support (counseling)
+Referral:
+* Neurologist, Infectious Disease, Psychiatrist/Psychologist
+* Emergency care for acute changes",10300203
+,,Localised pain over the face / head,Yes,The child with headache and has headache associated with localised pain over the face / head,"Conditions:
+* Meningitis: Inflammation, headache, fever, neck stiffness.
+* Subarachnoid Hemorrhage: Sudden severe headache, neck stiffness.
+* Encephalitis: Brain inflammation, headache, fever, altered mental status.
+* Intracranial Abscess: Abscess causing headache, neck stiffness.
+Tests:
+* Lumbar Puncture: For meningitis/hemorrhage.
+* Neuroimaging: To detect abscesses/bleeding.
+* Blood Tests: Infection markers.
+* Neurological Exam: Assess neurological function.
+Management:
+* Antibiotics: For suspected meningitis.
+* Intracranial Pressure Management: Medications or surgery.
+* Supportive Care: Hydration, pain relief.
+Referral:
+* Specialists: Infectious disease, neurology, or neurosurgery.
+* Emergency: Immediate evaluation for neck rigidity.",10300204
+,,Restricted or painful neck movement,Yes,The child with headache and has neck rigidity along with headache,"Conditions:
+* Meningitis: Inflammation with headache, fever, neck stiffness.
+* Subarachnoid Hemorrhage: Sudden severe headache, neck stiffness.
+* Encephalitis: Brain inflammation with headache, fever, neck stiffness, altered mental status.
+* Intracranial Abscess: Abscess causing headache, neck stiffness.
+Tests:
+* Lumbar Puncture: For meningitis or hemorrhage.
+* Neuroimaging (MRI/CT): To identify abscesses or bleeding.
+* Blood Tests: For infection markers.
+* Neurological Exam: To assess neurological function.
+Management:
+* Immediate Antibiotics: For suspected meningitis.
+* Manage Intracranial Pressure: Medications or surgery.
+* Supportive Care: Hydration, pain management.
+Referral:
+* Infectious Disease Specialist: For meningitis/encephalitis.
+* Neurologist/Neurosurgeon: For hemorrhage/abscess.
+* Emergency Care: Immediate evaluation for neck rigidity and headache.
+
+",10300205
+,,,,,,
+,,,,,,
+23,Family History:,Migraine,Yes,Child with headache has Family history of migraine,"Conditions:
+* Family history increases risk of moderate to severe, pulsating headaches with nausea, vomiting, and light/sound sensitivity.
+Tests:
+1. History: Assess family migraine patterns.
+2. Headache Diary: Track headache details and triggers.
+3. Neurological Exam: Rule out other causes.
+Management:
+1. Lifestyle: Avoid triggers (foods, stress, sleep issues).
+2. Symptomatic Treatment: OTC pain relievers (ibuprofen, acetaminophen).
+3. Preventive Medications: For frequent or severe cases.
+Referral:
+* Specialist: Pediatric neurologist if severe or unresponsive.
+* Genetic Counseling: If strong family history.",10300211
+,,Others <Free text>,Yes,<Free text>,,
+,,None,,,,

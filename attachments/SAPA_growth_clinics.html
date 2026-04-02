@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAPA Growth Clinics | Pediatric Care at Home</title>
+    <meta name="description" content="SAPA Growth Clinics extend pediatric care into the child’s home, detect red flags earlier and are positioned to deliver better health outcomes for children.">
+    <meta property="og:title" content="SAPA Growth Clinics | Pediatric Care at Home">
+    <meta property="og:description" content="Extend pediatric care, detect red flags earlier, and deliver better health outcomes for children.">
+    <meta property="og:image" content="https://placehold.co/1200x630/77B5FE/ffffff?text=SAPA+Growth+Clinics">
+    <meta property="og:type" content="website">
+
+    <!-- The main Tailwind script must be loaded BEFORE the custom config script. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#77B5FE', /* New clinical soft blue */
+                        'primary-dark': '#5A99E8', /* Darker for hover */
+                        'secondary': '#6c757d',
+                        'light': '#f8f9fa',
+                        'dark': '#212529',
+                        'muted': '#6c757d',
+                        'surface': '#ffffff',
+                        'teal-accent': '#4FD1C5',
+                        'warm-accent': '#F59E0B',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f8f9fa;
+            color: #212529;
+        }
+
+        /* Custom styles for elements that need more than utility classes */
+        .cta-button {
+             box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+         .cta-button:hover {
+             box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .hero-bg {
+            background-color: #f8f9fa;
+            /* Updated SVG background pattern with new primary color tint */
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23E1EFFE' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        
+        .modal {
+            transition: opacity 0.3s ease;
+        }
+        .modal-content {
+             transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+    <header class="bg-white/80 backdrop-blur-md text-dark shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-primary flex items-center">
+                 <svg class="w-8 h-8 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm-1.88 4.22a1 1 0 0 1 1.41 0l3.54 3.53a1 1 0 0 1 0 1.42l-3.54 3.53a1 1 0 1 1-1.41-1.41l2.83-2.83-2.83-2.83a1 1 0 0 1 0-1.41zM11 15.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0zM12 20a1 1 0 1 1 0-2 1 1 0 0 1 0 2zM6.5 11a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/></svg>
+                SAPA Growth Clinics
+            </a>
+            <nav class="hidden md:flex space-x-8 items-center font-medium">
+                <a href="#about" class="text-secondary hover:text-primary transition">About</a>
+                <a href="#certification" class="text-secondary hover:text-primary transition">Certification</a>
+                <a href="#red-flag-system" class="text-secondary hover:text-primary transition">Red Flag System</a>
+                <a href="#courses" class="text-secondary hover:text-primary transition">Courses</a>
+                 <button data-modal-trigger="contact-modal" class="cta-button inline-flex items-center justify-center bg-primary text-white font-semibold py-2 px-6 rounded-lg shadow-lg hover:bg-primary-dark transform hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary/30 text-sm">Contact</button>
+            </nav>
+            <button id="mobile-menu-button" class="md:hidden p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary">
+                <svg class="w-6 h-6 text-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 border-t">
+            <a href="#about" class="block py-2 text-secondary hover:text-primary rounded-md px-3">About</a>
+            <a href="#certification" class="block py-2 text-secondary hover:text-primary rounded-md px-3">Certification</a>
+            <a href="#red-flag-system" class="block py-2 text-secondary hover:text-primary rounded-md px-3">Red Flag System</a>
+            <a href="#courses" class="block py-2 text-secondary hover:text-primary rounded-md px-3">Courses</a>
+            <button data-modal-trigger="contact-modal" class="mt-4 cta-button w-full py-2 inline-flex items-center justify-center bg-primary text-white font-semibold px-8 rounded-lg shadow-lg hover:bg-primary-dark transform hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary/30">Contact</button>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero-bg py-24 md:py-40">
+            <div class="container mx-auto px-6 text-center relative z-10">
+                <h1 class="text-4xl md:text-6xl font-bold text-dark leading-tight mb-6">
+                    Let Your Patients Know They Have Your Protection. <span class="text-primary">Even at Home.</span>
+                </h1>
+                <p class="text-xl text-muted max-w-3xl mx-auto mb-10">
+                    Extend pediatric care into the child’s home, detect red flags earlier, and deliver better health outcomes for children with SAPA Growth Clinics.
+                </p>
+                <div class="flex justify-center">
+                    <a href="#certification" class="cta-button text-lg inline-flex items-center justify-center bg-primary text-white font-semibold py-3 px-8 rounded-lg shadow-lg hover:bg-primary-dark transform hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary/30">Become a SAPA Growth Clinic</a>
+                </div>
+            </div>
+        </section>
+
+        <div class="py-12 bg-surface">
+             <div class="container mx-auto px-6 text-center">
+                 <p class="text-2xl md:text-3xl font-semibold text-primary">Join a network of <span class="stat-number" data-target="5000">5,000</span>+ clinics supported by sponsors.</p>
+             </div>
+        </div>
+
+        <section id="about" class="py-20 md:py-28 reveal-on-scroll">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-dark text-center mb-4 tracking-tight uppercase">Superior Care Beyond The Clinic Walls</h2>
+                <p class="text-lg text-muted text-center max-w-3xl mx-auto mb-16">SAPA Growth Clinics are empowered with enhanced detection and intervention capabilities, ensuring no child's condition is overlooked.</p>
+                <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                    <!-- Updated with hover background color -->
+                    <div class="bg-surface p-8 rounded-xl shadow-lg transform hover:-translate-y-2 transition-all duration-300 border-2 border-transparent hover:border-primary/30 hover:bg-primary/5">
+                        <div class="flex items-center text-primary mb-4">
+                            <svg class="w-10 h-10 mr-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 1.5m1-1.5l-1-1.5m1 1.5l1 1.5m-2.25 0l1.5-2.25m-7.5 0h7.5m-7.5 0l-1 1.5m1-1.5l-1-1.5m1 1.5l1 1.5m-2.25 0l1.5-2.25M6 16.5h2.25m0 0l-1-1.5m1 1.5l1-1.5m-1.5 1.5l1.5-2.25m1.5 4.5h7.5m-7.5 0l-1 1.5m1-1.5l-1-1.5m1 1.5l1 1.5m-2.25 0l1.5-2.25M18 16.5h-2.25m0 0l1-1.5m-1 1.5l-1-1.5m1.5 1.5l-1.5-2.25M12 6.75l-1.5 1.5m1.5-1.5l1.5 1.5m-1.5-1.5v11.25m0 0l-1.5 1.5m1.5-1.5l1.5 1.5" /></svg>
+                            <h3 class="text-xl font-semibold text-dark uppercase">Continuous Growth Monitoring</h3>
+                        </div>
+                        <p class="text-muted">Unlike most pediatric clinics, we monitor growth parameters and detect red flags even when the child is not in the clinic, ensuring timely visits and interventions.</p>
+                    </div>
+                    <!-- Updated with hover background color -->
+                    <div class="bg-surface p-8 rounded-xl shadow-lg transform hover:-translate-y-2 transition-all duration-300 border-2 border-transparent hover:border-primary/30 hover:bg-primary/5">
+                         <div class="flex items-center text-primary mb-4">
+                            <svg class="w-10 h-10 mr-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0l-2.083-2.083m0 0l2.083 2.083m-2.083-2.083l2.083-2.083m15.482 0l2.083 2.083m0 0l-2.083-2.083m2.083 2.083l-2.083 2.083" /></svg>
+                            <h3 class="text-xl font-semibold text-dark uppercase">A Program by Experts</h3>
+                        </div>
+                        <p class="text-muted">SAPA Growth Clinics is a prestigious clinic-certification and capacity-building program by the South Asia Pediatrics Association, setting a new standard in child healthcare.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="certification" class="py-20 md:py-28 bg-surface reveal-on-scroll">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-dark text-center mb-4 tracking-tight uppercase">Get Your Clinic Certified</h2>
+                <p class="text-lg text-muted text-center max-w-3xl mx-auto mb-16">Join an elite group of clinics dedicated to providing proactive and superior pediatric care. The certification is a one-year, auto-renewable program that highlights your clinic's special capabilities.</p>
+                
+                <div class="max-w-4xl mx-auto space-y-4">
+                    <div class="border rounded-xl bg-light overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
+                        <button class="accordion-toggle w-full text-left p-5 font-semibold text-lg text-dark flex justify-between items-center hover:bg-primary/10 transition-colors">
+                            <span class="flex items-center">
+                                <svg class="w-6 h-6 mr-3 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>
+                                <span class="uppercase">Benefits of Certification</span>
+                            </span>
+                            <svg class="accordion-icon w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="p-8 border-t bg-surface">
+                                <p class="text-muted mb-8">Certified clinics receive exclusive materials to showcase their commitment to excellence and superior patient outcomes:</p>
+                                <div class="grid md:grid-cols-2 gap-8">
+                                    <!-- Card 1: Entire card is now a clickable link -->
+                                    <a href="#" class="block bg-light p-6 rounded-lg text-center transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:bg-surface">
+                                        <svg class="w-24 h-24 mx-auto mb-4 text-primary" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="8" y="4" width="48" height="56" rx="3" fill="#E1EFFE"/><path d="M8 7C8 5.34315 9.34315 4 11 4H53C54.6569 4 56 5.34315 56 7V16H8V7Z" fill="#77B5FE"/><path d="M22 10h20v2H22v-2z" fill="white"/><rect x="16" y="24" width="32" height="4" rx="1" fill="#B9D7FE"/><rect x="16" y="34" width="32" height="4" rx="1" fill="#B9D7FE"/><rect x="16" y="44" width="20" height="4" rx="1" fill="#B9D7FE"/></svg>
+                                        <h4 class="font-semibold text-dark uppercase text-sm leading-tight h-10 flex items-center justify-center mb-2">SAPA Growth Clinic Display Board</h4>
+                                        <p class="text-sm text-muted">For outside your clinic and in the waiting room.</p>
+                                    </a>
+                                    <!-- Card 2: Entire card is now a clickable link -->
+                                    <a href="#" class="block bg-light p-6 rounded-lg text-center transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:bg-surface">
+                                        <svg class="w-24 h-24 mx-auto mb-4 text-primary" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="12" width="56" height="44" rx="3" fill="#E1EFFE"/><path d="M4 15C4 13.3431 5.34315 12 7 12H57C58.6569 12 60 13.3431 60 15V24H4V15Z" fill="#77B5FE"/><path d="M10 18h8v2h-8v-2z" fill="white"/><path d="M21 34h22v4H21z" fill="#B9D7FE"/><path d="M21 44h14v4H21z" fill="#B9D7FE"/><path d="M49 32l-6 8h12l-6-8z" fill="#34D399"/><path d="M52 48a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" fill="#F59E0B"/></svg>
+                                        <h4 class="font-semibold text-dark uppercase text-sm leading-tight h-10 flex items-center justify-center mb-2">SAPA Outcomes Board</h4>
+                                        <p class="text-sm text-muted">Showcase superior detection and intervention rates.</p>
+                                    </a>
+                                    <!-- Card 3: Entire card is now a clickable link -->
+                                    <a href="#" class="block bg-light p-6 rounded-lg text-center transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:bg-surface">
+                                        <svg class="w-24 h-24 mx-auto mb-4 text-primary" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 4H48V12L56 20V60H8V4H16Z" fill="#E1EFFE"/><path d="M16 4h-8v56h48V20l-8-8V4h-3.4" stroke="#A5C9FD" stroke-width="2"/><path d="M48 12h8l-8 8v-8z" fill="#B9D7FE"/><circle cx="32" cy="38" r="10" fill="#77B5FE"/><path d="m28 38 3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 20h24M20 26h16" stroke="#A5C9FD" stroke-width="2" stroke-linecap="round"/></svg>
+                                        <h4 class="font-semibold text-dark uppercase text-sm leading-tight h-10 flex items-center justify-center mb-2">Doctor's Course Certificate</h4>
+                                        <p class="text-sm text-muted">For Growth and Nutrition expertise.</p>
+                                    </a>
+                                    <!-- Card 4: Entire card is now a clickable link -->
+                                    <a href="#" class="block bg-light p-6 rounded-lg text-center transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:bg-surface">
+                                        <svg class="w-24 h-24 mx-auto mb-4 text-primary" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 4H48V12L56 20V60H8V4H16Z" fill="#E1EFFE"/><path d="M16 4h-8v56h48V20l-8-8V4h-3.4" stroke="#A5C9FD" stroke-width="2"/><path d="M48 12h8l-8 8v-8z" fill="#B9D7FE"/><path d="M24 32h16m-16 6h16m-16 6h10" stroke="#77B5FE" stroke-width="2" stroke-linecap="round"/><path d="M20 20h24" stroke="#A5C9FD" stroke-width="2" stroke-linecap="round"/></svg>
+                                        <h4 class="font-semibold text-dark uppercase text-sm leading-tight h-10 flex items-center justify-center mb-2">Paramedic's Course Certificate</h4>
+                                        <p class="text-sm text-muted">For Growth Monitoring expertise.</p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                     <div class="border rounded-xl bg-light overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
+                        <button class="accordion-toggle w-full text-left p-5 font-semibold text-lg text-dark flex justify-between items-center hover:bg-primary/10 transition-colors">
+                            <span class="flex items-center">
+                                <svg class="w-6 h-6 mr-3 text-teal-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+                                <span class="uppercase">Certification Requirements</span>
+                            </span>
+                            <svg class="accordion-icon w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="p-8 border-t bg-surface text-muted space-y-4">
+                               <ul class="list-none space-y-4">
+                                    <li class="flex items-start"><span class="text-primary mr-3 mt-1 font-bold">&#10003;</span><span>Offers a clinic-branded Growth Monitoring and Red Flag Alerts service to all patients.</span></li>
+                                    <li class="flex items-start"><span class="text-primary mr-3 mt-1 font-bold">&#10003;</span><span>At least one doctor must have the SAPA Growth and Nutrition certificate.</span></li>
+                                    <li class="flex items-start"><span class="text-primary mr-3 mt-1 font-bold">&#10003;</span><span>At least one paramedic must have the SAPA Growth Monitoring certification.</span></li>
+                                    <li class="flex items-start"><span class="text-primary mr-3 mt-1 font-bold">&#10003;</span><span>Must reach an initial milestone of 100 patient screenings for Red Flags and maintain an average minimum of 50 screenings per month.</span></li>
+                               </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border rounded-xl bg-light overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
+                        <button class="accordion-toggle w-full text-left p-5 font-semibold text-lg text-dark flex justify-between items-center hover:bg-primary/10 transition-colors">
+                             <span class="flex items-center">
+                                 <svg class="w-6 h-6 mr-3 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                                 <span class="uppercase">How to Get Certified (3 Simple Steps)</span>
+                            </span>
+                            <svg class="accordion-icon w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="p-8 border-t bg-surface text-muted">
+                                <p class="mb-8">Currently, 5000 clinics are being supported by sponsors. Follow these free and simple steps:</p>
+                                <div class="space-y-6">
+                                    <div class="p-4 bg-light rounded-lg flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                                        <div class="flex items-center">
+                                             <span class="text-primary font-bold mr-4 bg-blue-100 rounded-full h-10 w-10 flex items-center justify-center flex-shrink-0">1</span>
+                                             <span><strong>Pediatrician Certification:</strong> Take the free Growth and Nutrition course.</span>
+                                        </div>
+                                        <a href="#" class="cta-button text-sm py-2 px-4 flex-shrink-0 inline-flex items-center justify-center bg-primary text-white font-semibold rounded-lg shadow-lg hover:bg-primary-dark transform hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary/30">Take the Course</a>
+                                    </div>
+                                    <div class="p-4 bg-light rounded-lg flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                                        <div class="flex items-center">
+                                             <span class="text-primary font-bold mr-4 bg-blue-100 rounded-full h-10 w-10 flex items-center justify-center flex-shrink-0">2</span>
+                                             <span><strong>Paramedic Certification:</strong> Your clinic staff takes the free Growth Monitoring course.</span>
+                                        </div>
+                                         <a href="#" class="cta-button text-sm py-2 px-4 flex-shrink-0 inline-flex items-center justify-center bg-primary text-white font-semibold rounded-lg shadow-lg hover:bg-primary-dark transform hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary/30">Take the Course</a>
+                                    </div>
+                                    <div class="p-4 bg-light rounded-lg flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                                        <div class="flex items-center">
+                                            <span class="text-primary font-bold mr-4 bg-blue-100 rounded-full h-10 w-10 flex items-center justify-center flex-shrink-0">3</span>
+                                            <span><strong>Apply for the System:</strong> Apply to receive your clinic-branded Red Flag Alerts System.</span>
+                                        </div>
+                                        <a href="#" class="cta-button text-sm py-2 px-4 flex-shrink-0 inline-flex items-center justify-center bg-primary text-white font-semibold rounded-lg shadow-lg hover:bg-primary-dark transform hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary/30">Apply for Sponsorship</a>
+                                    </div>
+                                </div>
+                                <div class="mt-8 text-center">
+                                    <p class="text-sm text-gray-500 mb-2">Alternatively, if you do not want sponsorship:</p>
+                                    <a href="#" class="cta-button !bg-warm-accent hover:!bg-amber-500 focus:!ring-amber-300 inline-flex items-center justify-center text-white font-semibold py-3 px-8 rounded-lg shadow-lg transform hover:-translate-y-1 transition-all duration-300 focus:outline-none">Pay The Annual Fee Directly</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="red-flag-system" class="py-20 md:py-28 bg-light reveal-on-scroll">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-dark text-center mb-4 tracking-tight uppercase">The SAPA Red Flag Alerts System</h2>
+                <p class="text-lg text-muted text-center max-w-3xl mx-auto mb-16">A clinic-customized service that extends your care into patients' homes, alerting both patients and doctors to potential health issues for timely intervention.</p>
+                
+                <div class="grid md:grid-cols-2 gap-10 items-start">
+                    <div class="bg-surface p-8 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 border-2 border-transparent hover:border-primary/30">
+                        <h3 class="text-2xl font-bold text-dark mb-6 uppercase">How It Works</h3>
+                        <ul class="space-y-6 text-muted">
+                            <li class="flex items-start">
+                                <span class="text-primary font-bold mr-4 bg-blue-100 rounded-full h-8 w-8 flex items-center justify-center flex-shrink-0">1</span>
+                                <span><strong>Share Your Link:</strong> Clinics receive a unique, branded link to share with patients via QR code or direct messaging.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-primary font-bold mr-4 bg-blue-100 rounded-full h-8 w-8 flex items-center justify-center flex-shrink-0">2</span>
+                                <span><strong>Patient Forms:</strong> Patients use simple forms for growth monitoring and 19 common conditions as advised or needed.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-primary font-bold mr-4 bg-blue-100 rounded-full h-8 w-8 flex items-center justify-center flex-shrink-0">3</span>
+                                <span><strong>Instant Alerts:</strong> If red flags are detected, the system immediately alerts the patient to visit the clinic.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-primary font-bold mr-4 bg-blue-100 rounded-full h-8 w-8 flex items-center justify-center flex-shrink-0">4</span>
+                                <span><strong>Doctor's Report:</strong> You receive a detailed report by email. Patient-identifiable information is auto-deleted for privacy.</span>
+                            </li>
+                        </ul>
+                         <div class="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4">
+                            <a href="#" class="cta-button inline-flex items-center justify-center bg-primary text-white font-semibold py-3 px-8 rounded-lg shadow-lg hover:bg-primary-dark transform hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary/30">Watch the System Video</a>
+                            <a href="#" class="cta-button !bg-transparent !text-primary border-2 border-primary hover:!bg-primary/10 inline-flex items-center justify-center font-semibold py-3 px-8 rounded-lg shadow-lg transform hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary/30">Read the PDF Document</a>
+                        </div>
+                    </div>
+                    <div class="bg-surface p-8 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 border-2 border-transparent hover:border-primary/30">
+                        <h3 class="text-2xl font-bold text-dark mb-6 uppercase">What Problem Does It Solve?</h3>
+                        <div class="space-y-8">
+                            <div>
+                                <h4 class="font-semibold text-red-600 mb-2 flex items-center uppercase"><svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>The Challenge: Delayed Detection</h4>
+                                <p class="text-muted pl-7">Almost 70% of red flags are missed in clinics due to low parental awareness and doctors' focus on common conditions.</p>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-green-600 mb-2 flex items-center uppercase"><svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>The Solution: Proactive Alerts</h4>
+                                <p class="text-muted pl-7">Our system bridges this gap by alerting both parents and doctors to potential issues early with embedded, context-specific education.</p>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-primary mb-2 flex items-center uppercase"><svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>The Benefit: Superior Outcomes</h4>
+                                <p class="text-muted pl-7">Offer patients assurance of timely care, building trust and leading to superior health outcomes through early detection.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="courses" class="py-20 md:py-28 bg-surface reveal-on-scroll">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-dark text-center mb-4 tracking-tight uppercase">Expert-Led Certification Courses</h2>
+                <p class="text-lg text-muted text-center max-w-3xl mx-auto mb-16">Upskill your clinic's staff with our free, expert-created courses available on the eSAPA platform. A certificate is awarded upon successful completion.</p>
+                <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                    <!-- Updated with hover effect -->
+                    <div class="bg-light p-8 rounded-xl shadow-lg text-center border-t-4 border-primary transform hover:-translate-y-2 transition-transform duration-300 hover:shadow-xl hover:bg-surface">
+                        <h3 class="text-2xl font-bold text-dark mb-3 uppercase">For Pediatricians</h3>
+                        <p class="text-muted mb-6">The SAPA Growth and Nutrition course, created by SAPA experts, enhances your diagnostic and intervention skills.</p>
+                        <a href="#" class="cta-button inline-flex items-center justify-center bg-primary text-white font-semibold py-3 px-8 rounded-lg shadow-lg hover:bg-primary-dark transform hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary/30">Take the Course</a>
+                    </div>
+                    <!-- Updated with hover effect -->
+                    <div class="bg-light p-8 rounded-xl shadow-lg text-center border-t-4 border-teal-accent transform hover:-translate-y-2 transition-transform duration-300 hover:shadow-xl hover:bg-surface">
+                        <h3 class="text-2xl font-bold text-dark mb-3 uppercase">For Paramedics</h3>
+                        <p class="text-muted mb-6">The SAPA Growth Monitoring mini-course equips your staff with essential skills for accurate patient monitoring.</p>
+                        <a href="#" class="cta-button inline-flex items-center justify-center bg-primary text-white font-semibold py-3 px-8 rounded-lg shadow-lg hover:bg-primary-dark transform hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary/30">Take the Course</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sponsors" class="py-20 md:py-28 reveal-on-scroll bg-light">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-dark text-center mb-4 tracking-tight uppercase">Support the Future of Pediatric Care</h2>
+                <p class="text-lg text-muted text-center max-w-3xl mx-auto mb-16">Companies can make a significant impact by sponsoring clinics and underwriting the costs of certification. Currently, 5000 clinics are being supported.</p>
+                <div class="bg-surface max-w-2xl mx-auto p-10 rounded-xl shadow-xl">
+                    <h3 class="text-2xl font-semibold text-dark mb-4 uppercase">Become a Sponsor</h3>
+                    <p class="text-muted mb-6">If your company wishes to support pediatric clinics to get certified, please contact our program operations and support team.</p>
+                    <button data-modal-trigger="contact-modal" class="cta-button inline-flex items-center justify-center bg-primary text-white font-semibold py-3 px-8 rounded-lg shadow-lg hover:bg-primary-dark transform hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary/30">Contact Us to Sponsor</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-dark text-white py-12">
+        <div class="container mx-auto px-6 text-center">
+            <p class="font-bold text-xl mb-2">SAPA Growth Clinics</p>
+            <p class="text-gray-400">A clinic-certification and capacity building program by the South Asia Pediatrics Association.</p>
+            <p class="text-gray-500 text-sm mt-8">&copy; 2024 SAPA Growth Clinics. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <div id="sticky-cta" class="hidden md:flex fixed bottom-5 right-5 bg-surface p-4 rounded-lg shadow-2xl items-center gap-4 transform translate-y-24 transition-transform duration-500">
+        <p class="text-dark font-semibold">Ready to get started?</p>
+        <button data-modal-trigger="contact-modal" class="cta-button py-2 px-4 text-sm inline-flex items-center justify-center bg-primary text-white font-semibold rounded-lg shadow-lg hover:bg-primary-dark transform hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary/30">Contact Us</button>
+        <button id="close-sticky-cta" class="text-muted hover:text-dark w-6 h-6 rounded-full flex items-center justify-center bg-gray-200 hover:bg-gray-300 transition-colors">&times;</button>
+    </div>
+
+    <!-- Contact Modal with new primary color in header -->
+    <div id="contact-modal" class="modal fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-[100] opacity-0 pointer-events-none" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-content bg-surface rounded-xl shadow-2xl w-full max-w-lg p-0 transform scale-95 overflow-hidden">
+             <div class="bg-primary p-6">
+                 <div class="flex justify-between items-center">
+                    <h2 id="modal-title" class="text-2xl font-bold text-white uppercase">Contact Us</h2>
+                    <button data-modal-close class="text-white/70 hover:text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors" aria-label="Close modal">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+            </div>
+            <form action="#" method="POST" class="space-y-4 p-8">
+                <div>
+                    <label for="name" class="block text-sm font-medium text-muted">Name</label>
+                    <input type="text" id="name" name="name" required class="mt-1 block w-full px-4 py-2 bg-light border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-dark">
+                </div>
+                <div>
+                    <label for="company" class="block text-sm font-medium text-muted">Company</label>
+                    <input type="text" id="company" name="company" class="mt-1 block w-full px-4 py-2 bg-light border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-dark">
+                </div>
+                <div>
+                    <label for="email" class="block text-sm font-medium text-muted">Email</label>
+                    <input type="email" id="email" name="email" required class="mt-1 block w-full px-4 py-2 bg-light border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-dark">
+                </div>
+                <div>
+                    <label for="message" class="block text-sm font-medium text-muted">Message</label>
+                    <textarea id="message" name="message" rows="4" class="mt-1 block w-full px-4 py-2 bg-light border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary text-dark"></textarea>
+                </div>
+                <div class="flex justify-center pt-4">
+                    <button type="submit" class="cta-button w-full sm:w-auto inline-flex items-center justify-center bg-primary text-white font-semibold py-3 px-8 rounded-lg shadow-lg hover:bg-primary-dark transform hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary/30">Submit Inquiry</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <button id="back-to-top" class="hidden fixed bottom-8 right-8 bg-primary text-white w-12 h-12 rounded-full shadow-lg hover:bg-primary-dark focus:outline-none focus:ring-4 focus:ring-primary/30 transition-all duration-300 transform hover:scale-110">
+        <svg class="w-6 h-6 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>
+    </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // Mobile menu toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Close mobile menu when a link is clicked
+            mobileMenu.querySelectorAll('a, button').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+            // Accordion functionality
+            const accordions = document.querySelectorAll('.accordion-toggle');
+            accordions.forEach(button => {
+                button.addEventListener('click', () => {
+                    const content = button.nextElementSibling;
+                    const icon = button.querySelector('.accordion-icon');
+                    const isExpanded = content.style.maxHeight;
+
+                    // Close all other accordions
+                    accordions.forEach(otherButton => {
+                        if (otherButton !== button) {
+                           otherButton.nextElementSibling.style.maxHeight = null;
+                           otherButton.querySelector('.accordion-icon').classList.remove('rotate-180');
+                        }
+                    });
+
+                    // Toggle current accordion
+                    if (isExpanded) {
+                        content.style.maxHeight = null;
+                        icon.classList.remove('rotate-180');
+                    } else {
+                        content.style.maxHeight = content.scrollHeight + "px";
+                        icon.classList.add('rotate-180');
+                    }
+                });
+            });
+
+            // Reveal on scroll functionality
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.reveal-on-scroll').forEach(section => observer.observe(section));
+            
+            // Stat counter animation
+            const statObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const el = entry.target;
+                        const target = +el.getAttribute('data-target');
+                        let current = 0;
+                        const increment = Math.ceil(target / 100);
+
+                        const timer = setInterval(() => {
+                            current += increment;
+                            if (current > target) {
+                                current = target;
+                                clearInterval(timer);
+                            }
+                            el.innerText = current.toLocaleString();
+                        }, 20);
+                        observer.unobserve(el);
+                    }
+                });
+            }, { threshold: 0.8 });
+
+            document.querySelectorAll('.stat-number').forEach(num => statObserver.observe(num));
+
+
+            // Back to top button functionality
+            const backToTopButton = document.getElementById('back-to-top');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTopButton.classList.remove('hidden');
+                } else {
+                    backToTopButton.classList.add('hidden');
+                }
+            });
+            backToTopButton.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // Sticky CTA functionality
+            const stickyCta = document.getElementById('sticky-cta');
+            const closeStickyCta = document.getElementById('close-sticky-cta');
+            
+            setTimeout(() => {
+                if(stickyCta) stickyCta.classList.remove('translate-y-24');
+            }, 3000);
+
+            if(closeStickyCta) {
+                closeStickyCta.addEventListener('click', () => {
+                    stickyCta.classList.add('translate-y-24');
+                });
+            }
+
+            // =================================================================
+            // MODAL SCRIPT
+            // =================================================================
+            const modalTriggers = document.querySelectorAll('[data-modal-trigger]');
+            const modal = document.getElementById('contact-modal');
+            const firstFocusableEl = modal.querySelector('input[name="name"]');
+            let lastFocusedElement;
+
+            const openModal = () => {
+                lastFocusedElement = document.activeElement;
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                modal.querySelector('.modal-content').classList.remove('scale-95');
+                document.body.style.overflow = 'hidden';
+                setTimeout(() => firstFocusableEl.focus(), 50); // Delay focus for transition
+                
+                // Dismiss sticky CTA if open
+                if(stickyCta) stickyCta.classList.add('translate-y-24');
+            };
+
+            const closeModal = () => {
+                modal.classList.add('opacity-0');
+                modal.querySelector('.modal-content').classList.add('scale-95');
+                setTimeout(() => {
+                    modal.classList.add('pointer-events-none');
+                    document.body.style.overflow = '';
+                    if(lastFocusedElement) lastFocusedElement.focus();
+                }, 300); // Wait for transition to finish
+            };
+            
+            modalTriggers.forEach(trigger => trigger.addEventListener('click', openModal));
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal || e.target.closest('[data-modal-close]')) {
+                    closeModal();
+                }
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !modal.classList.contains('pointer-events-none')) {
+                    closeModal();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

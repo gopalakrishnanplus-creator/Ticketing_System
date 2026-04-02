@@ -1,0 +1,1106 @@
+WEBVTT
+
+00:00:39.000 --> 00:00:42.000
+Gopala Krishnan: I Pinaki, we haven't met before, right?
+
+00:00:41.000 --> 00:00:44.000
+Pinaki.Mitra: Yeah, hi, yeah, hey, yeah.
+
+00:00:43.000 --> 00:00:46.000
+Gopala Krishnan: We've connected on LinkedIn.
+
+00:00:45.000 --> 00:00:47.000
+Pinaki.Mitra: Yes, yes, yes.
+
+00:00:46.000 --> 00:00:48.000
+Gopala Krishnan: I'm Gopala Krishnan, yeah.
+
+00:00:47.000 --> 00:00:50.000
+Pinaki.Mitra: I, you know, I could have done anything.
+
+00:00:51.000 --> 00:00:53.000
+Pinaki.Mitra: Where are you based at?
+
+00:00:54.000 --> 00:01:03.000
+Gopala Krishnan: I'm based in Navi, Mumbai. Actually, um, I work from the beach in Goa at 7 days a month, so I just came back today morning.
+
+00:01:03.000 --> 00:01:05.000
+Pinaki.Mitra: Oh, fantastic.
+
+00:01:05.000 --> 00:01:12.000
+Pinaki.Mitra: So, thanks, like, your team could, uh… we could catch up on…
+
+00:01:12.000 --> 00:01:15.000
+Pinaki.Mitra: It was the last week, last week, I guess.
+
+00:01:14.000 --> 00:01:17.000
+Amit gupta: Yeah, hi Pinaki, how are you?
+
+00:01:16.000 --> 00:01:18.000
+Gopala Krishnan: Yeah, yeah, yeah, yeah.
+
+00:01:17.000 --> 00:01:19.000
+Pinaki.Mitra: Yeah, hi, yeah, all good.
+
+00:01:18.000 --> 00:01:28.000
+Amit gupta: Okay. So, uh, great. Uh, I think we'll just get straight into the solution. Did you get a chance to look at that, uh, short video we sent you over?
+
+00:01:19.000 --> 00:01:21.000
+Pinaki.Mitra: Yes.
+
+00:01:28.000 --> 00:01:31.000
+Pinaki.Mitra: Yeah, I could… I've gone through it.
+
+00:01:31.000 --> 00:01:33.000
+Amit gupta: Okay.
+
+00:01:31.000 --> 00:01:41.000
+Pinaki.Mitra: And if you can just take me through, and because the way I read it, and the way you have thought, and would allow… take me through, I think that might make little…
+
+00:01:41.000 --> 00:01:43.000
+Pinaki.Mitra: Sense to me.
+
+00:01:41.000 --> 00:01:45.000
+Amit gupta: Sure. Sure, sure. I have my call. Yeah, GK, you want to take that?
+
+00:01:42.000 --> 00:01:44.000
+Gopala Krishnan: Okay, okay.
+
+00:01:46.000 --> 00:01:50.000
+Amit gupta: Do you want me to present? No, no, go ahead, if you want to…
+
+00:01:46.000 --> 00:01:48.000
+Gopala Krishnan: No, go ahead.
+
+00:01:48.000 --> 00:01:52.000
+Pinaki.Mitra: deck you can take me through.
+
+00:01:48.000 --> 00:01:50.000
+Gopala Krishnan: Yeah, yeah, go ahead, yeah.
+
+00:01:51.000 --> 00:01:53.000
+Gopala Krishnan: Yeah, please.
+
+00:01:52.000 --> 00:01:58.000
+Pinaki.Mitra: What was the thought behind it, and what do you feel there's a need, and on what basis?
+
+00:01:59.000 --> 00:02:01.000
+Amit gupta: Sure, sure. Let me just, uh…
+
+00:02:01.000 --> 00:02:07.000
+Amit gupta: put up on the screen. GK, you want to walk him through this? Go ahead then, because you kind of…
+
+00:02:06.000 --> 00:02:16.000
+Gopala Krishnan: Yeah. Yeah, see, the first thing, um, we spoke about, I mean, we thought about, was, uh, your feedback that, uh.
+
+00:02:16.000 --> 00:02:31.000
+Gopala Krishnan: Look, it's a couple of years since the brand has been launched. It is… it's… it's a… it's an established therapy, but not really established here. Um, so your first focus was to build that.
+
+00:02:25.000 --> 00:02:27.000
+Amit gupta: One sec.
+
+00:02:31.000 --> 00:02:37.000
+Gopala Krishnan: Awareness, which you have been able to do, uh, as far as the prescribing community is concerned.
+
+00:02:38.000 --> 00:02:46.000
+Gopala Krishnan: But now the next step, in the sense now, um, if, if it is going to get deeply and strongly established as a, as a therapy.
+
+00:02:46.000 --> 00:02:53.000
+Gopala Krishnan: Um, prescribed by, uh, the community. And, uh, is that the only challenge, or are there more challenges?
+
+00:02:54.000 --> 00:03:09.000
+Gopala Krishnan: So, when we looked at the therapy, we saw that, okay, it's a pretty long-term adherence is really important. Now, and any therapy with long-term adherence, and as well as there are some side effects which initially.
+
+00:03:09.000 --> 00:03:15.000
+Gopala Krishnan: Um, like irritation and so on, which might get people to stop using it.
+
+00:03:15.000 --> 00:03:23.000
+Gopala Krishnan: Um, and that, so there is, there is a trigger, there's a doctor trigger at the time of prescription to.
+
+00:03:23.000 --> 00:03:29.000
+Gopala Krishnan: Uh, for education for the client, okay? There is… there is definitely a need for patient education.
+
+00:03:29.000 --> 00:03:40.000
+Gopala Krishnan: Second, a patient education by itself as a one-time exercise does not solve anything. When you're talking about a 2-year, 3-year, 4-year period.
+
+00:03:46.000 --> 00:03:48.000
+Amit gupta: Hello.
+
+00:03:49.000 --> 00:03:51.000
+Pinaki.Mitra: Hello.
+
+00:03:50.000 --> 00:03:53.000
+Amit gupta: Yep, uh, I think I…
+
+00:03:53.000 --> 00:03:57.000
+Amit gupta: I can't hear GT anymore. Um, are you… could you… can you hear me, Pinaki?
+
+00:03:57.000 --> 00:03:59.000
+Pinaki.Mitra: Yeah, I can hear you.
+
+00:03:58.000 --> 00:04:01.000
+Amit gupta: Okay, uh, GK, we can't hear you.
+
+00:04:01.000 --> 00:04:06.000
+Gopala Krishnan: Yeah, sorry. I mean, I experienced something that people in Bombay don't.
+
+00:04:06.000 --> 00:04:17.000
+Gopala Krishnan: a power cut, so… So we said, okay, education by itself is not important. There need to be periodic check-ins.
+
+00:04:18.000 --> 00:04:28.000
+Gopala Krishnan: Now, the periodic check-in, why, why will it happen? Well, we need to, especially when myopia is initially noticed in children, when the treatment starts.
+
+00:04:28.000 --> 00:04:37.000
+Gopala Krishnan: Um, it's, the child is still quite young usually so at that time, the pediatrician for children who are reasonably young is a.
+
+00:04:37.000 --> 00:04:42.000
+Gopala Krishnan: He's an authority and trust figure in the life of the mother.
+
+00:04:42.000 --> 00:04:48.000
+Gopala Krishnan: is a very… is a person with high trust and high authority. So usually there'll be high, uh…
+
+00:04:49.000 --> 00:04:54.000
+Gopala Krishnan: adherence, I mean, or high compliance with the instructions of the pediatrician.
+
+00:04:54.000 --> 00:05:05.000
+Gopala Krishnan: But the instructions are, okay, you need to do this for the next 3 years, 4 years. That… that is sort of… it's not a… it's not an instruction which has very clear objective hooks.
+
+00:05:05.000 --> 00:05:10.000
+Gopala Krishnan: But something that has a very clear objective book is if they do periodic check-ins.
+
+00:05:11.000 --> 00:05:22.000
+Gopala Krishnan: So it's not just about giving the patient, uh, patient education, it's also about saying, every month or every 2 months, there is this check-in form, you need to fill it up.
+
+00:05:22.000 --> 00:05:24.000
+Gopala Krishnan: So we know that the child is doing well.
+
+00:05:25.000 --> 00:05:39.000
+Gopala Krishnan: And at that point, education also gets reinforced, so there is a periodic, every 2 months, every 3 months, you know, we need to think about, um, what is the right kind of frequency that the doctor can advise.
+
+00:05:39.000 --> 00:05:47.000
+Gopala Krishnan: Okay, once the advice a parent does it, you know, like, and every time they check in, it reinforces the fact that adherence is important.
+
+00:05:47.000 --> 00:05:53.000
+Gopala Krishnan: And it also provides, you know, the relevant patient education again at that time.
+
+00:05:54.000 --> 00:06:04.000
+Amit gupta: And also, yeah, and also, you know, once a check-in happens, it kind of reinforces… it tells the clinic that the adherence is happening, and if, you know, a few check-ins are missed.
+
+00:05:54.000 --> 00:05:56.000
+Gopala Krishnan: So this was… yeah?
+
+00:06:04.000 --> 00:06:06.000
+Amit gupta: Then clinic can trigger action.
+
+00:06:04.000 --> 00:06:06.000
+Pinaki.Mitra: Okay.
+
+00:06:06.000 --> 00:06:08.000
+Amit gupta: So…
+
+00:06:06.000 --> 00:06:08.000
+Pinaki.Mitra: Okay.
+
+00:06:06.000 --> 00:06:12.000
+Gopala Krishnan: And… see, another thing that is important is, anything that comes to the patient.
+
+00:06:12.000 --> 00:06:18.000
+Gopala Krishnan: Okay, there are… trust is important. In this… in the healthcare scenario, trust is extremely important.
+
+00:06:13.000 --> 00:06:16.000
+Pinaki.Mitra: Absolutely.
+
+00:06:18.000 --> 00:06:24.000
+Gopala Krishnan: So there are two trust elements. You can't give… the doctor will not accept any system which they can't trust.
+
+00:06:25.000 --> 00:06:31.000
+Gopala Krishnan: And the patient will not, you know, adhere to any system or comply with any system which they cannot trust.
+
+00:06:31.000 --> 00:06:41.000
+Gopala Krishnan: So, the, the, the… how do you establish trust for the doctor? What we say is, let us say, the, uh, the check-in forms, as well as the patient education.
+
+00:06:42.000 --> 00:06:46.000
+Gopala Krishnan: We get all of that, uh, endorsed by an academy.
+
+00:06:46.000 --> 00:06:55.000
+Gopala Krishnan: So because it is academy-endorsed material that is being used in a technology framework, the doctor will have immediate acceptance, because they don't have a problem with that.
+
+00:06:56.000 --> 00:07:01.000
+Gopala Krishnan: The patient does not recognize an academy, but for the patient recognizes the doctor.
+
+00:07:01.000 --> 00:07:06.000
+Gopala Krishnan: So the entire solution which goes to the patient must be clinic branded.
+
+00:07:07.000 --> 00:07:10.000
+Gopala Krishnan: It is… it is a service from my doctor to me.
+
+00:07:10.000 --> 00:07:12.000
+Gopala Krishnan: Okay, so, so…
+
+00:07:11.000 --> 00:07:17.000
+Pinaki.Mitra: This is good, actually. This is a very good idea, because this becomes very customized approach.
+
+00:07:18.000 --> 00:07:22.000
+Pinaki.Mitra: Where a patient knows that I have gone to a certain doctor, and he is.
+
+00:07:18.000 --> 00:07:20.000
+Gopala Krishnan: Yeah.
+
+00:07:23.000 --> 00:07:29.000
+Pinaki.Mitra: Sharing me those details and looking forward to my inputs, which will help, uh, the kids.
+
+00:07:26.000 --> 00:07:28.000
+Gopala Krishnan: Okay.
+
+00:07:29.000 --> 00:07:35.000
+Pinaki.Mitra: my own kid to, uh, resolve better, day by day. So I think this is very customizable.
+
+00:07:33.000 --> 00:07:34.000
+Gopala Krishnan: Yeah, yeah.
+
+00:07:35.000 --> 00:07:49.000
+Amit gupta: And this is also, Pinaki, a collaborative approach, where, you know, the doctor says that, look, while I'm prescribing atropine or treatment, it's not a one-sided street, where I prescribe and you do it for 2-3 months, and then, you know, you come back after a year for an annual checkup.
+
+00:07:49.000 --> 00:08:01.000
+Amit gupta: Then we realize, you know, your kids, their myopia has progressed further so this is something where doctor says that, look, you have to check in every 2, 3 months and, you know, and this is important, this is as a parent you must do.
+
+00:07:49.000 --> 00:07:51.000
+Pinaki.Mitra: Um…
+
+00:07:51.000 --> 00:07:53.000
+Pinaki.Mitra: Yeah.
+
+00:08:02.000 --> 00:08:04.000
+Amit gupta: Okay.
+
+00:08:02.000 --> 00:08:14.000
+Gopala Krishnan: In fact, that guideline, we will give the doctor, right? It has to be… the doctor needs to say, see, for example, statements like this, every 2-3 months. No, it is not compliance-friendly. What is compliance-friendly is every 60 days.
+
+00:08:10.000 --> 00:08:12.000
+Amit gupta: Hmm.
+
+00:08:12.000 --> 00:08:14.000
+Amit gupta: Yeah, it's with me.
+
+00:08:15.000 --> 00:08:27.000
+Gopala Krishnan: That's compliance-friendly, because to be compliance friendly, it has to be firm, clear. Okay. Now, the other things that are important in designing any system like this is, uh.
+
+00:08:18.000 --> 00:08:20.000
+Pinaki.Mitra: Very specific.
+
+00:08:27.000 --> 00:08:28.000
+Pinaki.Mitra: Okay, that'll work.
+
+00:08:27.000 --> 00:08:31.000
+Gopala Krishnan: We must understand that people are technology averse.
+
+00:08:32.000 --> 00:08:34.000
+Pinaki.Mitra: Very good.
+
+00:08:32.000 --> 00:08:40.000
+Gopala Krishnan: Doctors especially are extremely technology averse. Second, doctors will not accept anything which includes a change of behavior.
+
+00:08:40.000 --> 00:08:47.000
+Gopala Krishnan: The doctor's not going to accept anything which takes any additional steps or any additional time in the consulting group. They're not going to do that.
+
+00:08:48.000 --> 00:08:50.000
+Pinaki.Mitra: Hmm.
+
+00:08:48.000 --> 00:08:54.000
+Gopala Krishnan: So… so it has to be simple. So one thing is, the technology has to be eliminated.
+
+00:08:54.000 --> 00:08:59.000
+Gopala Krishnan: So it's like there's no technology. It's just a link and a QR code. There's nothing more.
+
+00:09:00.000 --> 00:09:07.000
+Gopala Krishnan: Second, the doctor does not have to share. The doctor does what they do. The doctor prescribes, advises the patient.
+
+00:09:00.000 --> 00:09:02.000
+Amit gupta: And it's… hmm.
+
+00:09:07.000 --> 00:09:12.000
+Gopala Krishnan: And says, there is important education, you have to check in every 2 months.
+
+00:09:12.000 --> 00:09:23.000
+Gopala Krishnan: go to the… my staff out there, they will give you the link, or there's a QR code out there on a poster, please scan the QR code. You will get it. So, it should be as simple as that.
+
+00:09:23.000 --> 00:09:30.000
+Gopala Krishnan: Second, even for the patient, nothing to download, nothing. They get, once they scan it, they have the link, they use the same link every time.
+
+00:09:31.000 --> 00:09:37.000
+Gopala Krishnan: They click on the link, it's a doctor-branded and a clinic-branded page, which has the check-in form and the patient education videos.
+
+00:09:38.000 --> 00:09:43.000
+Gopala Krishnan: The next is, anything that is patient-facing must be in local language.
+
+00:09:43.000 --> 00:09:50.000
+Gopala Krishnan: You can, you cannot have only English. So, therefore, in all the patient education content will be in.
+
+00:09:51.000 --> 00:09:54.000
+Gopala Krishnan: Uh, English, and the 7 major Indian languages.
+
+00:09:55.000 --> 00:10:01.000
+Gopala Krishnan: Okay, and anything doctor-facing will be in English. Third, brand presence. Brand presence.
+
+00:10:01.000 --> 00:10:07.000
+Gopala Krishnan: Is very important because it's, there are 2 things that this does. You've given the doctor a tool.
+
+00:10:08.000 --> 00:10:17.000
+Gopala Krishnan: Which helps them to build and maintain a loyal patient for a long time. You have actually enabled them with a patient service.
+
+00:10:17.000 --> 00:10:28.000
+Gopala Krishnan: Okay, so it… you've become a partner to them, in a sense. Once you've enabled a clinic that way, then… I mean, I assume you're not working in a competitive space, but if you were.
+
+00:10:28.000 --> 00:10:36.000
+Gopala Krishnan: Then it is, it's natural that if I'm your partner and I'm enabling your practice, it's natural that my brand is what you will prescribe.
+
+00:10:36.000 --> 00:10:41.000
+Gopala Krishnan: The… the other thing that is, uh… then, of course, you have, uh…
+
+00:10:41.000 --> 00:10:44.000
+Gopala Krishnan: Uh, for the patient.
+
+00:10:44.000 --> 00:10:47.000
+Gopala Krishnan: And the doctor, or anybody else.
+
+00:10:47.000 --> 00:10:55.000
+Gopala Krishnan: There is nothing to learn, there is no learning curve. So long as you are able to click on a link on WhatsApp, that's all that you need to know.
+
+00:11:01.000 --> 00:11:07.000
+Gopala Krishnan: Anything, okay, this is something that pharma companies face. Pharma companies.
+
+00:11:08.000 --> 00:11:10.000
+Gopala Krishnan: If you create…
+
+00:11:10.000 --> 00:11:15.000
+Gopala Krishnan: a training requirement for field reps. It becomes very difficult.
+
+00:11:15.000 --> 00:11:21.000
+Gopala Krishnan: So anything that is created for the field rep, it must be dead simple, as simple as just sharing something.
+
+00:11:21.000 --> 00:11:31.000
+Gopala Krishnan: So, so, so the field rep just has a link, they put in a few, you know, clinic details there, and submit, and the doctor gets a WhatsApp link, and for their system. That's it.
+
+00:11:31.000 --> 00:11:33.000
+Gopala Krishnan: Done.
+
+00:11:37.000 --> 00:11:42.000
+Amit gupta: And then, of course, the other pillar also, you know, the monthly reinforcement, right?
+
+00:11:37.000 --> 00:11:39.000
+Gopala Krishnan: So this is… yeah.
+
+00:11:41.000 --> 00:11:54.000
+Gopala Krishnan: Yeah, reinforcement. Now, it's easy to think that you give a system to somebody, and somebody… it'll start working, and everybody starts using it. That really doesn't happen. There needs to be reinforcement.
+
+00:11:54.000 --> 00:12:01.000
+Gopala Krishnan: The reinforcement also has to be… has to have some value. So, the reinforcement could be through a mini-CME.
+
+00:12:02.000 --> 00:12:06.000
+Gopala Krishnan: or a case study publication series from the Academy, shared on every visit.
+
+00:12:07.000 --> 00:12:09.000
+Pinaki.Mitra: Yeah, that's…
+
+00:12:07.000 --> 00:12:13.000
+Gopala Krishnan: If your dog… if your rep is visiting the doctor once in a month, then every month there is a new.
+
+00:12:13.000 --> 00:12:19.000
+Gopala Krishnan: case study publication, or a mini-CME from the academy to be shared with the doctor.
+
+00:12:21.000 --> 00:12:26.000
+Gopala Krishnan: And every publication will have a last page, which is an advertisement page.
+
+00:12:26.000 --> 00:12:33.000
+Gopala Krishnan: which has brand communication. Now, even there, we are suggesting that the brand communication should be relevant to the mini-CME.
+
+00:12:33.000 --> 00:12:43.000
+Gopala Krishnan: It should be contextual. So it's content which says, look, this… my brand applies to these cases, to this mini CME, in this fashion.
+
+00:12:43.000 --> 00:12:49.000
+Gopala Krishnan: Okay? So, so that builds a lot of value. So, content-driven value.
+
+00:12:49.000 --> 00:12:55.000
+Gopala Krishnan: Okay, at, at every, uh, visit. So this whole, this together.
+
+00:12:55.000 --> 00:13:07.000
+Gopala Krishnan: Becomes your program, and the idea is you first test it out with, let's say, with a thousand clinics, and then see what goes right, because what goes wrong, fix it, and then you can scale it up.
+
+00:12:57.000 --> 00:12:59.000
+Pinaki.Mitra: Good.
+
+00:13:08.000 --> 00:13:13.000
+Pinaki.Mitra: Good, good. Meaningful, I think. Uh, the… particularly the counseling tip continues.
+
+00:13:14.000 --> 00:13:17.000
+Pinaki.Mitra: 60 days monitoring is very good exercise.
+
+00:13:14.000 --> 00:13:16.000
+Gopala Krishnan: Yeah.
+
+00:13:15.000 --> 00:13:17.000
+Amit gupta: Yeah.
+
+00:13:17.000 --> 00:13:19.000
+Gopala Krishnan: Yeah.
+
+00:13:17.000 --> 00:13:24.000
+Pinaki.Mitra: Then, apart from that, you could touch upon, apart from the parental or, uh, counselor expertise.
+
+00:13:24.000 --> 00:13:29.000
+Pinaki.Mitra: What is that other two things you need? That has been well brought out directionally.
+
+00:13:29.000 --> 00:13:31.000
+Gopala Krishnan: Yeah, yeah.
+
+00:13:29.000 --> 00:13:36.000
+Pinaki.Mitra: Then, I like the idea of the mini CME plus cases, because this gives you a continuous, say, updates.
+
+00:13:35.000 --> 00:13:37.000
+Amit gupta: Touchpoint, yeah.
+
+00:13:36.000 --> 00:13:39.000
+Pinaki.Mitra: And touch points, definitely, yeah.
+
+00:13:38.000 --> 00:13:49.000
+Amit gupta: Yeah. So it's not something where, you know, you just enable the clinic service, patient service for the doctor, and you're done with it. So every month when your rep is visiting, they can actually.
+
+00:13:38.000 --> 00:13:40.000
+Gopala Krishnan: Yep.
+
+00:13:39.000 --> 00:13:41.000
+Pinaki.Mitra: So…
+
+00:13:46.000 --> 00:13:48.000
+Gopala Krishnan: Yeah.
+
+00:13:49.000 --> 00:13:56.000
+Amit gupta: share these CMEs, and also give, uh, you know, update doctor in terms of how patients are using, so we can also give some, some, uh.
+
+00:13:57.000 --> 00:14:00.000
+Amit gupta: Reporting interface to the reps, where they can share their data with the rep.
+
+00:13:59.000 --> 00:14:03.000
+Pinaki.Mitra: So, this mini SIM is what you're saying.
+
+00:14:03.000 --> 00:14:05.000
+Amit gupta: Mm-hmm.
+
+00:14:03.000 --> 00:14:07.000
+Pinaki.Mitra: These are the digital, I would say, video shortage.
+
+00:14:07.000 --> 00:14:10.000
+Amit gupta: So, there'll be two parts here. Yeah, go ahead.
+
+00:14:07.000 --> 00:14:09.000
+Gopala Krishnan: No.
+
+00:14:10.000 --> 00:14:15.000
+Gopala Krishnan: The mini CME is a short video plus a print-friendly PDF.
+
+00:14:14.000 --> 00:14:16.000
+Pinaki.Mitra: Okay.
+
+00:14:15.000 --> 00:14:21.000
+Gopala Krishnan: So, you have the option of printing it as well. Okay, the case study publication is a PDF.
+
+00:14:17.000 --> 00:14:19.000
+Pinaki.Mitra: Right.
+
+00:14:21.000 --> 00:14:23.000
+Pinaki.Mitra: Got it.
+
+00:14:22.000 --> 00:14:25.000
+Gopala Krishnan: printable… printable PDF. And…
+
+00:14:23.000 --> 00:14:27.000
+Pinaki.Mitra: So, what would be the frequency? One per month.
+
+00:14:27.000 --> 00:14:29.000
+Gopala Krishnan: One comment.
+
+00:14:27.000 --> 00:14:30.000
+Amit gupta: You can do per one per month, yes.
+
+00:14:29.000 --> 00:14:35.000
+Pinaki.Mitra: Okay. And how would you like to call it? So, any conferences which happened, or globally, or…
+
+00:14:29.000 --> 00:14:31.000
+Gopala Krishnan: One moment, yeah.
+
+00:14:35.000 --> 00:14:40.000
+Pinaki.Mitra: Uh, you have it in India as well. But, uh…
+
+00:14:39.000 --> 00:14:44.000
+Gopala Krishnan: No, we have the titles here, no? Here, see. Uh, we are suggesting… we're suggesting titles.
+
+00:14:41.000 --> 00:14:43.000
+Amit gupta: We've given you the title here.
+
+00:14:41.000 --> 00:14:43.000
+Pinaki.Mitra: I said, my bad, yes, yes, yes.
+
+00:14:45.000 --> 00:14:52.000
+Amit gupta: So your medical can look at this, Pinaki, and if you have some suggestions, or, you know, you want to make some edits, we can do that.
+
+00:14:45.000 --> 00:14:47.000
+Gopala Krishnan: Okay, we can…
+
+00:14:52.000 --> 00:14:59.000
+Pinaki.Mitra: Sure, so what I will do, I can run it down with some ophthalmologist, pediatric hotel, and check if that suits their interest or not, or need or not.
+
+00:14:56.000 --> 00:14:58.000
+Gopala Krishnan: Yeah.
+
+00:14:59.000 --> 00:15:01.000
+Amit gupta: Yes.
+
+00:14:59.000 --> 00:15:01.000
+Gopala Krishnan: Yeah, yeah.
+
+00:15:00.000 --> 00:15:06.000
+Pinaki.Mitra: So, once that is established, maybe we can re-look into it, if it is… if it was as it is, or maybe there are some changes.
+
+00:15:03.000 --> 00:15:05.000
+Gopala Krishnan: Yes.
+
+00:15:05.000 --> 00:15:07.000
+Amit gupta: Sure.
+
+00:15:06.000 --> 00:15:12.000
+Gopala Krishnan: Absolutely, absolutely. And, um, this is many CMEs. There was a case study also, right?
+
+00:15:12.000 --> 00:15:14.000
+Amit gupta: Yes.
+
+00:15:12.000 --> 00:15:14.000
+Pinaki.Mitra: Hello.
+
+00:15:12.000 --> 00:15:17.000
+Gopala Krishnan: Yeah, case publications. Each case study, uh, each publication will have 3 cases.
+
+00:15:17.000 --> 00:15:20.000
+Pinaki.Mitra: Okay. Yeah.
+
+00:15:22.000 --> 00:15:24.000
+Pinaki.Mitra: How's the month going?
+
+00:15:26.000 --> 00:15:28.000
+Pinaki.Mitra: Good.
+
+00:15:26.000 --> 00:15:29.000
+Gopala Krishnan: And all this will be from the Academy.
+
+00:15:30.000 --> 00:15:34.000
+Gopala Krishnan: It will be Academy branded and Academy certified content.
+
+00:15:34.000 --> 00:15:41.000
+Amit gupta: And then, of course, you get a lot of measurement and metrics to review how the program is progressing in terms of adoption.
+
+00:15:36.000 --> 00:15:38.000
+Pinaki.Mitra: Yeah.
+
+00:15:41.000 --> 00:15:48.000
+Amit gupta: Uh, clinics, number of clinics onboarded, number of, you know, active shareings, uh, then, uh, you know, patient engagement.
+
+00:15:41.000 --> 00:15:43.000
+Pinaki.Mitra: Okay.
+
+00:15:48.000 --> 00:15:50.000
+Pinaki.Mitra: Awesome.
+
+00:15:48.000 --> 00:15:53.000
+Amit gupta: Uh, how many clinics shared with patients? How many downloads happened to QR codes in clinics.
+
+00:15:53.000 --> 00:16:04.000
+Amit gupta: Uh, you know, what kind of red flags are getting noticed. Of course, we'll not share any patient identifiable information, but we'll give you a lot of aggregated data that you can actually track and see how your program is performing.
+
+00:16:03.000 --> 00:16:10.000
+Gopala Krishnan: No, and also one important thing, um, here, uh, which is the comfort factor for the doctor.
+
+00:16:10.000 --> 00:16:20.000
+Gopala Krishnan: The system does not retain patient identifiable information. Once the patient does a check-in or fills a form, and immediately, let's say, the report goes to the doctor by email.
+
+00:16:14.000 --> 00:16:16.000
+Pinaki.Mitra: Okay.
+
+00:16:20.000 --> 00:16:25.000
+Gopala Krishnan: Um, the patient identifiable information is wiped from the system.
+
+00:16:21.000 --> 00:16:23.000
+Pinaki.Mitra: Excellent.
+
+00:16:25.000 --> 00:16:27.000
+Pinaki.Mitra: Got it.
+
+00:16:26.000 --> 00:16:28.000
+Gopala Krishnan: Yeah.
+
+00:16:35.000 --> 00:16:38.000
+Amit gupta: Yeah, so I think this is, so…
+
+00:16:37.000 --> 00:16:39.000
+Pinaki.Mitra: This is summarized, actually, yeah.
+
+00:16:38.000 --> 00:16:40.000
+Amit gupta: Yeah, this is just a summary of the whole program.
+
+00:16:38.000 --> 00:16:40.000
+Gopala Krishnan: Yeah, yeah.
+
+00:16:40.000 --> 00:16:46.000
+Pinaki.Mitra: No, good, I think, uh, makes sense to me. So, let's go ahead and talk about, like.
+
+00:16:46.000 --> 00:16:49.000
+Pinaki.Mitra: What would be the WhatsApp link?
+
+00:16:49.000 --> 00:16:51.000
+Pinaki.Mitra: Content.
+
+00:16:51.000 --> 00:16:56.000
+Pinaki.Mitra: You said in the beginning, that something on ScienceBit can be shared in WhatsApp.
+
+00:16:54.000 --> 00:17:00.000
+Gopala Krishnan: Yeah. We had the… did we give a… did we give the list of the patient education videos also, Amit?
+
+00:17:00.000 --> 00:17:03.000
+Amit gupta: No, uh, we give some indicative list.
+
+00:17:01.000 --> 00:17:03.000
+Gopala Krishnan: I'll, uh…
+
+00:17:03.000 --> 00:17:07.000
+Pinaki.Mitra: Give me one or two, just in WhatsApp, so that I can get a reference of what…
+
+00:17:03.000 --> 00:17:05.000
+Amit gupta: Uh, but…
+
+00:17:07.000 --> 00:17:16.000
+Pinaki.Mitra: you're talking about is marrying the thought or not. So just to have a quick brief about… so that even I can also share some contents which are.
+
+00:17:10.000 --> 00:17:12.000
+Gopala Krishnan: Yeah, yeah, okay.
+
+00:17:16.000 --> 00:17:22.000
+Pinaki.Mitra: On those lines, probably. But I got it completely patient, uh, education, and.
+
+00:17:19.000 --> 00:17:21.000
+Gopala Krishnan: Okay.
+
+00:17:21.000 --> 00:17:23.000
+Gopala Krishnan: Yeah.
+
+00:17:22.000 --> 00:17:25.000
+Pinaki.Mitra: Uh, the best part is the…
+
+00:17:24.000 --> 00:17:26.000
+Gopala Krishnan: Periodic check-ins.
+
+00:17:25.000 --> 00:17:30.000
+Pinaki.Mitra: Pedroid check-ins, and that's where I think no doctor is doing that, and…
+
+00:17:26.000 --> 00:17:28.000
+Gopala Krishnan: You don't…
+
+00:17:30.000 --> 00:17:35.000
+Pinaki.Mitra: Even today, even if you roll it out, I feel that will be a problem for them to even, say, score.
+
+00:17:36.000 --> 00:17:43.000
+Pinaki.Mitra: And understand the score, what it is, because they won't do that. So ideally my team has to get that, but we'll look into it. Let's… give me some time, I'll look into it.
+
+00:17:42.000 --> 00:17:44.000
+Gopala Krishnan: Yeah.
+
+00:17:43.000 --> 00:17:46.000
+Pinaki.Mitra: So, quickly, that will be very important.
+
+00:17:45.000 --> 00:17:55.000
+Gopala Krishnan: See, the focus of the periodic check-in is less about red flags. If there are any red flags, then obviously, I mean, the doctor will get an email report.
+
+00:17:55.000 --> 00:18:00.000
+Gopala Krishnan: By the system, it'll get… it'll automatically email the report to the doctor.
+
+00:17:56.000 --> 00:17:58.000
+Pinaki.Mitra: Right.
+
+00:17:58.000 --> 00:18:04.000
+Pinaki.Mitra: somewhere… yeah, somewhere I want one help here. Maybe it is in the WhatsApp or in the…
+
+00:18:02.000 --> 00:18:04.000
+Gopala Krishnan: Yeah.
+
+00:18:05.000 --> 00:18:09.000
+Pinaki.Mitra: See, tech verify track, teach verified track, man. The…
+
+00:18:09.000 --> 00:18:10.000
+Gopala Krishnan: Huh.
+
+00:18:10.000 --> 00:18:12.000
+Pinaki.Mitra: online programs.
+
+00:18:12.000 --> 00:18:17.000
+Pinaki.Mitra: Somewhere you can bring up the role of atropine 0.01. It is not that because I have the drug.
+
+00:18:18.000 --> 00:18:26.000
+Pinaki.Mitra: It is because this is revolutionary, this is replacing the specs from… or maybe saying add on to the specs, this gives a cumulative and a better effect.
+
+00:18:18.000 --> 00:18:20.000
+Gopala Krishnan: Okay.
+
+00:18:26.000 --> 00:18:31.000
+Pinaki.Mitra: So, that role of atropine is very, very… I would say, uh, it's poor.
+
+00:18:31.000 --> 00:18:33.000
+Gopala Krishnan: Atroping centric. Okay.
+
+00:18:31.000 --> 00:18:40.000
+Pinaki.Mitra: Uh, it's poorly being reflected, and many doctors don't practice it even after the guidelines are in place.
+
+00:18:40.000 --> 00:18:48.000
+Pinaki.Mitra: So, that might trigger a kind of an event as a… probably my opinion, I've heard of taking classes, but never ever I drop.
+
+00:18:41.000 --> 00:18:43.000
+Gopala Krishnan: Okay.
+
+00:18:49.000 --> 00:18:50.000
+Gopala Krishnan: Yeah, okay.
+
+00:18:49.000 --> 00:18:52.000
+Pinaki.Mitra: So, somewhere that eye drop factor can come in.
+
+00:18:52.000 --> 00:18:58.000
+Gopala Krishnan: Okay. Take care. So, so here's what I'll, uh, I think that's a next step what we'll do.
+
+00:18:53.000 --> 00:18:55.000
+Pinaki.Mitra: In both cases.
+
+00:18:58.000 --> 00:19:02.000
+Gopala Krishnan: Um, what are the patient education topics?
+
+00:18:58.000 --> 00:19:01.000
+Pinaki.Mitra: Okay.
+
+00:19:02.000 --> 00:19:07.000
+Gopala Krishnan: In the videos, in the microsite, and what will they cover, and why?
+
+00:19:04.000 --> 00:19:06.000
+Pinaki.Mitra: Right.
+
+00:19:07.000 --> 00:19:11.000
+Amit gupta: So we have some topics that we've given here, yeah.
+
+00:19:07.000 --> 00:19:10.000
+Gopala Krishnan: Second, what… second?
+
+00:19:10.000 --> 00:19:27.000
+Gopala Krishnan: Second, the check-ins, the check-in forms, what will they cover? What does it look like? Yeah, because the idea of the check-in is not to make it complicated, but to see if there are any red flags, and to ensure adherence. It is a reminder for… it's that, uh, like your monthly doctor checkpoint.
+
+00:19:13.000 --> 00:19:16.000
+Pinaki.Mitra: How does it look like composition gap?
+
+00:19:19.000 --> 00:19:21.000
+Pinaki.Mitra: Yeah.
+
+00:19:28.000 --> 00:19:30.000
+Gopala Krishnan: That is your every 60 days checkpoint with the patient.
+
+00:19:31.000 --> 00:19:33.000
+Pinaki.Mitra: You're welcome.
+
+00:19:31.000 --> 00:19:41.000
+Gopala Krishnan: Okay, so… so the… so that… that is… I'll also send you the list of mini-CME and case study articles, and how they're addressing.
+
+00:19:41.000 --> 00:19:45.000
+Gopala Krishnan: Atropine awareness. Which ones of them are addressing atropine awareness, and how?
+
+00:19:46.000 --> 00:19:48.000
+Gopala Krishnan: I'll send you that.
+
+00:19:47.000 --> 00:19:55.000
+Pinaki.Mitra: Sure. I think that will be much help, and uh… this discussion was indeed really helpful to me to concisely understand what it is.
+
+00:19:55.000 --> 00:20:00.000
+Pinaki.Mitra: Now, I'll look forward to connect once more, and uh…
+
+00:19:59.000 --> 00:20:02.000
+Gopala Krishnan: Yes. This…
+
+00:20:00.000 --> 00:20:03.000
+Pinaki.Mitra: Very soon, maybe, when you are done.
+
+00:20:03.000 --> 00:20:09.000
+Gopala Krishnan: Yeah, just a couple of days I will send you, because much of the work was already done, so I just will compile it and send it to you.
+
+00:20:03.000 --> 00:20:05.000
+Pinaki.Mitra: I can get… yeah.
+
+00:20:06.000 --> 00:20:08.000
+Pinaki.Mitra: Sure, no worries, no worries.
+
+00:20:08.000 --> 00:20:13.000
+Pinaki.Mitra: No worries. So, I'm looking for everything to start from month of first week of April.
+
+00:20:14.000 --> 00:20:16.000
+Pinaki.Mitra: We still have a good amount of time.
+
+00:20:14.000 --> 00:20:16.000
+Gopala Krishnan: Okay, that's…
+
+00:20:16.000 --> 00:20:24.000
+Pinaki.Mitra: So, we can… meanwhile… meanwhile, we can work on the backend processes, because that might take 2 to 3 years, 3 days, 3 months.
+
+00:20:16.000 --> 00:20:18.000
+Gopala Krishnan: That's typed.
+
+00:20:24.000 --> 00:20:29.000
+Gopala Krishnan: April is actually quite aggressive. Uh, Amit? Amit?
+
+00:20:27.000 --> 00:20:32.000
+Pinaki.Mitra: Yeah. We will not change everything, we will not change everything, we can do it in phased manner, so…
+
+00:20:29.000 --> 00:20:31.000
+Amit gupta: Yeah, yeah.
+
+00:20:32.000 --> 00:20:40.000
+Amit gupta: Yeah, yeah, I think we should be able to maybe start with, uh, doctor CME, mini-CME education, and then roll out the screening, maybe, uh, you know, down the road.
+
+00:20:32.000 --> 00:20:34.000
+Gopala Krishnan: Okay.
+
+00:20:33.000 --> 00:20:35.000
+Pinaki.Mitra: Since I…
+
+00:20:39.000 --> 00:20:44.000
+Gopala Krishnan: See, the issue is not that, Amit. It's, uh, see the, uh…
+
+00:20:44.000 --> 00:20:54.000
+Gopala Krishnan: The tech and all that is easy, but the academy permissions and academy certifications, etc, you know they take a certain amount of time.
+
+00:20:46.000 --> 00:20:48.000
+Pinaki.Mitra: Okay.
+
+00:20:51.000 --> 00:20:53.000
+Pinaki.Mitra: Right.
+
+00:20:52.000 --> 00:21:08.000
+Amit gupta: So, yeah, so I think what the challenge, Pinaki here, as I told you when we met, you know, we are doing a lot of work with IAP, we are exclusive partners with IAP. But here, if you want an ophthalmology association to be onboarded, we will have to kind of, you know, make those inquiries and engage with someone.
+
+00:21:00.000 --> 00:21:02.000
+Pinaki.Mitra: Hmm…
+
+00:21:08.000 --> 00:21:19.000
+Amit gupta: So that may take a little while, but we can start, you know, once we have a kind of a go-ahead from you that, you know, we'd like to move forward, then we can start that.
+
+00:21:08.000 --> 00:21:10.000
+Pinaki.Mitra: Okay.
+
+00:21:10.000 --> 00:21:12.000
+Pinaki.Mitra: Okay.
+
+00:21:18.000 --> 00:21:25.000
+Gopala Krishnan: But let me ask you a question. Aren't pediatric ophthalmologists pediatricians? They're not members of IEP. Does IEP have a.
+
+00:21:24.000 --> 00:21:26.000
+Pinaki.Mitra: Hmm.
+
+00:21:25.000 --> 00:21:28.000
+Amit gupta: No, no. Yeah, yeah, I see.
+
+00:21:26.000 --> 00:21:28.000
+Gopala Krishnan: Okay, it's a separate thing, okay.
+
+00:21:27.000 --> 00:21:34.000
+Pinaki.Mitra: That's a valid question, and that is a valid question, and if you look at the patient journey, there's a small arm of, say, diabetic.
+
+00:21:32.000 --> 00:21:34.000
+Gopala Krishnan: Huh.
+
+00:21:35.000 --> 00:21:42.000
+Pinaki.Mitra: And, sorry, uh, petitions, but mostly, you know, when it comes to opt out, it's pretty defined.
+
+00:21:35.000 --> 00:21:37.000
+Gopala Krishnan: Okay.
+
+00:21:39.000 --> 00:21:41.000
+Gopala Krishnan: Okay.
+
+00:21:42.000 --> 00:21:44.000
+Gopala Krishnan: Understood, okay.
+
+00:21:43.000 --> 00:21:48.000
+Pinaki.Mitra: It doesn't require ancient's viewpoints to.
+
+00:21:48.000 --> 00:21:50.000
+Gopala Krishnan: Understood.
+
+00:21:48.000 --> 00:21:55.000
+Pinaki.Mitra: Come and meet the… refer to our doctor. But ask me for a problem here, if somebody's not able to see, they will definitely go to our…
+
+00:21:51.000 --> 00:21:53.000
+Gopala Krishnan: Understood.
+
+00:21:55.000 --> 00:21:58.000
+Pinaki.Mitra: Manifestations are pretty, I would say, defined here.
+
+00:21:57.000 --> 00:21:59.000
+Gopala Krishnan: Understood. Okay.
+
+00:21:58.000 --> 00:22:00.000
+Pinaki.Mitra: Very clear that where I have to go.
+
+00:22:01.000 --> 00:22:04.000
+Gopala Krishnan: Okay. Okay, fine. Fine.
+
+00:22:02.000 --> 00:22:10.000
+Amit gupta: Yeah, yeah. I think dentistry and ophthalmology, some of these are kind of standalone specialities. They don't really have a pediatric.
+
+00:22:09.000 --> 00:22:17.000
+Pinaki.Mitra: Yeah. So, in this, uh, just, sorry, I just, uh, made you… so there is a…
+
+00:22:10.000 --> 00:22:12.000
+Amit gupta: Uh, you know…
+
+00:22:17.000 --> 00:22:21.000
+Pinaki.Mitra: this on WhatsApp, continuous reminder, 60 days reminder.
+
+00:22:19.000 --> 00:22:21.000
+Amit gupta: Mm-hmm.
+
+00:22:21.000 --> 00:22:28.000
+Pinaki.Mitra: What do you think, what should be the content on that? So that… I think we have to discuss with some pediatricians or pediatriculs to understand.
+
+00:22:29.000 --> 00:22:34.000
+Pinaki.Mitra: the… what would they like to see? What would they like to check? Whether everything is under process or not.
+
+00:22:34.000 --> 00:22:36.000
+Pinaki.Mitra: I wanted to check on that.
+
+00:22:36.000 --> 00:22:42.000
+Gopala Krishnan: See, we will put together a set of red flags, okay, when I send you the content compilation.
+
+00:22:43.000 --> 00:22:48.000
+Gopala Krishnan: The… what the check-ins will check for, in terms of what are the red flags it will check for and report.
+
+00:22:48.000 --> 00:22:54.000
+Gopala Krishnan: Okay, that should… that you can then check with an ophthalmologist if that is making sense.
+
+00:22:53.000 --> 00:22:59.000
+Pinaki.Mitra: That's… that's good, that's good. I think that we can, uh, make a very comprehensive and…
+
+00:22:55.000 --> 00:22:57.000
+Gopala Krishnan: Okay, yeah. Yeah.
+
+00:22:59.000 --> 00:23:07.000
+Pinaki.Mitra: So, you can share me those details, the small video clips that you said.
+
+00:22:59.000 --> 00:23:01.000
+Gopala Krishnan: Yeah.
+
+00:23:01.000 --> 00:23:03.000
+Gopala Krishnan: Okay.
+
+00:23:07.000 --> 00:23:12.000
+Pinaki.Mitra: And, uh, red flags of that, what are the things you can integrate in the…
+
+00:23:12.000 --> 00:23:14.000
+Gopala Krishnan: Okay.
+
+00:23:12.000 --> 00:23:17.000
+Pinaki.Mitra: Regular check, so we can start. And regarding that, uh, online CMEs, or…
+
+00:23:18.000 --> 00:23:20.000
+Pinaki.Mitra: But…
+
+00:23:18.000 --> 00:23:27.000
+Amit gupta: No, yeah, we'll send you, Pinaki. So I think we have taken notes, yeah, so list of patient topics, what will be the questions in check-in, and what kind of red flags will they, you know, translate to.
+
+00:23:20.000 --> 00:23:22.000
+Gopala Krishnan: We'll send you a list.
+
+00:23:26.000 --> 00:23:29.000
+Pinaki.Mitra: We… sorry, you're based in Mumbai, right, Amit?
+
+00:23:29.000 --> 00:23:31.000
+Amit gupta: Yes, yes. So, I mentioned…
+
+00:23:30.000 --> 00:23:34.000
+Pinaki.Mitra: We can catch up, yeah, we can catch up, so…
+
+00:23:33.000 --> 00:23:39.000
+Amit gupta: So I actually, uh, you know, divvy up my time in Mumbai and Chandigarhuna, my hometown, uh, so…
+
+00:23:38.000 --> 00:23:43.000
+Pinaki.Mitra: It's okay, anyone can, um, your colleague, anyone who is there.
+
+00:23:40.000 --> 00:23:44.000
+Amit gupta: Yeah, yeah, so… so we can meet up, yeah, yeah, absolutely, absolutely.
+
+00:23:40.000 --> 00:23:42.000
+Gopala Krishnan: Yeah, cap, tap.
+
+00:23:43.000 --> 00:23:47.000
+Pinaki.Mitra: So that we can discuss and close on few things much faster.
+
+00:23:43.000 --> 00:23:45.000
+Gopala Krishnan: Absolutely. Yeah.
+
+00:23:47.000 --> 00:23:49.000
+Amit gupta: Sure.
+
+00:23:47.000 --> 00:23:49.000
+Gopala Krishnan: Take it. No problem.
+
+00:23:47.000 --> 00:23:50.000
+Pinaki.Mitra: Just to get us connect here itself took 2 days.
+
+00:23:50.000 --> 00:23:54.000
+Pinaki.Mitra: Because I was just getting a little busy with other meetings at the same time.
+
+00:23:54.000 --> 00:24:01.000
+Pinaki.Mitra: So, but then this is one thing which I wanted to have a clear discussion with you, because for me, what I've understood is pretty fine, pretty simple, but then…
+
+00:23:54.000 --> 00:23:56.000
+Gopala Krishnan: Okay.
+
+00:24:01.000 --> 00:24:08.000
+Pinaki.Mitra: What was there in your mind I could understand that how the… how… the way you have navigated.
+
+00:24:04.000 --> 00:24:06.000
+Amit gupta: Hmm.
+
+00:24:08.000 --> 00:24:11.000
+Pinaki.Mitra: And understood the problem statement.
+
+00:24:11.000 --> 00:24:16.000
+Pinaki.Mitra: So… I think let's look into it, going forward. I'm pretty interested, let's see, yeah.
+
+00:24:15.000 --> 00:24:17.000
+Gopala Krishnan: Sure.
+
+00:24:16.000 --> 00:24:18.000
+Amit gupta: Yeah, thank you.
+
+00:24:17.000 --> 00:24:22.000
+Pinaki.Mitra: And gradually, maybe as a part of Phase 2, we can look into the priorities as well, going forward.
+
+00:24:18.000 --> 00:24:19.000
+Gopala Krishnan: Thank you.
+
+00:24:23.000 --> 00:24:24.000
+Amit gupta: Yeah.
+
+00:24:23.000 --> 00:24:25.000
+Gopala Krishnan: Okay. Okay.
+
+00:24:25.000 --> 00:24:27.000
+Gopala Krishnan: Done.
+
+00:24:25.000 --> 00:24:29.000
+Amit gupta: Alright, thank you so much. Thank you for your time. Bye, thank you.
+
+00:24:26.000 --> 00:24:29.000
+Pinaki.Mitra: Thank you, thank you. Thank you. Bye. Bye.
+
+00:24:27.000 --> 00:24:29.000
+Gopala Krishnan: Thank you. Thank you, bye.
+

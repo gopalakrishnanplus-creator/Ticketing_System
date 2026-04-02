@@ -1,0 +1,1649 @@
+WEBVTT
+
+00:00:55.000 --> 00:00:57.000
+rambhad: Good morning in progress, progress, hop in.
+
+00:00:59.000 --> 00:01:02.000
+Anuj: Hi, good morning, everyone.
+
+00:01:46.000 --> 00:01:48.000
+Amit gupta: Beautiful.
+
+00:01:57.000 --> 00:01:59.000
+Amit gupta: Hi, Dr. Sripriya.
+
+00:02:01.000 --> 00:02:03.000
+rambhad: Hi, good morning.
+
+00:02:01.000 --> 00:02:03.000
+Amit gupta: The new good one?
+
+00:02:05.000 --> 00:02:07.000
+rambhad: Can you hear it?
+
+00:02:05.000 --> 00:02:07.000
+Amit gupta: I…
+
+00:02:09.000 --> 00:02:11.000
+Amit gupta: Hello?
+
+00:02:09.000 --> 00:02:11.000
+rambhad: Anyone can hear me?
+
+00:02:11.000 --> 00:02:13.000
+Dr Sripriya S: Hey, can you hear me?
+
+00:02:11.000 --> 00:02:15.000
+Amit gupta: Yeah, yeah, yeah, I can hear you now much better, clear, please.
+
+00:02:15.000 --> 00:02:17.000
+Amit gupta: Hi, rambhad.
+
+00:02:16.000 --> 00:02:19.000
+rambhad: Yeah. I don't know, I don't know.
+
+00:02:22.000 --> 00:02:24.000
+Amit gupta: I guess we're waiting for Rajit to join.
+
+00:02:30.000 --> 00:02:32.000
+Amit gupta: Hello?
+
+00:02:40.000 --> 00:02:43.000
+Dr Sripriya S: Yeah, let's just wait for 2 minutes, yeah.
+
+00:02:43.000 --> 00:02:45.000
+Amit gupta: Yeah, sure.
+
+00:03:26.000 --> 00:03:28.000
+rambhad: Ajit should join any moment.
+
+00:03:29.000 --> 00:03:31.000
+Amit gupta: Yeah, yeah, no worries. That's fine.
+
+00:03:35.000 --> 00:03:37.000
+Amit gupta: Hi, Ajit, good morning.
+
+00:03:42.000 --> 00:03:44.000
+Ajit Nair: Can you hear me?
+
+00:03:43.000 --> 00:03:45.000
+Amit gupta: Yeah, we can hear you now.
+
+00:03:46.000 --> 00:03:48.000
+Ajit Nair: Alright. How are you, Amit?
+
+00:03:47.000 --> 00:03:50.000
+Amit gupta: Good, how are you?
+
+00:03:50.000 --> 00:03:52.000
+Ajit Nair: So far, so good.
+
+00:03:51.000 --> 00:03:54.000
+Amit gupta: Yeah, so, uh…
+
+00:03:54.000 --> 00:04:00.000
+Amit gupta: So you, you're still with the MSG part of business, right? Not with Merck, or have you…
+
+00:04:00.000 --> 00:04:02.000
+Amit gupta: Moved.
+
+00:04:02.000 --> 00:04:05.000
+Ajit Nair: No, no, MSD, uh… Merck is known as MSD in India.
+
+00:04:06.000 --> 00:04:09.000
+Amit gupta: Oh, I thought there were two entities, right? Merck India also, and MSG, both.
+
+00:04:08.000 --> 00:04:12.000
+Ajit Nair: No, so there is… there is another, there is another company called Merck, which is not…
+
+00:04:12.000 --> 00:04:14.000
+Ajit Nair: The same company as this mark.
+
+00:04:14.000 --> 00:04:15.000
+Amit gupta: Yeah, yeah.
+
+00:04:14.000 --> 00:04:16.000
+Ajit Nair: That is a German… that's a German company.
+
+00:04:16.000 --> 00:04:20.000
+Amit gupta: True, true, I know, I know the background, but they both originated from the same.
+
+00:04:20.000 --> 00:04:22.000
+Amit gupta: Kind of… genesis.
+
+00:04:21.000 --> 00:04:25.000
+Ajit Nair: Uh-huh, that was… that was almost 200 years ago, yes.
+
+00:04:24.000 --> 00:04:28.000
+Amit gupta: Yeah, yeah, but, uh, yeah, so this is the American Merck, right? The MSD.
+
+00:04:28.000 --> 00:04:30.000
+Ajit Nair: Yes, yes, yes.
+
+00:04:29.000 --> 00:04:35.000
+Amit gupta: Oh, great. So, Jeet, I also invited GK on the call.
+
+00:04:35.000 --> 00:04:37.000
+Amit gupta: So, not the two of us.
+
+00:04:36.000 --> 00:04:37.000
+gk: I edit.
+
+00:04:36.000 --> 00:04:38.000
+Ajit Nair: Hi, hi. Hi, GK.
+
+00:04:39.000 --> 00:04:41.000
+gk: Bye.
+
+00:04:39.000 --> 00:04:43.000
+Amit gupta: And, uh, I see, uh, a lot of new faces. I remember meeting, uh.
+
+00:04:42.000 --> 00:04:44.000
+Ajit Nair: Yes.
+
+00:04:44.000 --> 00:04:45.000
+Amit gupta: You know, uh…
+
+00:04:46.000 --> 00:04:52.000
+Amit gupta: DL a couple of years ago, I don't see her hair, but maybe a quick round of introduction? Should I…
+
+00:04:53.000 --> 00:04:55.000
+Amit gupta: just introduce myself and GK, and then we can…
+
+00:04:56.000 --> 00:04:58.000
+Ajit Nair: I think makes sense, makes sense completely.
+
+00:04:58.000 --> 00:05:04.000
+Amit gupta: So, hi, so my name is Amit, and uh, you know, Ajit and I have kind of worked together in the past of.
+
+00:05:05.000 --> 00:05:07.000
+Amit gupta: You know, a few years ago, when it was with Sanofi.
+
+00:05:07.000 --> 00:05:20.000
+Amit gupta: Uh, as well. And, uh, currently, you know, we work with IAP, uh, you know, extensively. We have an exclusive license with IAP to market their digital services and, you know, and maintain and grow that portfolio.
+
+00:05:21.000 --> 00:05:29.000
+Amit gupta: And also, you know, since we last met Ajit, we've also added SAPA to our, uh, you know, to our organization list.
+
+00:05:29.000 --> 00:05:32.000
+Amit gupta: So we work with South Asia Pediatric Association as well.
+
+00:05:32.000 --> 00:05:43.000
+Amit gupta: And we have kind of developed a lot of innovative and exciting formats in which education can be disseminated. I think we… this meeting is essentially to kind of.
+
+00:05:32.000 --> 00:05:34.000
+Ajit Nair: Mhm.
+
+00:05:43.000 --> 00:05:51.000
+Amit gupta: Understand what your, uh, you know, which stage of, uh, you know, brand evolution and challenges that you have, and see, you know, if we can find solutions.
+
+00:05:51.000 --> 00:05:56.000
+Amit gupta: I will leave GK to introduce quickly himself, and then we can go through.
+
+00:05:56.000 --> 00:05:58.000
+Amit gupta: Uh, the other members on the…
+
+00:05:58.000 --> 00:06:00.000
+Amit gupta: on the call. Do you educate?
+
+00:05:59.000 --> 00:06:07.000
+gk: Yeah, hi. Hi, um, I basically used to run technology companies, um, and for the last 10 years, I've been in public health.
+
+00:06:07.000 --> 00:06:12.000
+gk: And Inditech is, uh, basically focused on improving, uh.
+
+00:06:12.000 --> 00:06:16.000
+gk: Uh, the capacity of pediatric clinics to, um.
+
+00:06:16.000 --> 00:06:19.000
+gk: Uh, detect special conditions early.
+
+00:06:19.000 --> 00:06:28.000
+gk: Um, and for which we have two legs. One is the education for pediatricians, which we do in partnership with the academies, where.
+
+00:06:28.000 --> 00:06:35.000
+gk: Both for IAP and SAPA, we are the exclusive education partners, digital, as well as, and services.
+
+00:06:35.000 --> 00:06:38.000
+gk: And the second part of capacity building we are doing.
+
+00:06:38.000 --> 00:06:44.000
+gk: is we have worked with the academies to create a set of tools and solutions which pediatricians can use in the clinics.
+
+00:06:44.000 --> 00:06:49.000
+gk: And this is something that we are taking to pediatric clinics starting this year.
+
+00:06:56.000 --> 00:07:02.000
+Ajit Nair: Okay. So, uh, I think, uh, from my team, uh, I have a fairly long, uh, list of people.
+
+00:07:02.000 --> 00:07:06.000
+Ajit Nair: Uh, I am joined by, uh, Dr. Gautam.
+
+00:07:06.000 --> 00:07:11.000
+Ajit Nair: Dr. Gautam leads our medical affairs team, uh, for vaccines.
+
+00:07:11.000 --> 00:07:15.000
+Ajit Nair: Um, and Sheetal works in the marketing team with me.
+
+00:07:15.000 --> 00:07:19.000
+Ajit Nair: Uh, Sripriya also, uh, works in the medical team with Gotham.
+
+00:07:19.000 --> 00:07:22.000
+Ajit Nair: Maybe I'll leave to introduce themselves, uh, in a minute.
+
+00:07:25.000 --> 00:07:29.000
+Ajit Nair: Sheetal, you can start, or Watam can start, depending on whoever is available.
+
+00:07:29.000 --> 00:07:40.000
+Sheetal Narkar: Yeah, so, hello everyone. My name is Sheetal Narkar. I take care of the HPV portfolio, you know, from a marketing standpoint, the pediatric franchise.
+
+00:07:40.000 --> 00:07:47.000
+Sheetal Narkar: And I work with Ajit, I'm in Ajit's team, and uh… yeah, so looking forward for this discussion. Over to you, Gautam.
+
+00:07:49.000 --> 00:07:54.000
+rambhad: Yeah, thanks, Sheetal. Myself, Gautam, I work with the medical team at MSD.
+
+00:07:54.000 --> 00:07:57.000
+rambhad: And I would let my colleague introduce herself.
+
+00:07:57.000 --> 00:08:06.000
+rambhad: Hi, uh, everyone, I'm Dr. Sripriya. I'm also in the medical team and Dr. Gautam's team, so I'm looking at the pediatric, uh, part of the HPV vaccination.
+
+00:08:09.000 --> 00:08:11.000
+Amit gupta: Oh, great, uh…
+
+00:08:11.000 --> 00:08:15.000
+Amit gupta: So, Ajit, uh, let's kind of kick this off in terms of, uh…
+
+00:08:16.000 --> 00:08:23.000
+Amit gupta: I know you have a wide portfolio, you have, uh… I remember, you know, HPV, of course, Gladysill is the… is a market leader.
+
+00:08:23.000 --> 00:08:27.000
+Amit gupta: But we also have, uh, varicella, rotavirus, a bunch of other vaccines.
+
+00:08:27.000 --> 00:08:36.000
+Amit gupta: So, if you can just set the ground in terms of are we looking specifically for HPV, or you want to have a broader discussion for entire pediatric range?
+
+00:08:36.000 --> 00:08:38.000
+Amit gupta: Uh, or if there's something that…
+
+00:08:36.000 --> 00:08:44.000
+Ajit Nair: No, so we are… we are keen only to do with HPV, because the other vaccines are not on focus as much as HPV is.
+
+00:08:43.000 --> 00:08:45.000
+Amit gupta: Okay.
+
+00:08:44.000 --> 00:08:51.000
+Ajit Nair: So, obviously, uh, you know, everything and anything that we have to do will be around the HPV franchise only.
+
+00:08:52.000 --> 00:08:54.000
+Amit gupta: Okay.
+
+00:08:53.000 --> 00:09:01.000
+Ajit Nair: In fact, just to give you a little bit of a context of what we have done this year, and maybe Sheetal and Bhautam can add, and Sripla can add.
+
+00:09:01.000 --> 00:09:06.000
+Ajit Nair: uh, is that we have associated with IAP, uh, you know, the AHA.
+
+00:09:06.000 --> 00:09:08.000
+Ajit Nair: the Adolescent Health Academy of IAP.
+
+00:09:08.000 --> 00:09:12.000
+Ajit Nair: Uh, and sort of created some train-the-trainer module.
+
+00:09:13.000 --> 00:09:17.000
+Ajit Nair: We have also met up with Dr. Neela Mohan, who is the president-elect.
+
+00:09:17.000 --> 00:09:22.000
+Ajit Nair: Uh, and we have definitely, uh, you know, we are in the process of.
+
+00:09:22.000 --> 00:09:29.000
+Ajit Nair: Formulating, uh, you know, modules that we will be able to cascade downwards to the… to the…
+
+00:09:29.000 --> 00:09:32.000
+Ajit Nair: you know, greater members of IAP at large.
+
+00:09:32.000 --> 00:09:38.000
+Ajit Nair: Uh, I think that is one place where, uh, where I think dIAP will have a role to play.
+
+00:09:38.000 --> 00:09:44.000
+Ajit Nair: Uh, in terms of cascade-down meetings, etc, that you, you know, definitely want to…
+
+00:09:44.000 --> 00:09:47.000
+Ajit Nair: Uh, you know, want to get onboarded with…
+
+00:09:47.000 --> 00:09:53.000
+Ajit Nair: But, uh, as I said, this is still, uh, you know, something which is under plan, and we wanted to sort of.
+
+00:09:53.000 --> 00:09:56.000
+Ajit Nair: Sweaty.
+
+00:09:56.000 --> 00:09:58.000
+Ajit Nair: have that discussion with Dr. Neelam WAN.
+
+00:09:59.000 --> 00:10:03.000
+Ajit Nair: Uh, and take it forward. Uh, we've had one round of discussion with her.
+
+00:10:03.000 --> 00:10:06.000
+Ajit Nair: Uh, I think the, the…
+
+00:10:06.000 --> 00:10:12.000
+Ajit Nair: Uh, you know, final plan in terms of the numbers of meetings, numbers of people, numbers of…
+
+00:10:12.000 --> 00:10:14.000
+Ajit Nair: Doctors that we want to engage.
+
+00:10:14.000 --> 00:10:22.000
+Ajit Nair: Uh, I think all that, uh, needs to be… needs to be worked out, uh, before we sort of reach out to her, and that…
+
+00:10:22.000 --> 00:10:29.000
+Ajit Nair: Hopefully, I think we must, uh, do that quickly, uh, you know, with whatever discussion we have had with, uh.
+
+00:10:29.000 --> 00:10:31.000
+Ajit Nair: Dr. Mila.
+
+00:10:31.000 --> 00:10:33.000
+Amit gupta: Sure.
+
+00:10:32.000 --> 00:10:41.000
+gk: I have a question, Ajit. I mean, if you were to, um, look at the primary brand challenges or brand focus.
+
+00:10:41.000 --> 00:10:45.000
+gk: Um, is it, uh, what are the primary challenges that you're trying to resolve?
+
+00:10:46.000 --> 00:10:51.000
+Ajit Nair: Essentially, uh, you know, when I look at pediatrics, it is not my growth liver.
+
+00:10:52.000 --> 00:10:55.000
+Ajit Nair: Okay? It is only a sustenance medium for me.
+
+00:10:56.000 --> 00:10:58.000
+gk: Okay.
+
+00:10:56.000 --> 00:11:00.000
+Ajit Nair: Uh, the driver of growth for me in my business is gynecology.
+
+00:11:01.000 --> 00:11:07.000
+Ajit Nair: Okay? Because, uh, when I look at the age cohort of my vaccine, it is 9 to 45.
+
+00:11:01.000 --> 00:11:03.000
+gk: Okay. Okay.
+
+00:11:07.000 --> 00:11:09.000
+gk: Yes.
+
+00:11:08.000 --> 00:11:15.000
+Ajit Nair: So, uh, you will see that almost one and a half to two times of the patient footfall happens at the gynecology end.
+
+00:11:15.000 --> 00:11:20.000
+Ajit Nair: than the pediatrics end. Okay, so, you know, it's only 9 to 18 for the pediatrician.
+
+00:11:20.000 --> 00:11:25.000
+Ajit Nair: But it is 18 to 45 for the gynecologist, so obviously the age.
+
+00:11:25.000 --> 00:11:28.000
+Ajit Nair: Cohort itself is, you know, is larger there.
+
+00:11:28.000 --> 00:11:34.000
+Ajit Nair: So, uh, for me, uh, I think one of the bigger challenges amongst the pediatric franchise.
+
+00:11:34.000 --> 00:11:37.000
+Ajit Nair: Uh, is to sustain.
+
+00:11:37.000 --> 00:11:39.000
+Ajit Nair: Uh, and also try to…
+
+00:11:39.000 --> 00:11:43.000
+Ajit Nair: Uh, you know, uh, deepen my grip.
+
+00:11:43.000 --> 00:11:46.000
+Ajit Nair: Uh, in the, in the pediatric space.
+
+00:11:46.000 --> 00:11:54.000
+Ajit Nair: Now, although vaccination comes naturally to a pediatrician, that's the belief, uh, you know, that all of us have.
+
+00:11:55.000 --> 00:11:58.000
+Ajit Nair: Uh, we see that most pediatricians.
+
+00:11:58.000 --> 00:12:03.000
+Ajit Nair: are not really using Gardasil and Gardasil 9 to.
+
+00:12:03.000 --> 00:12:05.000
+Ajit Nair: Uh, to the…
+
+00:12:05.000 --> 00:12:07.000
+Ajit Nair: To the extent of the potential that they have.
+
+00:12:08.000 --> 00:12:12.000
+Ajit Nair: Now, uh, you know, on an average, amongst the pediatricians.
+
+00:12:12.000 --> 00:12:15.000
+Ajit Nair: We see that, uh, you know, each pediatrician uses.
+
+00:12:15.000 --> 00:12:17.000
+Ajit Nair: Only about 3-4 doses of Gardasil.
+
+00:12:18.000 --> 00:12:24.000
+Ajit Nair: in a month, okay? And I'm talking about a total average MSA photo dividing.
+
+00:12:24.000 --> 00:12:28.000
+Ajit Nair: The total number of doses by the total number of pediatricians in a month.
+
+00:12:28.000 --> 00:12:32.000
+Ajit Nair: Okay, and I see that the, uh, the PPRD, uh.
+
+00:12:32.000 --> 00:12:35.000
+Ajit Nair: For a pediatrician, it's not more than 3.
+
+00:12:35.000 --> 00:12:39.000
+Ajit Nair: So, uh, you know, I really want that to go up, because.
+
+00:12:39.000 --> 00:12:41.000
+Ajit Nair: You know, this is one area where…
+
+00:12:41.000 --> 00:12:46.000
+Ajit Nair: Uh, you know, I am… I am seeing growth from two angles. One.
+
+00:12:46.000 --> 00:12:50.000
+Ajit Nair: That the vaccination coverage rate is extremely poor.
+
+00:12:50.000 --> 00:12:52.000
+Ajit Nair: It is less than 1-2%.
+
+00:12:52.000 --> 00:12:56.000
+Ajit Nair: Even amongst the affording urban population that we are talking about.
+
+00:12:57.000 --> 00:13:04.000
+Ajit Nair: And secondly, uh, the government of India is on the anvil of launching the National Immunization Program with 9-14 years old.
+
+00:13:04.000 --> 00:13:07.000
+Ajit Nair: So there is going to be a big boom in terms of the number of.
+
+00:13:08.000 --> 00:13:12.000
+Ajit Nair: Uh, people who are vaccinated at the public market, for sure.
+
+00:13:12.000 --> 00:13:16.000
+Ajit Nair: Which will have its ripple effect in the private market, where.
+
+00:13:16.000 --> 00:13:18.000
+Amit gupta: Of course.
+
+00:13:16.000 --> 00:13:18.000
+Ajit Nair: Uh, you know, a lot of, uh.
+
+00:13:18.000 --> 00:13:21.000
+Ajit Nair: Uh, queries, and we've seen that with… we have seen that with…
+
+00:13:21.000 --> 00:13:27.000
+Ajit Nair: with PCV, we have seen that with Rota, when they got introduced in the public market.
+
+00:13:27.000 --> 00:13:29.000
+Ajit Nair: The private market boomed.
+
+00:13:29.000 --> 00:13:33.000
+Ajit Nair: Uh, and that is what I want to capitalize on from a pediatric standpoint.
+
+00:13:34.000 --> 00:13:36.000
+gk: So, if I were to ask you a question.
+
+00:13:36.000 --> 00:13:45.000
+gk: Um, like the HPV right now, you said the penetration or the, uh, people, hardly 1-2%.
+
+00:13:42.000 --> 00:13:44.000
+Amit gupta: Reggie.
+
+00:13:45.000 --> 00:13:47.000
+gk: Now, why is that the case?
+
+00:13:47.000 --> 00:13:51.000
+gk: Is it because the pediatrician is not advising?
+
+00:13:51.000 --> 00:13:59.000
+gk: Is it because there needs to be pull from the patients? Why is, uh, why is that the problem?
+
+00:13:59.000 --> 00:14:08.000
+Amit gupta: And also, the 9 to 18 age group is, uh, parental consent is required, right? So, it is also where the parents need to be convinced. It is not the child.
+
+00:14:08.000 --> 00:14:14.000
+Amit gupta: Whereas, if you look at the adult population, it is, you know, people… women can take their own decision, right? So once you…
+
+00:14:08.000 --> 00:14:10.000
+gk: Yeah, but…
+
+00:14:14.000 --> 00:14:25.000
+gk: So, so the question is this, that, um, if you look at, um, children, um, I mean, the pediatrician is a very high-trust vehicle.
+
+00:14:25.000 --> 00:14:35.000
+gk: for the parent. In a sense, anything that the pediatrician advises, the compliance rates are extremely high. That's what we have seen across multiple things.
+
+00:14:35.000 --> 00:14:39.000
+Amit gupta: And I would say rather higher than what a gynecologist can achieve.
+
+00:14:40.000 --> 00:14:44.000
+Amit gupta: So, I may be wrong, Ajit, I don't know what your experience is.
+
+00:14:42.000 --> 00:14:44.000
+gk: Yeah.
+
+00:14:43.000 --> 00:14:56.000
+Ajit Nair: No, no, you are wrong, Amit, for a reason, because you see the total number of footfalls that are coming between 9 to 18 is less. 18 to 45 by virtue of the size of the cohort itself, is.
+
+00:14:45.000 --> 00:14:47.000
+Amit gupta: Okay.
+
+00:14:53.000 --> 00:14:55.000
+gk: Okay.
+
+00:14:56.000 --> 00:14:58.000
+Ajit Nair: It's one and a half to two times.
+
+00:14:57.000 --> 00:14:59.000
+Amit gupta: Cool.
+
+00:14:58.000 --> 00:15:04.000
+Ajit Nair: To answer your questions, uh, you know, I want to sort of bucket my response into two.
+
+00:15:04.000 --> 00:15:10.000
+Ajit Nair: two broad buckets, okay? Uh, let us talk about the HCPs first, the doctors first.
+
+00:15:10.000 --> 00:15:12.000
+Ajit Nair: Uh…
+
+00:15:13.000 --> 00:15:16.000
+Ajit Nair: What you say, GK is right, only till the age of 2.
+
+00:15:17.000 --> 00:15:19.000
+gk: Okay, okay.
+
+00:15:17.000 --> 00:15:22.000
+Ajit Nair: Okay? Parental compliance is very high, only till the age of 2.
+
+00:15:22.000 --> 00:15:25.000
+Ajit Nair: Because after two mothers become complacent.
+
+00:15:26.000 --> 00:15:30.000
+Ajit Nair: They don't get, you know, they don't get their children to get vaccinated as.
+
+00:15:30.000 --> 00:15:34.000
+Ajit Nair: Uh, regularly and as routinely as they are when they were 1 to 2.
+
+00:15:35.000 --> 00:15:37.000
+gk: Hm.
+
+00:15:35.000 --> 00:15:42.000
+Ajit Nair: Second reason is that children start to fall less ill, you know, they tend, you know, in less than 2 years, they are.
+
+00:15:42.000 --> 00:15:46.000
+Ajit Nair: You know, more often than not, he'll… so they definitely take them to the…
+
+00:15:46.000 --> 00:15:51.000
+Ajit Nair: Uh, to the pediatrician, and by the way, you know, that extends to a vaccination visit.
+
+00:15:51.000 --> 00:15:57.000
+Ajit Nair: Uh, there are exclusive vaccination visits that happen till the age of 2.
+
+00:15:56.000 --> 00:15:58.000
+gk: Yes.
+
+00:15:57.000 --> 00:16:04.000
+Ajit Nair: the government of India's mission, Indra Danus talks about too, so people generally feel, there is no need for a vaccine.
+
+00:16:05.000 --> 00:16:10.000
+Ajit Nair: And if you look at toddler versus preschool versus adolescent vaccines.
+
+00:16:10.000 --> 00:16:16.000
+Ajit Nair: you will see a gradual dip. So, if there are 100 babies who are getting their primary series vaccines.
+
+00:16:16.000 --> 00:16:19.000
+Ajit Nair: There are only 90 who are getting their first-year booster.
+
+00:16:19.000 --> 00:16:24.000
+Ajit Nair: There are only 60 who are getting their preschool booster, and there are only 20 that are getting their…
+
+00:16:24.000 --> 00:16:29.000
+Ajit Nair: adolescent boosters. So generally, at 9, you know, a lot of pediatricians.
+
+00:16:29.000 --> 00:16:33.000
+Ajit Nair: Uh, you know, there is no vaccination visit, per se, to a pediatrician.
+
+00:16:33.000 --> 00:16:37.000
+Ajit Nair: The other reason is also… let me just complete that, GK first time.
+
+00:16:36.000 --> 00:16:38.000
+gk: Yes.
+
+00:16:37.000 --> 00:16:42.000
+Ajit Nair: Uh, the other reason is also that at 9, a lot of times when children are ill.
+
+00:16:42.000 --> 00:16:48.000
+Ajit Nair: they tend to go to a family physician sometimes. You know, that is also a good proportion of doctors.
+
+00:16:48.000 --> 00:16:50.000
+Ajit Nair: Uh, of patients that are there.
+
+00:16:50.000 --> 00:16:55.000
+Ajit Nair: Now, this is, uh, also, uh, the other thing from an HCP standpoint, from a doctor standpoint.
+
+00:16:56.000 --> 00:17:00.000
+Ajit Nair: Is that because it is a… it is not a mandatory vaccine.
+
+00:17:00.000 --> 00:17:03.000
+Ajit Nair: Uh, you know, it faces the challenge.
+
+00:17:03.000 --> 00:17:06.000
+Ajit Nair: Of any other optional vaccine, like a meningitis.
+
+00:17:06.000 --> 00:17:12.000
+Ajit Nair: Or, uh, a flu, you know, or, uh, you know, uh, you know, the other vaccines that are there.
+
+00:17:12.000 --> 00:17:16.000
+Ajit Nair: Uh, you know, in the pediatric space. Although these are vaccines that are.
+
+00:17:16.000 --> 00:17:21.000
+Ajit Nair: Specifically, when you go call managers, for example, specifically operational.
+
+00:17:21.000 --> 00:17:23.000
+Ajit Nair: Only within the pediatric space.
+
+00:17:23.000 --> 00:17:28.000
+Ajit Nair: But, uh, look at the coverage, I think. You know, in the last 2 years, it's where that has grown up.
+
+00:17:29.000 --> 00:17:35.000
+Ajit Nair: The other issue is also counseling challenges. Pediatricians in India have very limited time to counsel patients.
+
+00:17:35.000 --> 00:17:37.000
+gk: Hm.
+
+00:17:36.000 --> 00:17:39.000
+Ajit Nair: And at 9, there is no opportunity to counsel, so…
+
+00:17:39.000 --> 00:17:43.000
+Ajit Nair: You know, had they been counseled right at the time when they are in their preschool?
+
+00:17:43.000 --> 00:17:50.000
+Ajit Nair: Uh, you know, or when they can, when they come for their, uh, boost tricks, or, uh, uh, you know, tetraxim at, at, uh.
+
+00:17:50.000 --> 00:17:56.000
+Ajit Nair: 4 to 6 years. Uh, you know, that is the time when parents need to be told that, look, there is this vaccine.
+
+00:17:56.000 --> 00:18:01.000
+Ajit Nair: Now, let me come to the other side of, uh, you know, this, which is the consumer.
+
+00:18:02.000 --> 00:18:07.000
+Ajit Nair: There is a lot of taboo that still exists between, uh, you know, in the minds of parents, although.
+
+00:18:08.000 --> 00:18:14.000
+Ajit Nair: That is coming down in the last 4 years. This has been our observation that, you know, I've been working on this vaccine for 4 years.
+
+00:18:14.000 --> 00:18:19.000
+Ajit Nair: And I see that there is a, uh, you know, there is a geometric decline when you look at.
+
+00:18:20.000 --> 00:18:25.000
+Ajit Nair: Uh, the awareness and the, uh, uh, attitude of parents towards this vaccine.
+
+00:18:26.000 --> 00:18:30.000
+Ajit Nair: Uh, you know, gone are the days when, uh, people would feel that.
+
+00:18:30.000 --> 00:18:33.000
+Ajit Nair: you know, sexual maturity is only after marriage, I think.
+
+00:18:33.000 --> 00:18:36.000
+Ajit Nair: You know, that is not what parents think today.
+
+00:18:36.000 --> 00:18:40.000
+Ajit Nair: But still, there exists that taboo, because most people associate this.
+
+00:18:40.000 --> 00:18:42.000
+Ajit Nair: With a sexually transmitted disease.
+
+00:18:43.000 --> 00:18:49.000
+Ajit Nair: Secondly, a lot of times, the parents also feel that this is a vaccine that may prevent.
+
+00:18:49.000 --> 00:18:54.000
+Ajit Nair: Uh, you know, a disease which has a mean age of occurrence of 38 years, right?
+
+00:18:54.000 --> 00:19:03.000
+Ajit Nair: So, after 20 years, you know, for a disease that may happen, uh, should my doctor be subjected to this vaccine?
+
+00:19:04.000 --> 00:19:14.000
+Ajit Nair: And thirdly, a lot of anti-vaxxer lobbies still exist, although it is much lesser in India. Uh, you know, it still exists, and therefore, uh, it creates a lot of myths.
+
+00:19:14.000 --> 00:19:19.000
+Ajit Nair: Amongst mothers who are anxious that this vaccine is given.
+
+00:19:19.000 --> 00:19:24.000
+Ajit Nair: Will it impact the menstrual cycle of my daughter?
+
+00:19:24.000 --> 00:19:29.000
+Ajit Nair: Will it impact the fertility of my daughter? Will it impact her marital life? Will it, you know, have.
+
+00:19:29.000 --> 00:19:33.000
+Ajit Nair: problems in progeny, and all of those kind of questions.
+
+00:19:34.000 --> 00:19:36.000
+Ajit Nair: Uh, also, uh, from a very…
+
+00:19:37.000 --> 00:19:40.000
+Ajit Nair: uh, social, uh, kind of a lens when I look at it.
+
+00:19:41.000 --> 00:19:45.000
+Ajit Nair: Uh, I think, uh, there is still, you know, this…
+
+00:19:45.000 --> 00:19:47.000
+Ajit Nair: Uh, you know, this, this, this question.
+
+00:19:47.000 --> 00:19:50.000
+Ajit Nair: Uh, whether we are giving…
+
+00:19:50.000 --> 00:19:55.000
+Ajit Nair: Uh, and this is one of the reasons why we are told that the NIP also is getting delayed.
+
+00:19:55.000 --> 00:19:58.000
+Ajit Nair: Uh, is the question of promiscuity.
+
+00:19:58.000 --> 00:20:02.000
+Ajit Nair: So, you know, I think these are some challenges that we are facing.
+
+00:20:02.000 --> 00:20:06.000
+Ajit Nair: From a consumer standpoint, uh, you know, for this vaccine.
+
+00:20:07.000 --> 00:20:09.000
+gk: So, if I were to…
+
+00:20:09.000 --> 00:20:12.000
+gk: Um, take your buckets.
+
+00:20:12.000 --> 00:20:15.000
+gk: And, um, take it to the next level.
+
+00:20:15.000 --> 00:20:21.000
+gk: First, let's look at, uh, the addressable market, right, within the pediatrician.
+
+00:20:21.000 --> 00:20:25.000
+gk: Missing. So, your, your first, uh, uh.
+
+00:20:25.000 --> 00:20:30.000
+gk: I mean, comments were about the smaller addressable market within the.
+
+00:20:30.000 --> 00:20:40.000
+gk: Pediatric, uh, clinic, because at that age, they are not coming in that frequently, they're not taking… there's no need to come for vaccinations, and so on.
+
+00:20:41.000 --> 00:20:46.000
+gk: But, if I were to just, um, therefore size the addressable market.
+
+00:20:46.000 --> 00:20:53.000
+gk: If children between, uh, I assume that the education for the parent or the counseling.
+
+00:20:53.000 --> 00:20:58.000
+gk: If it needs to start at least 2 to 3 years before puberty, right?
+
+00:20:58.000 --> 00:21:03.000
+gk: So, I would say maybe 6 years or 7 years. By the time the child is 6 or 7 years.
+
+00:21:03.000 --> 00:21:09.000
+gk: the parents need to… need to start getting counseled on the need, the coming need for the SPV vaccine.
+
+00:21:09.000 --> 00:21:15.000
+gk: Um, the… the… so, if… if I were to look at the cohort of, let's say, 6-year-olds to about.
+
+00:21:15.000 --> 00:21:20.000
+gk: Not even 18, let's say approximately 12 to 13 year olds.
+
+00:21:20.000 --> 00:21:22.000
+gk: Um, uh, currently.
+
+00:21:23.000 --> 00:21:30.000
+gk: Only 1-2%, you said, a certain… there are only 3 or 4 or 5 vaccines being given in the entire month.
+
+00:21:31.000 --> 00:21:34.000
+gk: Now, if I were to take this entire cohort.
+
+00:21:34.000 --> 00:21:38.000
+gk: They are falling sick at least once or twice every two years.
+
+00:21:38.000 --> 00:21:49.000
+gk: They are coming to the pediatrician. May not be for vaccines, they are coming with high fever, maybe waterborne disease, airborne disease, dengue, malaria, they're coming.
+
+00:21:49.000 --> 00:21:51.000
+gk: Okay, so, so it…
+
+00:21:51.000 --> 00:21:55.000
+gk: So, if… if they are… if… if that cohort.
+
+00:21:55.000 --> 00:21:58.000
+gk: Uh, what is that number that…
+
+00:21:58.000 --> 00:22:02.000
+gk: the… is the addressable market. That 3 or 4 per month.
+
+00:22:02.000 --> 00:22:09.000
+gk: What is the maximum number to which it can grow in a pediatric clinic? Is it 10? Is it 20? Is it 50? Is it 100?
+
+00:22:10.000 --> 00:22:13.000
+Ajit Nair: So, on an average, uh, the footfall of.
+
+00:22:13.000 --> 00:22:18.000
+Ajit Nair: Children who are coming between the age of 9 to 18, according to what we have surveyed.
+
+00:22:18.000 --> 00:22:22.000
+Ajit Nair: Uh, comes to almost about 18 per month.
+
+00:22:23.000 --> 00:22:26.000
+gk: No, what about 5… 5 to 12?
+
+00:22:23.000 --> 00:22:25.000
+Ajit Nair: So, you know…
+
+00:22:28.000 --> 00:22:30.000
+gk: 5 to 9.
+
+00:22:28.000 --> 00:22:32.000
+Ajit Nair: So that… that is not something that we have surveyed.
+
+00:22:32.000 --> 00:22:40.000
+gk: Okay, so, so I would say, let's say the number is from the current 3 or 4 vaccines that are given.
+
+00:22:40.000 --> 00:22:44.000
+gk: The addressable number is at least 20, probably 30.
+
+00:22:44.000 --> 00:22:46.000
+Ajit Nair: Got it.
+
+00:22:45.000 --> 00:22:54.000
+gk: Okay? So, so therefore, about 5-10% of the addressable market is actually getting the vaccine at pediatric clinics.
+
+00:22:54.000 --> 00:22:56.000
+gk: There is about a 90% which is not.
+
+00:22:54.000 --> 00:22:56.000
+Ajit Nair: Hmm.
+
+00:22:57.000 --> 00:22:59.000
+gk: Now, so then my next question is.
+
+00:22:59.000 --> 00:23:03.000
+gk: If I need to move this 10% to 20%.
+
+00:23:03.000 --> 00:23:09.000
+gk: That is double the numbers. Let's say within a year, year and a half, if I want to double the numbers.
+
+00:23:09.000 --> 00:23:12.000
+gk: Okay, then I come to your second bucket.
+
+00:23:12.000 --> 00:23:16.000
+gk: Which is the… which are the primary triggers I would focus on?
+
+00:23:16.000 --> 00:23:18.000
+gk: Because there's a lot of reasons.
+
+00:23:18.000 --> 00:23:27.000
+gk: But out of those reasons, then 80-20 applies everywhere, right? So, which are those 1 or 2 or 3 things which are, if we address.
+
+00:23:27.000 --> 00:23:29.000
+gk: Uh, this move is possible.
+
+00:23:31.000 --> 00:23:36.000
+Ajit Nair: So, according to me, I think one of the biggest pieces is the counseling challenges.
+
+00:23:36.000 --> 00:23:38.000
+gk: Okay, okay.
+
+00:23:36.000 --> 00:23:41.000
+Ajit Nair: Okay? From both, from both the HCP and the consumer lens.
+
+00:23:41.000 --> 00:23:44.000
+Ajit Nair: You know, uh, both of them have.
+
+00:23:44.000 --> 00:23:46.000
+Ajit Nair: Uh, you know, have, have…
+
+00:23:46.000 --> 00:23:49.000
+Ajit Nair: Identified this as one big challenge.
+
+00:23:49.000 --> 00:23:53.000
+Ajit Nair: Uh, you know, in terms of whatever researches that we have done and what we have seen.
+
+00:23:53.000 --> 00:23:55.000
+gk: Okay.
+
+00:23:54.000 --> 00:23:56.000
+Ajit Nair: From a pediatrician's standpoint.
+
+00:23:56.000 --> 00:23:59.000
+Ajit Nair: They say there is very little time.
+
+00:23:59.000 --> 00:24:01.000
+gk: Correct.
+
+00:23:59.000 --> 00:24:03.000
+Ajit Nair: From a consumer standpoint, there are a lot of myths.
+
+00:24:03.000 --> 00:24:05.000
+gk: Okay, sorry.
+
+00:24:06.000 --> 00:24:08.000
+gk: Sorry.
+
+00:24:08.000 --> 00:24:12.000
+Ajit Nair: Yeah. So, like I said, you know, it's a challenge from both the sides.
+
+00:24:12.000 --> 00:24:17.000
+gk: Okay. Okay. So, so, so now, um, if we were to.
+
+00:24:17.000 --> 00:24:21.000
+gk: Bridge the counseling challenge, if we were to solve it.
+
+00:24:21.000 --> 00:24:24.000
+gk: Okay? What would a solution look like?
+
+00:24:24.000 --> 00:24:33.000
+gk: Today, if I was… if I were to say, let's look at it from the pediatrician's side. If the pediatrician is unable to counsel, see, typically, what should he be doing?
+
+00:24:33.000 --> 00:24:40.000
+gk: Whenever a child of, uh… a girl child of 6 years to 15 years, or whatever, whenever they come into the clinic.
+
+00:24:40.000 --> 00:24:49.000
+gk: Whatever the reason might be, whatever the illness might be, what… they need to be able to counsel for HPV vaccines at that time.
+
+00:24:49.000 --> 00:24:52.000
+gk: That… that is basically what is required.
+
+00:24:52.000 --> 00:24:56.000
+gk: And that is something that the Academy would also advise them to do.
+
+00:24:56.000 --> 00:24:59.000
+gk: But, they are not able to do it. Why?
+
+00:24:59.000 --> 00:25:05.000
+gk: Is it because they're busy people, right? And number… there are two problems, I would think. I mean, you need to correct me.
+
+00:25:05.000 --> 00:25:11.000
+gk: My common sense tells me that there are two problems why the pediatrician is unable to counsel.
+
+00:25:11.000 --> 00:25:20.000
+gk: One, it is not top of mind, it is not… it takes time and effort, and the pediatric clinics are extremely busy, most of them.
+
+00:25:20.000 --> 00:25:25.000
+gk: Uh, they have hardly 3, 4, 5 minutes per patient, and they can't spend the time saying.
+
+00:25:25.000 --> 00:25:29.000
+gk: Uh, giving them a long spiel of… and a rationale, and so on.
+
+00:25:29.000 --> 00:25:31.000
+gk: The second problem is.
+
+00:25:31.000 --> 00:25:34.000
+gk: Most people are not great communicators.
+
+00:25:35.000 --> 00:25:37.000
+gk: So, it is… to tell a story.
+
+00:25:38.000 --> 00:25:43.000
+gk: is not easy. To give a simple instruction is easy, but to tell a story is not easy.
+
+00:25:42.000 --> 00:25:49.000
+Ajit Nair: Absolutely. So, in fact, that is also the genesis of another.
+
+00:25:44.000 --> 00:25:46.000
+gk: Uh, okay.
+
+00:25:49.000 --> 00:25:53.000
+Ajit Nair: issue, uh, you know, which is fundamentally that.
+
+00:25:53.000 --> 00:25:57.000
+Ajit Nair: Uh, Gardasil 9 is also indicated for boys.
+
+00:25:57.000 --> 00:25:59.000
+gk: Okay.
+
+00:25:58.000 --> 00:26:02.000
+Ajit Nair: Uh, very few pediatricians, and boys is only the younger age cohort.
+
+00:26:02.000 --> 00:26:05.000
+Ajit Nair: You know, it's only 9 to 15, for example.
+
+00:26:04.000 --> 00:26:07.000
+gk: Okay, understood. Understood.
+
+00:26:05.000 --> 00:26:12.000
+Ajit Nair: Apparently. Now, now, uh, very, very few pediatricians have picked up vaccination for boys.
+
+00:26:12.000 --> 00:26:16.000
+Ajit Nair: Because, you know, a lot of them have not been able to communicate.
+
+00:26:16.000 --> 00:26:20.000
+Ajit Nair: Because a lot of them, the parents are associating this with cervix.
+
+00:26:20.000 --> 00:26:22.000
+Ajit Nair: And boys don't have a cervix.
+
+00:26:21.000 --> 00:26:23.000
+gk: Yeah.
+
+00:26:23.000 --> 00:26:25.000
+gk: Yeah, yeah.
+
+00:26:23.000 --> 00:26:25.000
+Ajit Nair: They do have a cervical vertebra, but…
+
+00:26:25.000 --> 00:26:29.000
+Ajit Nair: That is another problem, because a lot of doctor… a lot of patients feel.
+
+00:26:29.000 --> 00:26:34.000
+Ajit Nair: That this is to… this is, you know, they don't know what the service is.
+
+00:26:34.000 --> 00:26:39.000
+Ajit Nair: And they get confused between the cervical vertebra and the cervical cancer.
+
+00:26:34.000 --> 00:26:36.000
+gk: Understood.
+
+00:26:39.000 --> 00:26:42.000
+Ajit Nair: So, you know, so, essentially.
+
+00:26:39.000 --> 00:26:41.000
+gk: Okay.
+
+00:26:42.000 --> 00:26:44.000
+Ajit Nair: Uh, the pickup for boys, and…
+
+00:26:44.000 --> 00:26:48.000
+Ajit Nair: Had that been the case, you know, then it puts my case.
+
+00:26:48.000 --> 00:26:52.000
+Ajit Nair: Of saying that pediatrician is definitely a health lever.
+
+00:26:52.000 --> 00:26:55.000
+Ajit Nair: Because then the entire cohort of boys opened up.
+
+00:26:57.000 --> 00:27:01.000
+gk: Understood. So, so now, uh, so that's a pediatrician education issue.
+
+00:27:01.000 --> 00:27:09.000
+gk: Okay, so there is a pediatrician education issue. There is a problem in terms of pediatrician being able to counsel and educate the patient.
+
+00:27:09.000 --> 00:27:16.000
+gk: And then, another problem is the patient usually doesn't… that education does not require an immediate decision.
+
+00:27:16.000 --> 00:27:21.000
+gk: So the parent might decide after 6 months, 1 year, or the time for the vaccine is later.
+
+00:27:21.000 --> 00:27:32.000
+gk: And there is nothing that the patient actually takes back with them also. So, in a sense, there is… there is no continuity of education, and uh… you know, it is out of sight, out of mind at that time.
+
+00:27:29.000 --> 00:27:31.000
+Amit gupta: There's no sense of urgency, right?
+
+00:27:31.000 --> 00:27:33.000
+Amit gupta: There's no sense of urgency here.
+
+00:27:33.000 --> 00:27:39.000
+gk: Okay? So… so… so I… I assume the solution would look like.
+
+00:27:40.000 --> 00:27:42.000
+gk: enable one, uh…
+
+00:27:42.000 --> 00:27:50.000
+gk: Education of the doctor in terms of why it is important for boys as well as girls, and what is the difference, number one.
+
+00:27:50.000 --> 00:27:58.000
+gk: Second, empowering the doctor in some manner to be able to counsel every patient without any time taken.
+
+00:27:59.000 --> 00:28:07.000
+gk: Okay? And they won't have a problem in counseling, right? If there is no time taken, if it is extremely easy, if it can be done.
+
+00:28:07.000 --> 00:28:13.000
+gk: Then they don't have a problem, because for private clinics, it is actually…
+
+00:28:13.000 --> 00:28:17.000
+gk: Uh, uh, new business.
+
+00:28:17.000 --> 00:28:20.000
+gk: People coming in for a vaccine is business, it's income.
+
+00:28:17.000 --> 00:28:19.000
+Ajit Nair: Bye.
+
+00:28:20.000 --> 00:28:22.000
+gk: So, it ties in with the interests as well.
+
+00:28:22.000 --> 00:28:27.000
+gk: So, so if we are able to give them something, if we are able to solve these two problems.
+
+00:28:27.000 --> 00:28:31.000
+gk: You would potentially be able to take your 2 or 3.
+
+00:28:31.000 --> 00:28:35.000
+gk: to 6 or 7. That is the 10% to 20%.
+
+00:28:35.000 --> 00:28:37.000
+gk: Which would pretty much double the market.
+
+00:28:37.000 --> 00:28:39.000
+Ajit Nair: Absolutely.
+
+00:28:39.000 --> 00:28:40.000
+gk: Okay, so…
+
+00:28:41.000 --> 00:28:43.000
+gk: So what if… what if, let us say.
+
+00:28:44.000 --> 00:28:46.000
+gk: Um, see, firstly.
+
+00:28:46.000 --> 00:28:53.000
+gk: Doctors will not be comfortable sharing patient education or patient counseling from a private company.
+
+00:28:54.000 --> 00:28:58.000
+gk: But they are very happy to do that if it comes from the academy, number one.
+
+00:28:59.000 --> 00:29:03.000
+gk: Second, the… second, the patient education.
+
+00:29:03.000 --> 00:29:10.000
+gk: Okay, has to be… you have for girls, you have for boys. The patient education here is, I suppose.
+
+00:29:10.000 --> 00:29:18.000
+gk: two or three or four topics for each one of them. Why do you need it? Okay, what are the issues? And so on.
+
+00:29:18.000 --> 00:29:20.000
+gk: Now, if…
+
+00:29:20.000 --> 00:29:24.000
+gk: If very, uh, easy to understand patient education.
+
+00:29:24.000 --> 00:29:29.000
+gk: Maybe videos, is available in all local languages.
+
+00:29:29.000 --> 00:29:34.000
+gk: is available in a form where the doctor just says, Ari, you should be doing this.
+
+00:29:34.000 --> 00:29:38.000
+gk: Here, I'm writing on the prescription, take it from my receptionist.
+
+00:29:38.000 --> 00:29:50.000
+gk: And if the receptionist is able to share it, or let's say by scanning a QR code or something, the patient is getting it, if they are getting these simple 2 or 3 or 4 short videos in local language.
+
+00:29:50.000 --> 00:29:53.000
+gk: And that interface is doctor-branded.
+
+00:29:53.000 --> 00:30:00.000
+gk: That is a service from my doctor, from my clinic, not from some third party, not from some academy, not from anybody.
+
+00:30:00.000 --> 00:30:05.000
+gk: Okay. Then, potentially, you could have a situation where, in a clinic.
+
+00:30:05.000 --> 00:30:08.000
+gk: Uh, let's say 30, 40, 50.
+
+00:30:08.000 --> 00:30:12.000
+gk: Children, every month, are getting this education.
+
+00:30:12.000 --> 00:30:15.000
+gk: And there is a certain 3 or 4 of them convert.
+
+00:30:15.000 --> 00:30:17.000
+gk: And actually get the vaccine.
+
+00:30:20.000 --> 00:30:23.000
+Ajit Nair: So, uh, essentially, some of these things.
+
+00:30:23.000 --> 00:30:27.000
+Ajit Nair: You know, we have sort of created a lot of these content.
+
+00:30:27.000 --> 00:30:34.000
+Ajit Nair: In terms of, you know, patient education in the form of… in different formats, you know, from print to videos.
+
+00:30:34.000 --> 00:30:36.000
+Ajit Nair: To animated, uh, films, to everything.
+
+00:30:36.000 --> 00:30:38.000
+gk: Yeah.
+
+00:30:37.000 --> 00:30:38.000
+Ajit Nair: to multiple languages.
+
+00:30:39.000 --> 00:30:42.000
+Ajit Nair: to places where they cannot play the audio. We have subtitled it.
+
+00:30:43.000 --> 00:30:44.000
+Ajit Nair: So, you know, we have…
+
+00:30:45.000 --> 00:30:50.000
+Ajit Nair: you know, CC options. So, everything, everything is something, the content of which is available.
+
+00:30:46.000 --> 00:30:48.000
+gk: Yeah.
+
+00:30:50.000 --> 00:30:52.000
+gk: The key question is this.
+
+00:30:53.000 --> 00:30:56.000
+gk: Is the doctor actively sharing it?
+
+00:30:58.000 --> 00:31:01.000
+gk: At the point when the patient is in front of the doctor.
+
+00:30:59.000 --> 00:31:06.000
+Ajit Nair: In many cases, in many cases, yes. Yeah, in many cases, yes. So, if I was to talk about the 14,000 odd.
+
+00:31:06.000 --> 00:31:10.000
+Ajit Nair: Uh, you know, vaccinating pediatricians across the country.
+
+00:31:10.000 --> 00:31:12.000
+gk: Yeah.
+
+00:31:10.000 --> 00:31:13.000
+Ajit Nair: Uh, about 7.5 to 8,000 R.
+
+00:31:14.000 --> 00:31:17.000
+gk: Then why are the numbers not increasing there?
+
+00:31:17.000 --> 00:31:20.000
+Ajit Nair: Which is essentially the challenge, because.
+
+00:31:20.000 --> 00:31:23.000
+Ajit Nair: You know, footfall becomes another issue.
+
+00:31:24.000 --> 00:31:26.000
+Ajit Nair: Sometimes they also talk about.
+
+00:31:24.000 --> 00:31:26.000
+gk: No.
+
+00:31:26.000 --> 00:31:29.000
+Ajit Nair: Uh, you know, period, it didn't also talk about affordability.
+
+00:31:29.000 --> 00:31:33.000
+Ajit Nair: Now, to me, I think that is only a value proposition, I think.
+
+00:31:33.000 --> 00:31:37.000
+Ajit Nair: You know, when there are people who are buying an iPhone, buy an iPhone.
+
+00:31:38.000 --> 00:31:42.000
+Ajit Nair: Uh, there should be people who are able to spend some money for possession rents.
+
+00:31:42.000 --> 00:31:45.000
+Ajit Nair: uh, you know, future. So, I think it is only there.
+
+00:31:46.000 --> 00:31:49.000
+Ajit Nair: The showcasing of the value proposition of the product.
+
+00:31:49.000 --> 00:31:54.000
+gk: See, the value proposition, if you look at a consumer, um, there are…
+
+00:31:49.000 --> 00:31:51.000
+Ajit Nair: So…
+
+00:31:54.000 --> 00:31:56.000
+gk: the… the primary…
+
+00:31:56.000 --> 00:31:59.000
+gk: Reason for taking a vaccine.
+
+00:31:59.000 --> 00:32:01.000
+gk: The primary emotion.
+
+00:32:01.000 --> 00:32:03.000
+gk: is fear.
+
+00:32:03.000 --> 00:32:09.000
+gk: Fear is the primary emotion which drives this thing, and immediacy of fear.
+
+00:32:09.000 --> 00:32:12.000
+gk: So, it's not just about the doctors.
+
+00:32:10.000 --> 00:32:12.000
+Ajit Nair: No, so…
+
+00:32:12.000 --> 00:32:16.000
+Ajit Nair: From a consumer angle, there are only two reasons for selling or buying anything.
+
+00:32:16.000 --> 00:32:18.000
+Ajit Nair: That is fear and hope.
+
+00:32:18.000 --> 00:32:20.000
+Ajit Nair: Other than that, there is nothing.
+
+00:32:19.000 --> 00:32:25.000
+gk: Correct. So, so I'm saying there are two parts to this. One is, at the time when.
+
+00:32:25.000 --> 00:32:41.000
+gk: the patient… see, when the patient is outside, not in front of the doctor, there is no question of counseling, there is no question of sharing anything. So we are anyway talking only about the people who are already coming to the doctor, and for whatever reason, they are sitting in front of the doctor.
+
+00:32:41.000 --> 00:32:51.000
+gk: Now, at that point, okay, there needs to be something easy to share. And also, at subsequent points, let's say, for example, after 3 months, after 6 months.
+
+00:32:51.000 --> 00:32:54.000
+gk: Or there needs to be something that goes from the clinic.
+
+00:32:55.000 --> 00:32:59.000
+gk: Let's say on WhatsApp. Thank you, Ari, you're ready. Please come.
+
+00:32:59.000 --> 00:33:05.000
+Ajit Nair: Yeah, so these are things in which we also can't associate ourselves because of compliance and ethical reasons.
+
+00:33:05.000 --> 00:33:09.000
+Ajit Nair: You know, because then it becomes… you can do it as an economist, of course.
+
+00:33:05.000 --> 00:33:07.000
+gk: But we can do it as the academy.
+
+00:33:09.000 --> 00:33:18.000
+gk: Yeah, so that is why I'm saying, today, if you're looking at, um, a set of simple videos in local language, which is easily shareable by the clinic.
+
+00:33:18.000 --> 00:33:23.000
+gk: Academy-branded videos, or Academy-endorsed videos.
+
+00:33:23.000 --> 00:33:29.000
+gk: And, uh, a one-time, you know, customization for the doctor. Fill up a simple form and photo.
+
+00:33:30.000 --> 00:33:35.000
+gk: So when the patient gets it, it's a WhatsApp link. They click on the link, it's actually Dr. Kafoto Clinika service.
+
+00:33:35.000 --> 00:33:38.000
+gk: and Nietzsche videos, in their language.
+
+00:33:38.000 --> 00:33:43.000
+gk: Okay? And also combined with, um, a reminder service.
+
+00:33:43.000 --> 00:33:46.000
+gk: From the clinic, through the clinic numbers.
+
+00:33:46.000 --> 00:33:49.000
+gk: Every 3 months, every 6 months, going to the patient.
+
+00:33:49.000 --> 00:33:52.000
+gk: Now, these kind of solutions, we have already deployed.
+
+00:33:53.000 --> 00:33:55.000
+gk: So the same thing can be done by you.
+
+00:33:55.000 --> 00:33:57.000
+gk: for… specifically for HPV.
+
+00:34:01.000 --> 00:34:04.000
+Ajit Nair: So, if you have samples of these, maybe you can pass it on to us.
+
+00:34:05.000 --> 00:34:08.000
+Ajit Nair: Uh, you know, and Sheetal, Sheetal could be your point of contact for this one.
+
+00:34:08.000 --> 00:34:10.000
+gk: Huh.
+
+00:34:08.000 --> 00:34:13.000
+Ajit Nair: Uh, she shared her mail ID and, uh, and contact coordinates.
+
+00:34:13.000 --> 00:34:14.000
+gk: Yeah.
+
+00:34:13.000 --> 00:34:16.000
+Ajit Nair: Uh, perhaps we can have a look at those samples.
+
+00:34:16.000 --> 00:34:18.000
+Ajit Nair: Uh, you know, these kind of services.
+
+00:34:16.000 --> 00:34:18.000
+gk: Absolutely.
+
+00:34:18.000 --> 00:34:21.000
+Ajit Nair: which are not in the Ambit of CRMs.
+
+00:34:21.000 --> 00:34:25.000
+Ajit Nair: Typically. You know, where, where, which is where… which is where we will have a problem.
+
+00:34:21.000 --> 00:34:23.000
+gk: Correct, exactly.
+
+00:34:25.000 --> 00:34:27.000
+gk: Correct. Yeah.
+
+00:34:25.000 --> 00:34:29.000
+Ajit Nair: You know? So, uh, you know, let us have a look at these samples.
+
+00:34:29.000 --> 00:34:30.000
+gk: Yeah.
+
+00:34:29.000 --> 00:34:33.000
+Ajit Nair: So, you know, in my mind, uh, you know, I have two things.
+
+00:34:33.000 --> 00:34:36.000
+Ajit Nair: That I think we can work together on oneness.
+
+00:34:36.000 --> 00:34:39.000
+Ajit Nair: the… the modules that I was trying to tell you about, the…
+
+00:34:40.000 --> 00:34:42.000
+Ajit Nair: You don't get adolescent health modules, typically.
+
+00:34:43.000 --> 00:34:44.000
+gk: Yeah.
+
+00:34:43.000 --> 00:34:48.000
+Ajit Nair: And the second could be something around this bit that GK just mentioned now.
+
+00:34:48.000 --> 00:34:50.000
+gk: Absolutely.
+
+00:34:48.000 --> 00:34:51.000
+Ajit Nair: Uh, I think these are two, uh, you know, uh…
+
+00:34:51.000 --> 00:34:53.000
+Ajit Nair: low-hanging fruits.
+
+00:34:53.000 --> 00:34:55.000
+gk: Yeah.
+
+00:34:53.000 --> 00:34:56.000
+Ajit Nair: Uh, for us to start, uh, deployment with.
+
+00:34:56.000 --> 00:35:00.000
+Ajit Nair: And I don't know how we operationalize it with IoT, but I think.
+
+00:35:00.000 --> 00:35:03.000
+Ajit Nair: Uh, in all our discussions, we need to definitely keep.
+
+00:35:01.000 --> 00:35:03.000
+gk: Yeah.
+
+00:35:04.000 --> 00:35:07.000
+Ajit Nair: uh, Dr. Neelam and others involved, because I think.
+
+00:35:07.000 --> 00:35:09.000
+Ajit Nair: That discussion we've already had with you.
+
+00:35:09.000 --> 00:35:18.000
+gk: Yeah. Now, these will be, I would say, in addition to what you're doing. For example, these would be complementary. In terms of doctor education.
+
+00:35:18.000 --> 00:35:24.000
+gk: a DIAP program would be complementary, in the sense, you already have a presidential action plan, you will be doing a lot of stuff.
+
+00:35:25.000 --> 00:35:30.000
+gk: the DIP program will be complementary, where, you know, it is broken up into practical education.
+
+00:35:30.000 --> 00:35:37.000
+gk: Let's say 6, uh, 6 pieces, or 10 pieces, and every visit, clinic visit.
+
+00:35:37.000 --> 00:35:42.000
+gk: You will have an easy sharing mechanism, your field… field person with the doctor.
+
+00:35:42.000 --> 00:35:49.000
+gk: That is as far as the DIP add-on on your doctor education is concerned. On the patient education side.
+
+00:35:49.000 --> 00:35:57.000
+gk: I will, um… you know, I've broadly told you the solution. What I will do, Sheetal, is let me put these things down.
+
+00:35:57.000 --> 00:36:01.000
+gk: In the form of a broad solution note, and send it to you in the next day or two.
+
+00:36:02.000 --> 00:36:04.000
+gk: And then, it'll be useful to have a discussion.
+
+00:36:05.000 --> 00:36:07.000
+Ajit Nair: Sure. Made sense.
+
+00:36:07.000 --> 00:36:09.000
+gk: Okay.
+
+00:36:10.000 --> 00:36:12.000
+Ajit Nair: Okay?
+
+00:36:10.000 --> 00:36:19.000
+Amit gupta: Great. Yeah, yeah. And also, what you're doing with Adolescent Health Academy is, uh, you already have initiated, right? You said you're already doing some program with them.
+
+00:36:12.000 --> 00:36:14.000
+gk: Yes.
+
+00:36:12.000 --> 00:36:14.000
+Ajit Nair: All right.
+
+00:36:18.000 --> 00:36:20.000
+Ajit Nair: Ah, that is… that is already on, I think.
+
+00:36:20.000 --> 00:36:24.000
+Ajit Nair: Uh, you know, our presence is also there in Adora's pond this weekend.
+
+00:36:20.000 --> 00:36:22.000
+Amit gupta: Bye.
+
+00:36:25.000 --> 00:36:32.000
+Ajit Nair: Uh, and, uh, there are some, uh, white paper that is being launched and all of that, which is, which is typically, uh.
+
+00:36:32.000 --> 00:36:34.000
+Ajit Nair: Medical marketing kind of an initiative.
+
+00:36:35.000 --> 00:36:37.000
+gk: Okay.
+
+00:36:36.000 --> 00:36:38.000
+Amit gupta: Sure, sure. I think that's true.
+
+00:36:38.000 --> 00:36:41.000
+Amit gupta: So, great, Ajit. I think what I'll do is I'll…
+
+00:36:38.000 --> 00:36:43.000
+Ajit Nair: Now, we'll see how… we'll see how we tie that back into…
+
+00:36:43.000 --> 00:36:50.000
+Ajit Nair: you know, this DIAP thing, uh, you know, to execute it and cascade it downwards. That is something that we can do.
+
+00:36:50.000 --> 00:36:57.000
+gk: Yeah, because what happens is, let's say in a conference, or a launch, or let's say a classroom kind of session.
+
+00:36:57.000 --> 00:37:02.000
+gk: Uh, it doesn't have, uh, uh, what's it called? It is not hammered home repeatedly.
+
+00:37:03.000 --> 00:37:08.000
+gk: So, to hammer it home repeatedly, um, a good idea is to add a conjunct to it.
+
+00:37:08.000 --> 00:37:11.000
+gk: Which is clinic sharing friendly.
+
+00:37:11.000 --> 00:37:13.000
+gk: Okay? And which can be done at every visit.
+
+00:37:11.000 --> 00:37:13.000
+Ajit Nair: Right.
+
+00:37:14.000 --> 00:37:20.000
+gk: So, something like that, uh, sort of, uh, ensures that, that, that, um, uh, classroom session.
+
+00:37:20.000 --> 00:37:28.000
+gk: or that launch, is not out of sight, out of mind, people don't forget, and it is… it keeps getting hammered home again and again.
+
+00:37:29.000 --> 00:37:31.000
+Ajit Nair: Correct.
+
+00:37:30.000 --> 00:37:32.000
+gk: Okay.
+
+00:37:30.000 --> 00:37:35.000
+Amit gupta: And also something you can control through your field teams, right? So you have more control as a brand.
+
+00:37:36.000 --> 00:37:41.000
+Amit gupta: To kind of, you know, drive it to 5,000, 10,000 pediatricians that your team is meeting.
+
+00:37:42.000 --> 00:37:44.000
+Amit gupta: regularly.
+
+00:37:43.000 --> 00:37:45.000
+Ajit Nair: Yeah. So…
+
+00:37:44.000 --> 00:37:46.000
+Amit gupta: Okay.
+
+00:37:45.000 --> 00:37:47.000
+gk: Okay, done. I'll…
+
+00:37:46.000 --> 00:37:51.000
+Ajit Nair: Alright, okay. So I think, broadly we have next steps as well, so, uh…
+
+00:37:48.000 --> 00:37:50.000
+gk: Thank you.
+
+00:37:51.000 --> 00:37:55.000
+Ajit Nair: Sheetal, maybe in the chat, you can, uh, type down your, uh.
+
+00:37:55.000 --> 00:37:57.000
+Ajit Nair: You know, email, contact, etc.
+
+00:37:58.000 --> 00:38:00.000
+Sheetal Narkar: Sure, sure, Ajit.
+
+00:37:58.000 --> 00:38:00.000
+Ajit Nair: And then we can vintage.
+
+00:38:00.000 --> 00:38:03.000
+Amit gupta: Yeah, and if you can just share your…
+
+00:38:02.000 --> 00:38:06.000
+Ajit Nair: Anything, anything from you, Gautam and Sripriya, uh, additionally?
+
+00:38:07.000 --> 00:38:10.000
+Ajit Nair: I realized I was the only guy speaking.
+
+00:38:18.000 --> 00:38:20.000
+Dr Sripriya S: Um, yeah, I did learn nothing from my favorite team was…
+
+00:38:21.000 --> 00:38:23.000
+Ajit Nair: Alright, okay. Take care.
+
+00:38:22.000 --> 00:38:27.000
+gk: Okay, thanks, Ajit. Thank you, Supriya. Thank you, everybody.
+
+00:38:24.000 --> 00:38:26.000
+Ajit Nair: Okay, alright, thanks.
+
+00:38:27.000 --> 00:38:29.000
+Ajit Nair: Bye-bye. See you.
+
+00:38:28.000 --> 00:38:30.000
+gk: Bye.
+
+00:38:29.000 --> 00:38:34.000
+Amit gupta: Thank you. Yeah, Srithel, I got your email. If you can also, uh…
+
+00:38:34.000 --> 00:38:37.000
+Amit gupta: Share your contact? Yeah, I've got both. Thank you.
+
+00:38:38.000 --> 00:38:40.000
+Amit gupta: Thank you so much.
+
+00:38:39.000 --> 00:38:41.000
+Sheetal Narkar: Sorry, I'll just retype it.
+
+00:38:43.000 --> 00:38:45.000
+Amit gupta: Oh, okay.
+
+00:38:44.000 --> 00:38:46.000
+Sheetal Narkar: That's… that's the correct one, sorry.
+
+00:38:46.000 --> 00:38:49.000
+Amit gupta: No worries, yeah, I got it. Thank you.
+
+00:38:48.000 --> 00:38:50.000
+Sheetal Narkar: Yeah, alright, buh-bye.
+
+00:38:50.000 --> 00:38:52.000
+Amit gupta: Bye.
+

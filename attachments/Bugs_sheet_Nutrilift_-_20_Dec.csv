@@ -1,0 +1,20 @@
+Sr no,Link,Bug,Expected Outcome,Reference photo
+,Organization admin Journey,,,
+1,http://15.207.180.254/orgs/start?mode=signup,We are missing the address Input box of the organization,Addrerss input box is necessary to get the Supplements registered ,
+2,http://15.207.180.254/orgs/start?mode=signup,"Cit, country and state are
+input box",They should be a dropdown menu instead so user can select the respective city state and country,
+,http://15.207.180.254/assist/admin,The copy button is not working for the copying the screening link button,User should be able to copy it with some instrusction attached so the user can just copy and forward it to the school teacher's whatapp group ,
+Sr no,Link,Bug,Expected Outcome,Reference photo
+,Teachers Journey,,,
+3,http://15.207.180.254/screening/teacher/vikram_1_test-wLcJWEwY/add-student/,Division cannot be selected unless a grade is chosen first.,"Grade and division should be selectable independently, without one being mandatory to select the other first.",
+4,http://15.207.180.254/screening/teacher/result/1/,"Teacher is not redirected to the whatsapp once screening form is filled:   Auto-send failed: Error -3 connecting to redis:6379. Temporary failure in name resolution.
+Student “Vikram kanaujiya” created and screening completed.
+Result: RED
+Red flags: diet_diversity_low, multiple_symptoms
+
+Parent message: Queued automatically based on screening results.", ideally I(teacher) should automatically redirect to whatsapp based on the family income selection and screening result,
+Sr no,Link,Bug,Expected Outcome,Reference photo
+,Parents Journey,,,
+5,,cannot be tested if i cannot recevie the message,,
+Sr no,Link,Bug,Expected Outcome,Reference photo
+,Logistics Journey,,,
