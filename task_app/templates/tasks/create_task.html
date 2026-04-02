@@ -135,12 +135,18 @@
                     <h2>Attachments</h2>
                     <p>Up to 5 files. Each file can be up to 10 MB.</p>
                 </div>
-                <label class="form-field">
-                    <span>Upload Files</span>
-                    {{ client_form.attachments }}
+                <div class="form-field form-field--upload">
+                    <span>Upload Attachments</span>
+                    <label class="upload-dropzone js-file-upload">
+                        <div class="upload-dropzone__copy">
+                            <strong>Select files</strong>
+                            <p class="js-file-upload-label">{{ client_form.attachments.help_text }}</p>
+                        </div>
+                        {{ client_form.attachments }}
+                    </label>
                     <small>{{ client_form.attachments.help_text }}</small>
                     {{ client_form.attachments.errors }}
-                </label>
+                </div>
             </section>
 
             <div class="form-actions-bar form-panel--full">
@@ -219,14 +225,44 @@
                     </label>
                     <label class="form-field">
                         <span>Viewers</span>
-                        {{ form.viewers_ui }}
+                        <div class="support-multiselect" data-multiselect-root>
+                            <button type="button" class="support-multiselect__trigger" data-multiselect-trigger aria-expanded="false">
+                                <span data-multiselect-label>Select viewers</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="support-multiselect__menu" data-multiselect-menu>
+                                <div class="support-multiselect__options">
+                                    {% for option in form.viewers_ui.field.queryset %}
+                                        <label class="support-multiselect__option">
+                                            <input
+                                                type="checkbox"
+                                                value="{{ option.pk }}"
+                                                data-multiselect-option
+                                                {% if form.viewers_ui.value and option.pk in form.viewers_ui.value or form.viewers_ui.value and option.pk|stringformat:"s" in form.viewers_ui.value %}checked{% endif %}
+                                            >
+                                            <span>{{ option.get_full_name|default:option.username }}</span>
+                                        </label>
+                                    {% empty %}
+                                        <div class="support-multiselect__empty">No users available</div>
+                                    {% endfor %}
+                                </div>
+                                {{ form.viewers_ui }}
+                            </div>
+                        </div>
                         <small>Selected users can view the ticket and receive CC on emails.</small>
                         {{ form.viewers_ui.errors }}
                     </label>
                     <label class="form-field form-field--full">
-                        <span>Attachment</span>
-                        {{ form.attach_file }}
-                        {{ form.attach_file.errors }}
+                        <span>Upload Attachments</span>
+                        <label class="upload-dropzone js-file-upload">
+                            <div class="upload-dropzone__copy">
+                                <strong>Select files</strong>
+                                <p class="js-file-upload-label">{{ form.attachments.help_text }}</p>
+                            </div>
+                            {{ form.attachments }}
+                        </label>
+                        <small>{{ form.attachments.help_text }}</small>
+                        {{ form.attachments.errors }}
                     </label>
                 </div>
             </section>
@@ -307,5 +343,79 @@
     if (ticketTypeField) {
         ticketTypeField.addEventListener("change", syncDepartmentFromTicketType);
     }
+
+    document.querySelectorAll(".js-file-upload").forEach((uploadShell) => {
+        const fileInput = uploadShell.querySelector("input[type='file']");
+        const label = uploadShell.querySelector(".js-file-upload-label");
+        if (!fileInput || !label) {
+            return;
+        }
+
+        const defaultLabel = label.textContent.trim();
+        const syncFileLabel = () => {
+            const files = Array.from(fileInput.files || []);
+            if (!files.length) {
+                label.textContent = defaultLabel;
+                return;
+            }
+            if (files.length === 1) {
+                label.textContent = files[0].name;
+                return;
+            }
+            label.textContent = `${files.length} files selected`;
+        };
+
+        fileInput.addEventListener("change", syncFileLabel);
+        syncFileLabel();
+    });
+
+    document.querySelectorAll("[data-multiselect-root]").forEach((root) => {
+        const trigger = root.querySelector("[data-multiselect-trigger]");
+        const menu = root.querySelector("[data-multiselect-menu]");
+        const label = root.querySelector("[data-multiselect-label]");
+        const hiddenSelect = root.querySelector("select[multiple]");
+        const options = Array.from(root.querySelectorAll("[data-multiselect-option]"));
+
+        if (!trigger || !menu || !label || !hiddenSelect) {
+            return;
+        }
+
+        const syncSelection = () => {
+            const checkedOptions = options.filter((option) => option.checked);
+            Array.from(hiddenSelect.options).forEach((option) => {
+                option.selected = checkedOptions.some((checkedOption) => checkedOption.value === option.value);
+            });
+
+            if (!checkedOptions.length) {
+                label.textContent = "Select viewers";
+                return;
+            }
+
+            if (checkedOptions.length <= 2) {
+                label.textContent = checkedOptions.map((option) => option.parentElement.textContent.trim()).join(", ");
+                return;
+            }
+
+            label.textContent = `${checkedOptions.length} viewers selected`;
+        };
+
+        trigger.addEventListener("click", () => {
+            const isOpen = root.classList.toggle("is-open");
+            trigger.setAttribute("aria-expanded", String(isOpen));
+        });
+
+        options.forEach((option) => {
+            option.addEventListener("change", syncSelection);
+        });
+
+        document.addEventListener("click", (event) => {
+            if (!root.contains(event.target)) {
+                root.classList.remove("is-open");
+                trigger.setAttribute("aria-expanded", "false");
+            }
+        });
+
+        syncSelection();
+    });
 </script>
 {% endblock %}

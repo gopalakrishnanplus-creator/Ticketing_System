@@ -5,6 +5,11 @@ import string
 from datetime import timedelta,datetime,date, timezone
 from django.utils import timezone
 
+
+def task_attachment_upload_to(instance, filename):
+    task_id = instance.task.task_id if instance.task_id else "unassigned"
+    return f"task_attachments/{task_id}/{filename}"
+
 class Department(models.Model):
     name = models.CharField(max_length=50)
     manager = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='managed_departments')
@@ -161,6 +166,29 @@ class Task(models.Model):
                 notes=self.notes
             )
             new_task.save()
+
+
+class TaskAttachment(models.Model):
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='attachments')
+    file = models.FileField(upload_to=task_attachment_upload_to)
+    uploaded_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='task_attachments_uploaded',
+    )
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['uploaded_at']
+
+    @property
+    def filename(self):
+        return self.file.name.split('/')[-1]
+
+    def __str__(self):
+        return f"{self.task.task_id} - {self.filename}"
 
 
 class TaskChat(models.Model):

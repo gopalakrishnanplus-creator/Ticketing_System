@@ -168,14 +168,22 @@
                 
                 <div class="detail-grid">
                     <div class="detail-item">
-                        <div class="detail-label">Original Attachment</div>
+                        <div class="detail-label">Attachments</div>
                         <div class="detail-value">
-                            {% if task.attach_file %}
+                            {% if task.attachments.all %}
+                                {% for attachment in task.attachments.all %}
+                                    <div>
+                                        <a href="{{ attachment.file.url }}" download class="download-link">
+                                            <i class="fas fa-download"></i> {{ attachment.filename }}
+                                        </a>
+                                    </div>
+                                {% endfor %}
+                            {% elif task.attach_file %}
                                 <a href="{{ task.attach_file.url }}" download class="download-link">
                                     <i class="fas fa-download"></i> Download File
                                 </a>
                             {% else %}
-                                <span class="text-muted">No file attached</span>
+                                <span class="text-muted">No attachments uploaded</span>
                             {% endif %}
                         </div>
                     </div>

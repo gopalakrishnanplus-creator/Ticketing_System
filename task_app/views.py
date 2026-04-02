@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Task, UserProfile, Department, TaskChat
+from .models import Task, UserProfile, Department, TaskChat, TaskAttachment
 from django.contrib.auth.decorators import login_required
 from .forms import TaskForm, TaskChatForm
 from django.core.exceptions import PermissionDenied
@@ -252,6 +252,19 @@ def _external_assigned_by_queryset(user, user_profile):
             Q(project_manager__userprofile__department=department)
         ).distinct()
     return queryset.filter(Q(created_by=user) | Q(project_manager=user)).distinct()
+
+
+def save_task_attachments(task, attachments, uploaded_by=None):
+    saved_attachments = []
+    for upload in attachments or []:
+        saved_attachments.append(
+            TaskAttachment.objects.create(
+                task=task,
+                file=upload,
+                uploaded_by=uploaded_by,
+            )
+        )
+    return saved_attachments
 
 @login_required
 def home(request):
@@ -530,10 +543,12 @@ def create_task(request):
         form = TaskForm(request.POST, request.FILES, user=request.user)
         if form.is_valid():
             task = form.save(commit=False)
+            uploaded_attachments = form.cleaned_data.get('attachments', [])
             task.assigned_by = request.user  # Automatically set the assigned_by field
             task.assigned_date = date.today()
             task.save()
             form.save_m2m()
+            save_task_attachments(task, uploaded_attachments, uploaded_by=request.user)
 
             # Notify the departmental manager (if exists)
             if task.department and hasattr(task.department, 'manager') and task.department.manager:
@@ -651,7 +666,10 @@ def task_detail(request, task_id):
     Task detail view with chat functionality
     """
     # Fetch the task
-    task = get_object_or_404(Task, task_id=task_id)
+    task = get_object_or_404(
+        Task.objects.select_related('assigned_by', 'assigned_to', 'department').prefetch_related('attachments'),
+        task_id=task_id,
+    )
     
     # Check if user has permission to view this task
     user_profile = UserProfile.objects.get(user=request.user)

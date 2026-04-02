@@ -1,11 +1,12 @@
 from datetime import date, timedelta
 
 from django.contrib.auth.models import User
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, override_settings
 from django.urls import reverse
 
 from client_tickets.models import ClientTicket, ClientTicketType
-from task_app.models import Department, Task, UserProfile
+from task_app.models import Department, Task, TaskAttachment, UserProfile
 
 
 @override_settings(CLIENT_TICKETS_BASE_URL="http://127.0.0.1:5467")
@@ -181,3 +182,77 @@ class ManagerTicketVisibilityTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Department scoped task")
+
+
+@override_settings(
+    CLIENT_TICKETS_BASE_URL="http://127.0.0.1:5467",
+    EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend",
+)
+class InternalTaskAttachmentTests(TestCase):
+    def setUp(self):
+        self.department = Department.objects.create(name="Technology")
+        self.user = User.objects.create_user(
+            username="attachmentuser",
+            email="attachment@example.com",
+            password="password123",
+            first_name="Attachment",
+            last_name="User",
+        )
+        UserProfile.objects.create(
+            user=self.user,
+            category="Non-Management",
+            department=self.department,
+        )
+        self.client.force_login(self.user)
+
+    def test_internal_task_can_be_created_with_multiple_attachments(self):
+        attachment_one = SimpleUploadedFile("brief.txt", b"brief", content_type="text/plain")
+        attachment_two = SimpleUploadedFile("design.txt", b"design", content_type="text/plain")
+
+        response = self.client.post(
+            reverse("create_task"),
+            data={
+                "assigned_to": self.user.id,
+                "deadline": (date.today() + timedelta(days=2)).isoformat(),
+                "ticket_type": "Testing",
+                "priority": "high",
+                "department": self.department.id,
+                "subject": "Attachment test task",
+                "request_details": "Testing multi-attachment upload.",
+                "status": "Not Started",
+                "viewers_ui": [self.user.id],
+                "attachments": [attachment_one, attachment_two],
+            },
+        )
+
+        self.assertEqual(response.status_code, 302)
+        task = Task.objects.get(subject="Attachment test task")
+        self.assertEqual(task.attachments.count(), 2)
+        self.assertEqual(task.viewers, [self.user.email])
+
+    def test_internal_task_attachment_size_limit_is_enforced(self):
+        oversized_attachment = SimpleUploadedFile(
+            "oversized.txt",
+            b"x" * ((5 * 1024 * 1024) + 1),
+            content_type="text/plain",
+        )
+
+        response = self.client.post(
+            reverse("create_task"),
+            data={
+                "assigned_to": self.user.id,
+                "deadline": (date.today() + timedelta(days=2)).isoformat(),
+                "ticket_type": "Testing",
+                "priority": "high",
+                "department": self.department.id,
+                "subject": "Oversized attachment task",
+                "request_details": "This should fail.",
+                "status": "Not Started",
+                "attachments": [oversized_attachment],
+            },
+        )
+
+        self.assertEqual(response.status_code, 400)
+        self.assertContains(response, "file size exceeds 5 MB", status_code=400)
+        self.assertFalse(Task.objects.filter(subject="Oversized attachment task").exists())
+        self.assertEqual(TaskAttachment.objects.count(), 0)
