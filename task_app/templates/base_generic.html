@@ -5,121 +5,77 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Task Management System{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="{% static 'styles.css' %}">
-    <style>
-        .cross-app-shortcuts {
-            position: fixed;
-            right: 20px;
-            bottom: 20px;
-            z-index: 9999;
-            width: min(320px, calc(100vw - 32px));
-            background: rgba(15, 23, 42, 0.96);
-            color: #fff;
-            border-radius: 18px;
-            padding: 16px;
-            box-shadow: 0 16px 36px rgba(15, 23, 42, 0.28);
-            backdrop-filter: blur(8px);
-        }
-
-        .cross-app-shortcuts-title {
-            font-size: 12px;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 6px;
-        }
-
-        .cross-app-shortcuts h3 {
-            margin: 0 0 8px;
-            font-size: 18px;
-        }
-
-        .cross-app-shortcuts p {
-            margin: 0 0 12px;
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.82);
-            line-height: 1.5;
-        }
-
-        .cross-app-shortcuts-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .cross-app-shortcuts-actions a {
-            flex: 1 1 140px;
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 12px;
-            border-radius: 999px;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .cross-app-shortcuts-actions a.primary {
-            background: #1d4ed8;
-            color: #fff;
-        }
-
-        .cross-app-shortcuts-actions a.secondary {
-            background: rgba(255, 255, 255, 0.12);
-            color: #fff;
-        }
-
-        .cross-app-shortcuts-actions a:hover {
-            opacity: 0.92;
-            text-decoration: none;
-        }
-
-        @media (max-width: 700px) {
-            .cross-app-shortcuts {
-                right: 12px;
-                left: 12px;
-                bottom: 12px;
-                width: auto;
-            }
-        }
-    </style>
+    {% block extra_head %}{% endblock %}
 </head>
-<body>
+<body class="inditech-task-shell">
     {% if user.is_authenticated %}
-        <aside class="cross-app-shortcuts" aria-label="Client ticket quick access">
-            <div class="cross-app-shortcuts-title">Connected Systems</div>
-            <h3>Client Tickets</h3>
-            <p>Open the client ticket dashboard, see all client tickets, or raise a new one from anywhere in the current ticketing system.</p>
-            <div class="cross-app-shortcuts-actions">
-                <a class="primary" href="{% url 'client_tickets:dashboard' %}">Client Dashboard</a>
-                <a class="secondary" href="{% url 'client_tickets:ticket_list' %}">All Client Tickets</a>
-                <a class="secondary" href="{% url 'client_tickets:create_ticket' %}">Create Client Ticket</a>
+        <header class="app-topbar">
+            <div class="app-topbar-inner">
+                <a class="app-brand" href="{% if user_category == 'Departmental Manager' %}{% url 'home' %}{% elif user_category == 'Task Management System Manager' %}{% url 'activity' %}{% else %}{% url 'assigned_to_me' %}{% endif %}">
+                    <span class="app-brand-mark">IT</span>
+                    <span class="app-brand-copy">
+                        <span class="app-brand-kicker">Inditech Operations</span>
+                        <strong>TaskFlow</strong>
+                    </span>
+                </a>
+
+                <nav class="app-quicknav" aria-label="Primary">
+                    {% if user_category == 'Departmental Manager' %}
+                        <a href="{% url 'home' %}" class="{% if request.resolver_match.url_name == 'home' %}is-active{% endif %}">Home</a>
+                        <a href="{% url 'manage_users' %}" class="{% if request.resolver_match.url_name == 'manage_users' %}is-active{% endif %}">Users</a>
+                    {% endif %}
+                    {% if user_category == 'Task Management System Manager' %}
+                        <a href="{% url 'activity' %}" class="{% if request.resolver_match.url_name == 'activity' %}is-active{% endif %}">Activity</a>
+                        <a href="{% url 'metrics' %}" class="{% if request.resolver_match.url_name == 'metrics' %}is-active{% endif %}">Metrics</a>
+                    {% endif %}
+                    <a href="{% url 'assigned_to_me' %}" class="{% if request.resolver_match.url_name == 'assigned_to_me' %}is-active{% endif %}">Assigned To Me</a>
+                    <a href="{% url 'assigned_by_me' %}" class="{% if request.resolver_match.url_name == 'assigned_by_me' %}is-active{% endif %}">Assigned By Me</a>
+                    <a href="{% url 'create_task' %}" class="{% if request.resolver_match.url_name == 'create_task' %}is-active{% endif %}">Create Task</a>
+                </nav>
+
+                <div class="app-topbar-meta">
+                    <a class="app-link-pill app-link-pill-primary" href="{% url 'client_tickets:dashboard' %}">
+                        <i class="fas fa-link"></i>
+                        <span>Client Tickets</span>
+                    </a>
+                    <a class="app-user-chip" href="{% url 'user_profile' %}">
+                        <span class="app-user-avatar">
+                            {{ request.user.first_name|default:request.user.username|slice:":1"|upper }}
+                        </span>
+                        <span class="app-user-copy">
+                            <strong>{{ request.user.get_full_name|default:request.user.username }}</strong>
+                            <small>{{ user_category|default:"Team Member" }}</small>
+                        </span>
+                    </a>
+                    <a class="app-link-pill app-link-pill-ghost" href="{% url 'logout' %}">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </div>
             </div>
-        </aside>
+        </header>
     {% endif %}
-    <div class="header">
-        
 
-        <div class="navbar">
-            {% if user.is_authenticated %}
-                <!-- Display "Home" link only for Departmental Managers -->
-                <!-- {% if user_category == 'Departmental Manager' %}
-                    <a href="{% url 'home' %}">Home</a>
-                {% endif %}
-                <a href="{% url 'assigned_to_me' %}">Assigned to Me</a>
-                <a href="{% url 'assigned_by_me' %}">Assigned by Me</a>
-                <a href="{% url 'create_task' %}">Create Task</a>
-                <a href="{% url 'user_profile' %}">Profile</a>
-                <a href="{% url 'logout' %}">Logout</a> -->
-            {% endif %}
-        </div>
-        
-    </div>
+    <main class="app-content-shell">
+        {% if messages %}
+            <div class="app-flash-list">
+                {% for message in messages %}
+                    <div class="app-flash app-flash-{{ message.tags|default:'info' }}">
+                        <i class="fas fa-info-circle"></i>
+                        <span>{{ message }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
 
-    <div class="container">
         {% block content %}{% endblock %}
-    </div>
+    </main>
 
-    
+    <link rel="stylesheet" href="{% static 'theme-overrides.css' %}">
 </body>
 </html>

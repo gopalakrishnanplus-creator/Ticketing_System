@@ -1,0 +1,932 @@
+.app-content-shell,
+.app-content-shell * {
+    font-family: "Manrope", "Segoe UI", sans-serif;
+}
+
+.app-content-shell .task-manager-container {
+    display: grid;
+    grid-template-columns: minmax(245px, 285px) minmax(0, 1fr);
+    gap: 26px;
+    align-items: start;
+    min-height: calc(100vh - 190px);
+    height: auto;
+    overflow: visible;
+}
+
+.app-content-shell .task-manager-container > .sidebar {
+    position: sticky;
+    top: 108px;
+    width: 100%;
+    min-height: calc(100vh - 220px);
+    padding: 18px 16px 18px;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background:
+        radial-gradient(circle at top, rgba(37, 99, 235, 0.34), transparent 34%),
+        linear-gradient(180deg, #10213d 0%, #0b1425 100%);
+    box-shadow: 0 26px 56px rgba(15, 23, 42, 0.24);
+    color: #fff;
+}
+
+.app-content-shell .task-manager-container > .sidebar.expanded {
+    width: 100%;
+}
+
+.app-content-shell .task-manager-container .logo-container {
+    margin-bottom: 18px;
+    padding: 20px 18px;
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.06);
+    text-align: left;
+}
+
+.app-content-shell .task-manager-container .logo-container h2,
+.app-content-shell .task-manager-container .logo-full,
+.app-content-shell .task-manager-container .logo-compact {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: #fff;
+}
+
+.app-content-shell .task-manager-container .logo-container span {
+    color: #5eead4;
+}
+
+.app-content-shell .task-manager-container .menu-container {
+    padding: 0;
+}
+
+.app-content-shell .task-manager-container .sidebar ul {
+    display: grid;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.app-content-shell .task-manager-container .sidebar ul li {
+    margin: 0;
+}
+
+.app-content-shell .task-manager-container .sidebar ul li a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: 18px;
+    border: 1px solid transparent;
+    color: rgba(255, 255, 255, 0.8);
+    background: transparent;
+    font-size: 15px;
+    font-weight: 700;
+    transition: transform 0.18s ease, background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+
+.app-content-shell .task-manager-container .sidebar ul li a i {
+    width: 18px;
+    text-align: center;
+    margin: 0;
+    font-size: 15px;
+}
+
+.app-content-shell .task-manager-container .sidebar ul li a:hover,
+.app-content-shell .task-manager-container .sidebar ul li a.active {
+    color: #fff;
+    border-color: rgba(94, 234, 212, 0.22);
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.28), rgba(20, 184, 166, 0.16));
+    transform: translateX(2px);
+}
+
+.app-content-shell .task-manager-container .sidebar-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    margin-top: auto;
+    margin-left: auto;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+}
+
+.app-content-shell .task-manager-container > .main-content,
+.app-content-shell > .container,
+.app-content-shell .task-manager-container .main-content {
+    min-width: 0;
+}
+
+.app-content-shell .task-manager-container > .main-content,
+.app-content-shell > .container {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 28px;
+    border-radius: 32px;
+    border: 1px solid rgba(255, 255, 255, 0.56);
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(248, 250, 255, 0.84));
+    box-shadow: 0 24px 52px rgba(15, 23, 42, 0.10);
+    backdrop-filter: blur(18px);
+}
+
+.app-content-shell .task-manager-container .main-content {
+    overflow: visible;
+    height: auto;
+    background: transparent;
+    box-shadow: none;
+    border: 0;
+    padding: 0;
+}
+
+.app-content-shell .task-manager-container .main-content > *,
+.app-content-shell > .container > * {
+    margin-top: 0;
+}
+
+.app-content-shell .task-manager-container .main-content > * + *,
+.app-content-shell > .container > * + * {
+    margin-top: 22px;
+}
+
+.app-content-shell .greeting,
+.app-content-shell .header,
+.app-content-shell .header-section,
+.app-content-shell .content-header,
+.app-content-shell .table-header,
+.app-content-shell .section-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.app-content-shell .header,
+.app-content-shell .greeting,
+.app-content-shell .header-section {
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+    border: 0;
+}
+
+.app-content-shell .greeting h1,
+.app-content-shell .header h1,
+.app-content-shell .header-section h1,
+.app-content-shell .content-header h2,
+.app-content-shell .table-title h2 {
+    margin: 0;
+    color: var(--heading);
+    font-size: clamp(1.9rem, 2.4vw, 2.65rem);
+    line-height: 1.05;
+    letter-spacing: -0.05em;
+}
+
+.app-content-shell .greeting p,
+.app-content-shell .header p,
+.app-content-shell .section-header p,
+.app-content-shell .content-header span,
+.app-content-shell .task-count {
+    margin: 8px 0 0;
+    color: var(--text-muted);
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.app-content-shell .user-actions,
+.app-content-shell .header-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 14px;
+    margin: 0;
+    float: none;
+}
+
+.app-content-shell .notification,
+.app-content-shell .user {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+}
+
+.app-content-shell .notification {
+    width: 48px;
+    height: 48px;
+    justify-content: center;
+    border-radius: 16px;
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.88);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+}
+
+.app-content-shell .notification i {
+    color: var(--navy-soft);
+    font-size: 17px;
+}
+
+.app-content-shell .user {
+    padding: 8px 14px 8px 8px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+}
+
+.app-content-shell .avatar {
+    width: 42px;
+    height: 42px;
+    margin: 0;
+    border: 0;
+    border-radius: 50%;
+    object-fit: cover;
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.18), rgba(20, 184, 166, 0.24));
+}
+
+.app-content-shell .user span {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--heading);
+    margin: 0;
+}
+
+.app-content-shell .filter-section,
+.app-content-shell .filter-panel,
+.app-content-shell .filter-container,
+.app-content-shell .task-form-container,
+.app-content-shell .task-table-container,
+.app-content-shell .table-section,
+.app-content-shell .metrics-table-container,
+.app-content-shell .activity-table-container,
+.app-content-shell .table-container,
+.app-content-shell .task-note-form-container,
+.app-content-shell .existing-notes,
+.app-content-shell .task-section,
+.app-content-shell .profile-card,
+.app-content-shell .detail-panel,
+.app-content-shell .detail-container,
+.app-content-shell .task-detail-container,
+.app-content-shell .modal-content,
+.app-content-shell .panel,
+.app-content-shell .form-panel {
+    padding: 24px;
+    border-radius: 28px;
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+    box-shadow: 0 18px 42px rgba(15, 23, 42, 0.08);
+}
+
+.app-content-shell .download-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.app-content-shell .content-wrapper {
+    display: grid;
+    grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+    gap: 24px;
+    align-items: start;
+}
+
+.app-content-shell .filter-panel {
+    position: sticky;
+    top: 110px;
+}
+
+.app-content-shell .filter-header,
+.app-content-shell .profile-header,
+.app-content-shell .modal-header,
+.app-content-shell .task-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.app-content-shell .filter-header h3,
+.app-content-shell .profile-header h2,
+.app-content-shell .modal-header h2,
+.app-content-shell .task-header h3,
+.app-content-shell .metrics-table-container h3,
+.app-content-shell .task-form-container h3,
+.app-content-shell .table-section h2,
+.app-content-shell .table-section h3 {
+    margin: 0;
+    color: var(--heading);
+    font-size: 1.22rem;
+    letter-spacing: -0.03em;
+}
+
+.app-content-shell .filter-content,
+.app-content-shell .filters,
+.app-content-shell .form-grid {
+    display: grid;
+    gap: 16px;
+}
+
+.app-content-shell .filters,
+.app-content-shell .form-row,
+.app-content-shell .detail-grid,
+.app-content-shell .client-ticket-metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+}
+
+.app-content-shell .form-group,
+.app-content-shell .detail-item,
+.app-content-shell .info-item,
+.app-content-shell .task-detail-item,
+.app-content-shell .client-ticket-metric {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.app-content-shell label,
+.app-content-shell .detail-label,
+.app-content-shell .task-detail-label,
+.app-content-shell .info-label,
+.app-content-shell .profile-detail label {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.app-content-shell input,
+.app-content-shell select,
+.app-content-shell textarea {
+    width: 100%;
+    margin: 0;
+    padding: 13px 15px;
+    border: 1px solid rgba(148, 163, 184, 0.30);
+    border-radius: 16px;
+    background: #fff;
+    color: var(--text);
+    font: inherit;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+}
+
+.app-content-shell input:focus,
+.app-content-shell select:focus,
+.app-content-shell textarea:focus {
+    outline: none;
+    border-color: rgba(37, 99, 235, 0.52);
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+    transform: translateY(-1px);
+}
+
+.app-content-shell textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+.app-content-shell .multi-select,
+.app-content-shell .deadline-quick-filter,
+.app-content-shell .password-input-container {
+    position: relative;
+}
+
+.app-content-shell .multi-select-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 13px 15px;
+    border: 1px solid rgba(148, 163, 184, 0.30);
+    border-radius: 16px;
+    background: #fff;
+    color: var(--text);
+    cursor: pointer;
+}
+
+.app-content-shell .multi-select-dropdown {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 18px;
+    border: 1px solid rgba(148, 163, 184, 0.24);
+    background: #fff;
+    box-shadow: 0 18px 36px rgba(15, 23, 42, 0.10);
+}
+
+.app-content-shell .checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 10px;
+    border-radius: 12px;
+}
+
+.app-content-shell .checkbox-item:hover {
+    background: rgba(37, 99, 235, 0.06);
+}
+
+.app-content-shell .checkbox-item input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    accent-color: var(--blue);
+}
+
+.app-content-shell .checkbox-item label {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: normal;
+    text-transform: none;
+    color: var(--text);
+}
+
+.app-content-shell .deadline-quick-filter {
+    display: grid;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 18px;
+    border: 1px solid rgba(148, 163, 184, 0.24);
+    background: #fff;
+}
+
+.app-content-shell .filter-buttons,
+.app-content-shell .form-actions,
+.app-content-shell .form-buttons,
+.app-content-shell .button-row,
+.app-content-shell .client-ticket-actions,
+.app-content-shell .action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.app-content-shell button,
+.app-content-shell .btn,
+.app-content-shell .submit-btn,
+.app-content-shell .download-btn,
+.app-content-shell .create-task-btn,
+.app-content-shell .filter-btn,
+.app-content-shell .reset-btn,
+.app-content-shell .action-btn,
+.app-content-shell .logout-btn,
+.app-content-shell .client-ticket-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 48px;
+    padding: 12px 18px;
+    border: 0;
+    border-radius: 16px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+}
+
+.app-content-shell button:hover,
+.app-content-shell .btn:hover,
+.app-content-shell .submit-btn:hover,
+.app-content-shell .download-btn:hover,
+.app-content-shell .create-task-btn:hover,
+.app-content-shell .filter-btn:hover,
+.app-content-shell .reset-btn:hover,
+.app-content-shell .action-btn:hover,
+.app-content-shell .logout-btn:hover,
+.app-content-shell .client-ticket-action:hover {
+    transform: translateY(-1px);
+}
+
+.app-content-shell .submit-btn,
+.app-content-shell .download-btn,
+.app-content-shell .create-task-btn,
+.app-content-shell .filter-btn,
+.app-content-shell .btn-primary,
+.app-content-shell .client-ticket-action.primary,
+.app-content-shell .action-btn.edit,
+.app-content-shell .btn-edit {
+    color: #fff;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    box-shadow: 0 18px 30px rgba(37, 99, 235, 0.18);
+}
+
+.app-content-shell .reset-btn,
+.app-content-shell .cancel-btn,
+.app-content-shell .btn-secondary,
+.app-content-shell .client-ticket-action.secondary {
+    color: var(--navy-soft);
+    background: rgba(226, 232, 240, 0.75);
+}
+
+.app-content-shell .logout-btn,
+.app-content-shell .btn-delete {
+    color: #fff;
+    background: linear-gradient(135deg, #ef4444, #b91c1c);
+    box-shadow: 0 16px 26px rgba(239, 68, 68, 0.20);
+}
+
+.app-content-shell .close-btn,
+.app-content-shell .close-filters-btn,
+.app-content-shell .password-toggle,
+.app-content-shell .toggle-filters-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 10px 14px;
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--navy-soft);
+}
+
+.app-content-shell .task-cards-container,
+.app-content-shell .stats-grid,
+.app-content-shell .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+}
+
+.app-content-shell .task-card,
+.app-content-shell .metric-card,
+.app-content-shell .client-ticket-metric {
+    padding: 20px;
+    border-radius: 22px;
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    background: linear-gradient(180deg, #fff, #f7faff);
+    box-shadow: 0 14px 28px rgba(15, 23, 42, 0.06);
+}
+
+.app-content-shell .task-card h3,
+.app-content-shell .metric-card .value,
+.app-content-shell .client-ticket-metric p {
+    margin: 0;
+    font-size: 2rem;
+    color: var(--heading);
+    letter-spacing: -0.05em;
+}
+
+.app-content-shell .metric-card .label,
+.app-content-shell .client-ticket-metric label {
+    margin-bottom: 6px;
+    font-size: 13px;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.app-content-shell .task-table-container,
+.app-content-shell .table-container,
+.app-content-shell .metrics-table-container,
+.app-content-shell .activity-table-container {
+    overflow: hidden;
+}
+
+.app-content-shell .table-wrapper,
+.app-content-shell .table-wrap {
+    overflow-x: auto;
+    border-radius: 20px;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+}
+
+.app-content-shell table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 0;
+    background: #fff;
+}
+
+.app-content-shell thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    padding: 15px 16px;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+    background: #eff6ff;
+    color: #334155;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.app-content-shell tbody td {
+    padding: 15px 16px;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+    background: rgba(255, 255, 255, 0.96);
+    color: var(--text);
+    vertical-align: top;
+}
+
+.app-content-shell tbody tr:nth-child(even) td {
+    background: #fbfdff;
+}
+
+.app-content-shell tbody tr:hover td {
+    background: #f3f8ff;
+}
+
+.app-content-shell .task-keyword-link,
+.app-content-shell .download-link,
+.app-content-shell .back-link,
+.app-content-shell .task-id {
+    font-weight: 800;
+}
+
+.app-content-shell .priority-badge,
+.app-content-shell .status-badge,
+.app-content-shell .category-badge,
+.app-content-shell .action-badge,
+.app-content-shell .badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 32px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+}
+
+.app-content-shell .priority-badge.low,
+.app-content-shell .badge.priority-low {
+    background: rgba(34, 197, 94, 0.12);
+    color: #166534;
+}
+
+.app-content-shell .priority-badge.medium,
+.app-content-shell .badge.priority-medium {
+    background: rgba(245, 158, 11, 0.16);
+    color: #92400e;
+}
+
+.app-content-shell .priority-badge.high,
+.app-content-shell .badge.priority-high {
+    background: rgba(249, 115, 22, 0.16);
+    color: #9a3412;
+}
+
+.app-content-shell .priority-badge.urgent,
+.app-content-shell .badge.priority-urgent {
+    background: rgba(239, 68, 68, 0.14);
+    color: #b91c1c;
+}
+
+.app-content-shell .status-badge.not-started,
+.app-content-shell .status-badge.in-progress,
+.app-content-shell .status-badge.overdue,
+.app-content-shell .badge.status-open,
+.app-content-shell .badge.status-in_progress,
+.app-content-shell .badge.status-pending {
+    background: rgba(37, 99, 235, 0.12);
+    color: #1d4ed8;
+}
+
+.app-content-shell .status-badge.completed,
+.app-content-shell .status-badge.closed,
+.app-content-shell .badge.status-completed,
+.app-content-shell .badge.status-closed,
+.app-content-shell .badge.status-resolved,
+.app-content-shell .badge.status-auto_closed {
+    background: rgba(34, 197, 94, 0.12);
+    color: #166534;
+}
+
+.app-content-shell .status-badge.on-hold,
+.app-content-shell .status-badge.stalled,
+.app-content-shell .badge.status-waiting_for_client,
+.app-content-shell .badge.status-needs_clarification {
+    background: rgba(245, 158, 11, 0.16);
+    color: #92400e;
+}
+
+.app-content-shell .status-badge.cancelled,
+.app-content-shell .badge.status-cancelled,
+.app-content-shell .badge.status-waiting_for_inditech {
+    background: rgba(148, 163, 184, 0.22);
+    color: #334155;
+}
+
+.app-content-shell .detail-item,
+.app-content-shell .task-detail-item,
+.app-content-shell .info-item,
+.app-content-shell .profile-item {
+    padding: 16px;
+    border-radius: 18px;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    background: rgba(248, 250, 255, 0.96);
+}
+
+.app-content-shell .detail-value,
+.app-content-shell .task-detail-value,
+.app-content-shell .info-value,
+.app-content-shell .profile-detail p {
+    margin: 0;
+    color: var(--heading);
+    font-size: 15px;
+    font-weight: 700;
+    word-break: break-word;
+}
+
+.app-content-shell .profile-card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 22px;
+}
+
+.app-content-shell .profile-body,
+.app-content-shell .task-details,
+.app-content-shell .task-info,
+.app-content-shell .notes-box {
+    display: grid;
+    gap: 16px;
+}
+
+.app-content-shell .profile-item {
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+}
+
+.app-content-shell .profile-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(20, 184, 166, 0.16));
+    color: var(--blue-strong);
+    font-size: 18px;
+}
+
+.app-content-shell .profile-footer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.app-content-shell .messages,
+.app-content-shell .alert,
+.app-content-shell .errornote,
+.app-content-shell .empty-state,
+.app-content-shell .no-tasks,
+.app-content-shell .no-users,
+.app-content-shell .warning-text {
+    border-radius: 18px;
+}
+
+.app-content-shell .messages {
+    display: grid;
+    gap: 12px;
+}
+
+.app-content-shell .alert,
+.app-content-shell .errornote,
+.app-content-shell .empty-state,
+.app-content-shell .no-tasks,
+.app-content-shell .no-users {
+    padding: 16px 18px;
+    border: 1px dashed rgba(148, 163, 184, 0.32);
+    background: rgba(248, 250, 255, 0.88);
+    color: var(--text-muted);
+}
+
+.app-content-shell .modal {
+    position: fixed;
+    inset: 0;
+    padding: 24px;
+    background: rgba(15, 23, 42, 0.44);
+    backdrop-filter: blur(8px);
+}
+
+.app-content-shell .modal-content {
+    max-width: 760px;
+    margin: 4vh auto;
+}
+
+.app-content-shell .pending-list {
+    display: grid;
+    gap: 8px;
+    margin: 0;
+    padding-left: 18px;
+}
+
+.app-content-shell .pending-list li {
+    color: var(--text);
+}
+
+.app-content-shell .form-text,
+.app-content-shell .help-text,
+.app-content-shell .field-help,
+.app-content-shell .text-muted {
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.55;
+}
+
+.app-content-shell .task-note-form,
+.app-content-shell .user-form {
+    display: grid;
+    gap: 18px;
+}
+
+@media (max-width: 1180px) {
+    .app-content-shell .task-manager-container,
+    .app-content-shell .content-wrapper {
+        grid-template-columns: 1fr;
+    }
+
+    .app-content-shell .task-manager-container > .sidebar,
+    .app-content-shell .filter-panel {
+        position: relative;
+        top: 0;
+        min-height: 0;
+    }
+}
+
+@media (max-width: 900px) {
+    .app-content-shell .task-manager-container > .main-content,
+    .app-content-shell > .container {
+        padding: 20px;
+        border-radius: 24px;
+    }
+
+    .app-content-shell .task-manager-container > .sidebar {
+        border-radius: 24px;
+    }
+
+    .app-content-shell .filters,
+    .app-content-shell .form-row,
+    .app-content-shell .detail-grid,
+    .app-content-shell .profile-card-container,
+    .app-content-shell .task-cards-container,
+    .app-content-shell .stats-grid,
+    .app-content-shell .metrics-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .app-content-shell .task-manager-container > .sidebar,
+    .app-content-shell .task-manager-container > .main-content,
+    .app-content-shell > .container,
+    .app-content-shell .filter-section,
+    .app-content-shell .filter-panel,
+    .app-content-shell .filter-container,
+    .app-content-shell .task-form-container,
+    .app-content-shell .task-table-container,
+    .app-content-shell .table-section,
+    .app-content-shell .metrics-table-container,
+    .app-content-shell .activity-table-container,
+    .app-content-shell .table-container,
+    .app-content-shell .task-note-form-container,
+    .app-content-shell .existing-notes,
+    .app-content-shell .task-section,
+    .app-content-shell .profile-card,
+    .app-content-shell .modal-content,
+    .app-content-shell .panel,
+    .app-content-shell .form-panel {
+        padding: 18px;
+        border-radius: 22px;
+    }
+
+    .app-content-shell .user-actions,
+    .app-content-shell .header-actions,
+    .app-content-shell .filter-buttons,
+    .app-content-shell .form-actions,
+    .app-content-shell .form-buttons,
+    .app-content-shell .button-row,
+    .app-content-shell .client-ticket-actions,
+    .app-content-shell .action-buttons {
+        width: 100%;
+        justify-content: stretch;
+    }
+
+    .app-content-shell button,
+    .app-content-shell .btn,
+    .app-content-shell .submit-btn,
+    .app-content-shell .download-btn,
+    .app-content-shell .create-task-btn,
+    .app-content-shell .filter-btn,
+    .app-content-shell .reset-btn,
+    .app-content-shell .action-btn,
+    .app-content-shell .logout-btn,
+    .app-content-shell .client-ticket-action {
+        width: 100%;
+    }
+}
