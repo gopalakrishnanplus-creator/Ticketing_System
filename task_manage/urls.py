@@ -8,7 +8,7 @@ from django.views.generic import RedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', RedirectView.as_view(url='/tasks/create/', permanent=True)),
+    path('', RedirectView.as_view(url='/tasks/assigned_to_me/', permanent=True)),
     path('client-tickets/', include('client_tickets.urls')),
     path('tasks/', include('task_app.urls')),
     path('accounts/', include('django.contrib.auth.urls')),  # Linking to task_app URLs

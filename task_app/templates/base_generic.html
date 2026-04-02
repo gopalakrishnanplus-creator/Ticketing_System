@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Task Management System{% endblock %}</title>
+    <title>{% block title %}Inditech Support{% endblock %}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -12,60 +12,62 @@
     <link rel="stylesheet" href="{% static 'styles.css' %}">
     {% block extra_head %}{% endblock %}
 </head>
-<body class="inditech-task-shell">
+<body class="support-shell ticket-mode-{{ current_ticket_mode|default:'internal' }}">
     {% if user.is_authenticated %}
-        <header class="app-topbar">
-            <div class="app-topbar-inner">
-                <a class="app-brand" href="{% if user_category == 'Departmental Manager' %}{% url 'home' %}{% elif user_category == 'Task Management System Manager' %}{% url 'activity' %}{% else %}{% url 'assigned_to_me' %}{% endif %}">
-                    <span class="app-brand-mark">IT</span>
-                    <span class="app-brand-copy">
-                        <span class="app-brand-kicker">Inditech Operations</span>
-                        <strong>TaskFlow</strong>
-                    </span>
+        <header class="support-topbar">
+            <div class="support-topbar__inner">
+                <a class="support-brand" href="{% url 'assigned_to_me' %}">
+                    <span class="support-brand__mark">IS</span>
+                    <span class="support-brand__text">InditechSupport</span>
                 </a>
 
-                <nav class="app-quicknav" aria-label="Primary">
-                    {% if user_category == 'Departmental Manager' %}
-                        <a href="{% url 'home' %}" class="{% if request.resolver_match.url_name == 'home' %}is-active{% endif %}">Home</a>
-                        <a href="{% url 'manage_users' %}" class="{% if request.resolver_match.url_name == 'manage_users' %}is-active{% endif %}">Users</a>
-                    {% endif %}
-                    {% if user_category == 'Task Management System Manager' %}
-                        <a href="{% url 'activity' %}" class="{% if request.resolver_match.url_name == 'activity' %}is-active{% endif %}">Activity</a>
-                        <a href="{% url 'metrics' %}" class="{% if request.resolver_match.url_name == 'metrics' %}is-active{% endif %}">Metrics</a>
-                    {% endif %}
-                    <a href="{% url 'assigned_to_me' %}" class="{% if request.resolver_match.url_name == 'assigned_to_me' %}is-active{% endif %}">Assigned To Me</a>
-                    <a href="{% url 'assigned_by_me' %}" class="{% if request.resolver_match.url_name == 'assigned_by_me' %}is-active{% endif %}">Assigned By Me</a>
-                    <a href="{% url 'create_task' %}" class="{% if request.resolver_match.url_name == 'create_task' %}is-active{% endif %}">Create Task</a>
+                <nav class="support-nav" aria-label="Primary">
+                    <a href="{% url 'assigned_to_me' %}" class="{% if request.resolver_match.url_name == 'assigned_to_me' %}is-active{% endif %}">
+                        Assigned to Me
+                    </a>
+                    <a href="{% url 'assigned_by_me' %}" class="{% if request.resolver_match.url_name == 'assigned_by_me' %}is-active{% endif %}">
+                        Assigned By Me
+                    </a>
                 </nav>
 
-                <div class="app-topbar-meta">
-                    <a class="app-link-pill app-link-pill-primary" href="{% url 'client_tickets:dashboard' %}">
-                        <i class="fas fa-link"></i>
-                        <span>Client Tickets</span>
+                <div class="support-toolbar">
+                    <div class="support-mode-toggle" role="group" aria-label="Ticket mode">
+                        <a href="{% url 'set_ticket_mode' 'internal' %}?next={% if request.resolver_match.namespace == 'client_tickets' %}{% url 'assigned_to_me' %}{% else %}{{ request.get_full_path|urlencode }}{% endif %}" class="{% if current_ticket_mode == 'internal' %}is-active{% endif %}">
+                            Internal
+                        </a>
+                        <a href="{% url 'set_ticket_mode' 'external' %}?next={% if request.resolver_match.namespace == 'client_tickets' %}{% url 'assigned_to_me' %}{% else %}{{ request.get_full_path|urlencode }}{% endif %}" class="{% if current_ticket_mode == 'external' %}is-active{% endif %}">
+                            External
+                        </a>
+                    </div>
+
+                    <a class="support-create-button" href="{% url 'create_task' %}">
+                        <i class="fas fa-plus"></i>
+                        <span>Create Ticket</span>
                     </a>
-                    <a class="app-user-chip" href="{% url 'user_profile' %}">
-                        <span class="app-user-avatar">
+
+                    <a class="support-user-chip" href="{% url 'user_profile' %}">
+                        <span class="support-user-chip__avatar">
                             {{ request.user.first_name|default:request.user.username|slice:":1"|upper }}
                         </span>
-                        <span class="app-user-copy">
+                        <span class="support-user-chip__copy">
                             <strong>{{ request.user.get_full_name|default:request.user.username }}</strong>
-                            <small>{{ user_category|default:"Team Member" }}</small>
+                            <small>{{ user_category|default:"Support User" }}</small>
                         </span>
                     </a>
-                    <a class="app-link-pill app-link-pill-ghost" href="{% url 'logout' %}">
+
+                    <a class="support-logout" href="{% url 'logout' %}" aria-label="Logout">
                         <i class="fas fa-sign-out-alt"></i>
-                        <span>Logout</span>
                     </a>
                 </div>
             </div>
         </header>
     {% endif %}
 
-    <main class="app-content-shell">
+    <main class="support-main">
         {% if messages %}
-            <div class="app-flash-list">
+            <div class="support-flash-list">
                 {% for message in messages %}
-                    <div class="app-flash app-flash-{{ message.tags|default:'info' }}">
+                    <div class="support-flash support-flash--{{ message.tags|default:'info' }}">
                         <i class="fas fa-info-circle"></i>
                         <span>{{ message }}</span>
                     </div>

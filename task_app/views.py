@@ -3,6 +3,7 @@ from .models import Task, UserProfile, Department, TaskChat
 from django.contrib.auth.decorators import login_required
 from .forms import TaskForm, TaskChatForm
 from django.core.exceptions import PermissionDenied
+from django.core.paginator import Paginator
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.db.models import Q,F
@@ -24,10 +25,20 @@ from datetime import date
 from django.views.decorators.http import require_http_methods
 from django.core.exceptions import ValidationError
 from django.utils.dateparse import parse_date
+from django.utils.http import url_has_allowed_host_and_scheme
+from django.urls import reverse
 import logging
 import json
 
+from client_tickets.forms import ClientTicketForm
+from client_tickets.models import ClientTicket, ClientTicketType, ClientTicketUpdate
+from client_tickets.services import create_ticket_update, notify_ticket_created, upsert_client_contact
+
 logger = logging.getLogger(__name__)
+
+TICKET_MODE_INTERNAL = 'internal'
+TICKET_MODE_EXTERNAL = 'external'
+TICKET_MODE_CHOICES = {TICKET_MODE_INTERNAL, TICKET_MODE_EXTERNAL}
 
 def send_email_notification(subject, template_name, context, recipient_email, cc_emails=None):
     """Utility function to send email notifications (with CC)."""
@@ -44,6 +55,143 @@ def send_email_notification(subject, template_name, context, recipient_email, cc
 def _norm_emails(iterable):
     return sorted(list({(e or "").strip().lower() for e in (iterable or []) if (e or "").strip()}))
 
+
+def get_ticket_ui_mode(request):
+    mode = request.session.get('ticket_ui_mode', TICKET_MODE_INTERNAL)
+    if mode not in TICKET_MODE_CHOICES:
+        mode = TICKET_MODE_INTERNAL
+    return mode
+
+
+def _safe_ticket_redirect_target(request, fallback='assigned_to_me'):
+    redirect_to = request.GET.get('next') or request.POST.get('next')
+    if redirect_to and url_has_allowed_host_and_scheme(
+        redirect_to,
+        allowed_hosts={request.get_host()},
+        require_https=request.is_secure(),
+    ):
+        return redirect_to
+    return reverse(fallback)
+
+
+def _query_string_without_page(request):
+    params = request.GET.copy()
+    params.pop('page', None)
+    return params.urlencode()
+
+
+def _paginate_records(request, queryset, per_page=10):
+    paginator = Paginator(queryset, per_page)
+    return paginator.get_page(request.GET.get('page') or 1)
+
+
+def _apply_internal_filters(queryset, request):
+    today = date.today()
+    search = (request.GET.get('q') or '').strip()
+    quick_filter = (request.GET.get('quick') or '').strip()
+    priority = (request.GET.get('priority') or '').strip()
+    status = (request.GET.get('status') or '').strip()
+    department = (request.GET.get('department') or '').strip()
+    deadline = (request.GET.get('deadline') or '').strip()
+
+    if search:
+        queryset = queryset.filter(
+            Q(task_id__icontains=search) |
+            Q(subject__icontains=search) |
+            Q(request_details__icontains=search) |
+            Q(assigned_by__username__icontains=search) |
+            Q(assigned_by__first_name__icontains=search) |
+            Q(assigned_by__last_name__icontains=search) |
+            Q(assigned_to__username__icontains=search) |
+            Q(assigned_to__first_name__icontains=search) |
+            Q(assigned_to__last_name__icontains=search)
+        )
+    if quick_filter == 'this_week':
+        queryset = queryset.filter(deadline__gte=today, deadline__lte=today + timedelta(days=7))
+    elif quick_filter == 'next_24_hours':
+        queryset = queryset.filter(deadline__gte=today, deadline__lte=today + timedelta(days=1))
+    elif quick_filter == 'overdue':
+        queryset = queryset.filter(deadline__lt=today).exclude(status__in=['Completed', 'Cancelled'])
+    if priority:
+        queryset = queryset.filter(priority=priority)
+    if status:
+        queryset = queryset.filter(status=status)
+    if department:
+        queryset = queryset.filter(department__name=department)
+    if deadline:
+        parsed_deadline = parse_date(deadline)
+        if parsed_deadline:
+            queryset = queryset.filter(deadline=parsed_deadline)
+
+    return queryset, {
+        'search': search,
+        'quick': quick_filter,
+        'priority': priority,
+        'status': status,
+        'department': department,
+        'deadline': deadline,
+    }
+
+
+def _apply_external_filters(queryset, request):
+    search = (request.GET.get('q') or '').strip()
+    department = (request.GET.get('department') or '').strip()
+    user_type = (request.GET.get('user_type') or '').strip()
+    source_system = (request.GET.get('source_system') or '').strip()
+    priority = (request.GET.get('priority') or '').strip()
+    status = (request.GET.get('status') or '').strip()
+
+    if search:
+        queryset = queryset.filter(
+            Q(ticket_number__icontains=search) |
+            Q(title__icontains=search) |
+            Q(description__icontains=search) |
+            Q(requester_name__icontains=search) |
+            Q(requester_email__icontains=search)
+        )
+    if department:
+        queryset = queryset.filter(department__name=department)
+    if user_type:
+        queryset = queryset.filter(user_type=user_type)
+    if source_system:
+        queryset = queryset.filter(source_system=source_system)
+    if priority:
+        queryset = queryset.filter(priority=priority)
+    if status:
+        queryset = queryset.filter(status=status)
+
+    return queryset, {
+        'search': search,
+        'department': department,
+        'user_type': user_type,
+        'source_system': source_system,
+        'priority': priority,
+        'status': status,
+    }
+
+
+def _internal_summary(queryset):
+    today = date.today()
+    return {
+        'total': queryset.count(),
+        'open': queryset.exclude(status__in=['Completed', 'Cancelled']).count(),
+        'overdue': queryset.filter(deadline__lt=today).exclude(status__in=['Completed', 'Cancelled']).count(),
+        'urgent': queryset.filter(priority='urgent').count(),
+    }
+
+
+def _external_summary(queryset):
+    return {
+        'total': queryset.count(),
+        'open': queryset.exclude(
+            status__in=[ClientTicket.STATUS_CLOSED, ClientTicket.STATUS_AUTO_CLOSED, ClientTicket.STATUS_CANCELLED]
+        ).count(),
+        'waiting': queryset.filter(
+            status__in=[ClientTicket.STATUS_WAITING_FOR_CLIENT, ClientTicket.STATUS_WAITING_FOR_INDITECH]
+        ).count(),
+        'urgent': queryset.filter(priority=ClientTicket.PRIORITY_URGENT).count(),
+    }
+
 @login_required
 def home(request):
     user_profile = UserProfile.objects.get(user=request.user)
@@ -59,7 +207,7 @@ def home(request):
             Q(assigned_to__userprofile__department=department)|
             Q(department__name=department),
 
-            assigned_date__lte=today
+            assigned_date__date__lte=today
         ).order_by('-assigned_date')
         
         return render(request, 'tasks/home.html', {
@@ -72,36 +220,98 @@ def home(request):
 
 @login_required
 def assigned_to_me(request):
-    today = date.today()
-    # Filter tasks where the assigned_to field matches the current user
-    tasks = Task.objects.filter(assigned_to=request.user, assigned_date__lte=today).order_by('-assigned_date')
+    mode = get_ticket_ui_mode(request)
+    if mode == TICKET_MODE_EXTERNAL:
+        queryset = ClientTicket.objects.select_related(
+            'assigned_to', 'project_manager', 'department', 'ticket_type'
+        ).filter(assigned_to=request.user)
+        queryset, selected_filters = _apply_external_filters(queryset, request)
+        page_obj = _paginate_records(request, queryset.order_by('-updated_at', '-created_at'))
+        return render(request, 'tasks/assigned_to_me.html', {
+            'records': page_obj.object_list,
+            'page_obj': page_obj,
+            'page_title': 'Assigned to Me',
+            'page_description': 'Track the external client tickets currently routed to you.',
+            'summary': _external_summary(queryset),
+            'selected_filters': selected_filters,
+            'department_choices': Department.objects.all().order_by('name'),
+            'user_type_choices': ClientTicket.USER_TYPE_CHOICES,
+            'source_choices': ClientTicket.SOURCE_SYSTEM_CHOICES,
+            'priority_choices': ClientTicket.PRIORITY_CHOICES,
+            'status_choices': ClientTicket.STATUS_CHOICES[1:],
+            'filter_query': _query_string_without_page(request),
+        })
 
-    # Passing task category functional choices (department in this case) for filtering
-    functional_categories = Task.FUNCTIONAL_CATEGORIES  # Assuming Task.FUNCTIONAL_CATEGORIES holds department choices
+    queryset = Task.objects.filter(
+        assigned_to=request.user,
+        assigned_date__date__lte=date.today(),
+    ).select_related('department', 'assigned_by', 'assigned_to')
+    queryset, selected_filters = _apply_internal_filters(queryset, request)
+    page_obj = _paginate_records(request, queryset.order_by('-assigned_date', '-deadline'))
 
-    # Render the template with the tasks and functional categories
     return render(request, 'tasks/assigned_to_me.html', {
-        'tasks': tasks,
-        'departments': Department.objects.all(),
-        'users':User.objects.all(),
+        'records': page_obj.object_list,
+        'page_obj': page_obj,
+        'page_title': 'Assigned to Me',
+        'page_description': 'Review and action the internal tickets currently assigned to you.',
+        'summary': _internal_summary(queryset),
+        'selected_filters': selected_filters,
+        'department_choices': Department.objects.all().order_by('name'),
+        'priority_choices': Task.PRIORITY_LEVELS,
+        'status_choices': Task.STATUS_CHOICES,
+        'filter_query': _query_string_without_page(request),
     })
 
 @login_required
 def assigned_by_me(request):
-    today = date.today()
-    tasks = Task.objects.filter(assigned_by=request.user, assigned_date__lte=today).order_by('-assigned_date')
-    # Fetch tasks where the logged-in user is the assigner
-    # tasks = Task.objects.filter(assigned_by=request.user)
+    mode = get_ticket_ui_mode(request)
+    if mode == TICKET_MODE_EXTERNAL:
+        queryset = ClientTicket.objects.select_related(
+            'assigned_to', 'project_manager', 'department', 'ticket_type'
+        ).filter(created_by=request.user)
+        queryset, selected_filters = _apply_external_filters(queryset, request)
+        page_obj = _paginate_records(request, queryset.order_by('-updated_at', '-created_at'))
+        return render(request, 'tasks/assigned_by_me.html', {
+            'records': page_obj.object_list,
+            'page_obj': page_obj,
+            'page_title': 'Assigned By Me',
+            'page_description': 'Monitor the external client tickets you have raised into the support flow.',
+            'summary': _external_summary(queryset),
+            'selected_filters': selected_filters,
+            'department_choices': Department.objects.all().order_by('name'),
+            'user_type_choices': ClientTicket.USER_TYPE_CHOICES,
+            'source_choices': ClientTicket.SOURCE_SYSTEM_CHOICES,
+            'priority_choices': ClientTicket.PRIORITY_CHOICES,
+            'status_choices': ClientTicket.STATUS_CHOICES[1:],
+            'filter_query': _query_string_without_page(request),
+        })
 
-    # Passing task category functional choices (department in this case) for filtering
-    functional_categories = Task.FUNCTIONAL_CATEGORIES  # Assuming Task.FUNCTIONAL_CATEGORIES holds department choices
+    queryset = Task.objects.filter(
+        assigned_by=request.user,
+        assigned_date__date__lte=date.today(),
+    ).select_related('department', 'assigned_by', 'assigned_to')
+    queryset, selected_filters = _apply_internal_filters(queryset, request)
+    page_obj = _paginate_records(request, queryset.order_by('-assigned_date', '-deadline'))
 
-    # Render the template with the tasks and functional categories
     return render(request, 'tasks/assigned_by_me.html', {
-        'tasks': tasks,
-        'departments': Department.objects.all(),
-        'users':User.objects.all(),
+        'records': page_obj.object_list,
+        'page_obj': page_obj,
+        'page_title': 'Assigned By Me',
+        'page_description': 'Keep track of the internal tickets you have created for the team.',
+        'summary': _internal_summary(queryset),
+        'selected_filters': selected_filters,
+        'department_choices': Department.objects.all().order_by('name'),
+        'priority_choices': Task.PRIORITY_LEVELS,
+        'status_choices': Task.STATUS_CHOICES,
+        'filter_query': _query_string_without_page(request),
     })
+
+
+@login_required
+@require_http_methods(['GET'])
+def set_ticket_mode(request, mode):
+    request.session['ticket_ui_mode'] = mode if mode in TICKET_MODE_CHOICES else TICKET_MODE_INTERNAL
+    return redirect(_safe_ticket_redirect_target(request))
 
 @login_required
 def user_profile(request):
@@ -214,6 +424,44 @@ def task_list(request):
 
 @login_required
 def create_task(request):
+    mode = get_ticket_ui_mode(request)
+
+    if mode == TICKET_MODE_EXTERNAL:
+        if request.method == 'POST':
+            client_form = ClientTicketForm(request.POST, request.FILES, request=request)
+            if client_form.is_valid():
+                ticket = client_form.save(commit=False)
+                client = upsert_client_contact(
+                    client_form.cleaned_data['requester_name'],
+                    client_form.cleaned_data['requester_email'],
+                    client_form.cleaned_data['requester_number'],
+                )
+                ticket.requester = client
+                ticket.created_by = request.user
+                ticket.save()
+                create_ticket_update(
+                    ticket,
+                    ClientTicketUpdate.ACTOR_INDITECH,
+                    message='Ticket created from the main task screen.',
+                    status=ticket.status,
+                    user=request.user,
+                    attachments=client_form.cleaned_data['attachments'],
+                )
+                notify_ticket_created(ticket)
+                messages.success(request, f'Client ticket {ticket.ticket_number} created successfully.')
+                return redirect('client_tickets:ticket_detail', ticket.ticket_number)
+        else:
+            client_form = ClientTicketForm(request=request)
+
+        ticket_type_department_map = {
+            ticket_type.id: ticket_type.department_id
+            for ticket_type in ClientTicketType.objects.select_related('department').filter(is_active=True)
+        }
+        return render(request, 'tasks/create_task.html', {
+            'client_form': client_form,
+            'ticket_type_department_map': ticket_type_department_map,
+        })
+
     if request.method == 'POST':
         form = TaskForm(request.POST, request.FILES, user=request.user)
         if form.is_valid():
@@ -278,13 +526,17 @@ def create_task(request):
                 task=task,
                 description=f"Task {task.task_id} created by {request.user.username} for {task.assigned_to.username if task.assigned_to else 'Unassigned'}"
             )
-            return JsonResponse({'message': 'Task created successfully!', 'task_id': task.task_id})
-        else:
-            # Log invalid form errors
+            messages.success(request, f'Task {task.task_id} created successfully.')
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                return JsonResponse({'message': 'Task created successfully!', 'task_id': task.task_id})
+            return redirect('task_detail', task.task_id)
+
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
             return JsonResponse({'error': 'Form data is invalid', 'errors': form.errors}, status=400)
-    else:
-        form = TaskForm(user=request.user)
-        return render(request, 'tasks/create_task.html', {'form': form})
+        return render(request, 'tasks/create_task.html', {'form': form}, status=400)
+
+    form = TaskForm(user=request.user)
+    return render(request, 'tasks/create_task.html', {'form': form})
 
 @login_required
 def edit_task(request, task_id):
@@ -647,13 +899,7 @@ def task_note_page(request, task_id):
 
 @login_required
 def dashboard(request):
-    user_profile = UserProfile.objects.get(user=request.user)
-    if user_profile.category == 'Task Management System Manager':
-        return redirect('activity')  # Redirect Managers to Activity Page
-    elif user_profile.category == 'Departmental Manager':
-        return redirect('home')      # Redirect Departmental Managers to Home Page
-    else:
-        return redirect('assigned_to_me')  # Redirect others to Assigned To Me Page
+    return redirect('assigned_to_me')
 
 @login_required
 def activity(request):

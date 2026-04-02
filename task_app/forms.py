@@ -43,17 +43,7 @@ class TaskForm(forms.ModelForm):
         # Preselect viewers_ui from instance.viewers
         if self.instance and getattr(self.instance, "viewers", None):
             self.fields["viewers_ui"].initial = User.objects.filter(email__in=self.instance.viewers)
-        # Conditionally show recurrence fields based on 'is_recurring'
-        if not self.instance.is_recurring:
-            # Hide recurrence fields if task is not recurring
-            self.fields['recurrence_type'].widget.attrs['style'] = 'display: none;'
-            self.fields['recurrence_count'].widget.attrs['style'] = 'display: none;'
-            self.fields['recurrence_duration'].widget.attrs['style'] = 'display: none;'
-        else:
-            # Show recurrence fields if task is recurring
-            self.fields['recurrence_type'].widget.attrs['style'] = 'display: block;'
-            self.fields['recurrence_count'].widget.attrs['style'] = 'display: block;'
-            self.fields['recurrence_duration'].widget.attrs['style'] = 'display: block;'
+
     def save(self, commit=True):
         instance = super().save(commit=False)
         # Write UI selection into JSONField of emails

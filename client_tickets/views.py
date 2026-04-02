@@ -163,40 +163,13 @@ def _touch_inditech_activity(ticket, user):
 
 @login_required
 def dashboard(request):
-    queryset = (
-        ClientTicket.objects.select_related("assigned_to", "project_manager", "department", "ticket_type")
-        .prefetch_related("updates", "attachments")
-        .all()
-    )
-    metrics = {
-        "total": queryset.count(),
-        "open": queryset.exclude(
-            status__in=[ClientTicket.STATUS_CLOSED, ClientTicket.STATUS_AUTO_CLOSED, ClientTicket.STATUS_CANCELLED]
-        ).count(),
-        "high_priority": queryset.filter(priority__in=[ClientTicket.PRIORITY_HIGH, ClientTicket.PRIORITY_URGENT]).count(),
-        "waiting_for_client": queryset.filter(status=ClientTicket.STATUS_WAITING_FOR_CLIENT).count(),
-        "waiting_for_inditech": queryset.filter(status=ClientTicket.STATUS_WAITING_FOR_INDITECH).count(),
-        "resolved": queryset.filter(status=ClientTicket.STATUS_RESOLVED).count(),
-        "stale_unchecked": queryset.filter(
-            created_at__lte=timezone.now() - timedelta(hours=24), last_inditech_action_at__isnull=True
-        ).count(),
-    }
-    status_counts = queryset.values("status").annotate(total=Count("id")).order_by("-total")
-    source_counts = queryset.values("source_system").annotate(total=Count("id")).order_by("-total")
-    recent_updates = ClientTicketUpdate.objects.select_related("ticket", "user", "client").all()[:10]
-    my_tickets = queryset.filter(Q(assigned_to=request.user) | Q(project_manager=request.user)).distinct()[:10]
-    context = {
-        "metrics": metrics,
-        "status_counts": status_counts,
-        "source_counts": source_counts,
-        "recent_updates": recent_updates,
-        "my_tickets": my_tickets,
-    }
-    return render(request, "client_tickets/dashboard.html", context)
+    request.session["ticket_ui_mode"] = "external"
+    return redirect("assigned_to_me")
 
 
 @login_required
 def ticket_list(request):
+    request.session["ticket_ui_mode"] = "external"
     queryset = ClientTicket.objects.select_related("assigned_to", "project_manager", "department", "ticket_type").all()
     search = request.GET.get("q", "").strip()
     status = request.GET.get("status", "").strip()
@@ -232,47 +205,13 @@ def ticket_list(request):
 
 @login_required
 def create_ticket(request):
-    if request.method == "POST":
-        form = ClientTicketForm(request.POST, request.FILES, request=request)
-        if form.is_valid():
-            ticket = form.save(commit=False)
-            client = upsert_client_contact(
-                form.cleaned_data["requester_name"],
-                form.cleaned_data["requester_email"],
-                form.cleaned_data["requester_number"],
-            )
-            ticket.requester = client
-            ticket.created_by = request.user
-            ticket.save()
-            create_ticket_update(
-                ticket,
-                ClientTicketUpdate.ACTOR_INDITECH,
-                message="Ticket created from UI.",
-                status=ticket.status,
-                user=request.user,
-                attachments=form.cleaned_data["attachments"],
-            )
-            notify_ticket_created(ticket)
-            messages.success(request, f"Client ticket {ticket.ticket_number} created successfully.")
-            return redirect("client_tickets:ticket_detail", ticket.ticket_number)
-    else:
-        form = ClientTicketForm(request=request)
-
-    ticket_type_department_map = {
-        ticket_type.id: ticket_type.department_id for ticket_type in ClientTicketType.objects.select_related("department")
-    }
-    return render(
-        request,
-        "client_tickets/create_ticket.html",
-        {
-            "form": form,
-            "ticket_type_department_map": ticket_type_department_map,
-        },
-    )
+    request.session["ticket_ui_mode"] = "external"
+    return redirect("create_task")
 
 
 @login_required
 def ticket_detail(request, ticket_number):
+    request.session["ticket_ui_mode"] = "external"
     ticket = get_object_or_404(
         ClientTicket.objects.select_related("assigned_to", "project_manager", "department", "ticket_type", "requester")
         .prefetch_related("attachments", "updates")

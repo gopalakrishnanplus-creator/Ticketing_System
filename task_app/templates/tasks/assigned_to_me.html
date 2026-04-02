@@ -1,1077 +1,270 @@
+{% extends "base_generic.html" %}
 
-{% extends 'base_generic.html' %}
-{% load static %}
+{% block title %}{{ page_title }} | Inditech Support{% endblock %}
 
 {% block content %}
-<div class="task-manager-container">
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="logo-container">
-            <h2>Task<span>Flow</span></h2>
+<section class="ticket-workspace">
+    <header class="workspace-header">
+        <div>
+            <p class="workspace-kicker">{% if is_external_ticket_mode %}CLIENT TICKETING{% else %}WORKFORCE MANAGEMENT{% endif %}</p>
+            <h1>{{ page_title }}</h1>
+            <p class="workspace-copy">{{ page_description }}</p>
         </div>
-        <div class="menu-container">
-            <ul>
-                {% with request.user.userprofile as profile %}
-                    {% if profile.category == 'Task Management System Manager' %}
-                        <li><a href="{% url 'activity' %}" class="{% if request.resolver_match.url_name == 'activity' %}active{% endif %}">
-                            <i class="fas fa-chart-line"></i> Activity
-                        </a></li>
-                        <li><a href="{% url 'metrics' %}" class="{% if request.resolver_match.url_name == 'metrics' %}active{% endif %}">
-                            <i class="fas fa-tachometer-alt"></i> Metrics
-                        </a></li>
-                        <li><a href="{% url 'user_profile' %}" class="{% if request.resolver_match.url_name == 'user_profile' %}active{% endif %}">
-                            <i class="fas fa-user"></i> User Profile
-                        </a></li>
-                    {% else %}
-                        {% if profile.category == "Departmental Manager" %}
-                            <li><a href="{% url 'home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">
-                                <i class="fas fa-home"></i> Home
-                            </a></li>
-                            <li><a href="{% url 'manage_users' %}" class="{% if request.resolver_match.url_name == 'manage_users' %}active{% endif %}" title="Users">
-                                <i class="fas fa-users"></i> <span>Users</span>
-                            </a></li>
-                        {% endif %}
-                        <li><a href="{% url 'assigned_to_me' %}" class="{% if request.resolver_match.url_name == 'assigned_to_me' %}active{% endif %}">
-                            <i class="fas fa-tasks"></i> Assigned To Me
-                        </a></li>
-                        <li><a href="{% url 'assigned_by_me' %}" class="{% if request.resolver_match.url_name == 'assigned_by_me' %}active{% endif %}">
-                            <i class="fas fa-project-diagram"></i> Assigned By Me
-                        </a></li>
-                        <li><a href="{% url 'user_profile' %}" class="{% if request.resolver_match.url_name == 'user_profile' %}active{% endif %}">
-                            <i class="fas fa-user"></i> User Profile
-                        </a></li>
-                    {% endif %}
-                {% endwith %}
-            </ul>
+
+        <div class="workspace-stats">
+            <article class="workspace-stat">
+                <span>Total Tickets</span>
+                <strong>{{ summary.total }}</strong>
+            </article>
+            <article class="workspace-stat">
+                <span>Open</span>
+                <strong>{{ summary.open }}</strong>
+            </article>
+            <article class="workspace-stat">
+                <span>{% if is_external_ticket_mode %}Waiting{% else %}Overdue{% endif %}</span>
+                <strong>{% if is_external_ticket_mode %}{{ summary.waiting }}{% else %}{{ summary.overdue }}{% endif %}</strong>
+            </article>
+            <article class="workspace-stat">
+                <span>Urgent</span>
+                <strong>{{ summary.urgent }}</strong>
+            </article>
         </div>
+    </header>
+
+    <div class="workspace-panel">
+        <form method="get" class="workspace-filters">
+            {% if is_external_ticket_mode %}
+                <label class="filter-field filter-field--search">
+                    <span>Search</span>
+                    <input type="text" name="q" value="{{ selected_filters.search }}" placeholder="Ticket number, title, requester">
+                </label>
+                <label class="filter-field">
+                    <span>Department</span>
+                    <select name="department">
+                        <option value="">All Departments</option>
+                        {% for department in department_choices %}
+                            <option value="{{ department.name }}" {% if selected_filters.department == department.name %}selected{% endif %}>{{ department.name }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <label class="filter-field">
+                    <span>User Type</span>
+                    <select name="user_type">
+                        <option value="">All User Types</option>
+                        {% for value, label in user_type_choices %}
+                            <option value="{{ value }}" {% if selected_filters.user_type == value %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <label class="filter-field">
+                    <span>Source System</span>
+                    <select name="source_system">
+                        <option value="">All Sources</option>
+                        {% for value, label in source_choices %}
+                            <option value="{{ value }}" {% if selected_filters.source_system == value %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <label class="filter-field">
+                    <span>Priority</span>
+                    <select name="priority">
+                        <option value="">All Priorities</option>
+                        {% for value, label in priority_choices %}
+                            <option value="{{ value }}" {% if selected_filters.priority == value %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <label class="filter-field">
+                    <span>Status</span>
+                    <select name="status">
+                        <option value="">All Statuses</option>
+                        {% for value, label in status_choices %}
+                            <option value="{{ value }}" {% if selected_filters.status == value %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+            {% else %}
+                <label class="filter-field filter-field--search">
+                    <span>Search</span>
+                    <input type="text" name="q" value="{{ selected_filters.search }}" placeholder="Task ID, subject, assignee">
+                </label>
+                <label class="filter-chip-group">
+                    <span>Quick Filter</span>
+                    <select name="quick">
+                        <option value="">All Tickets</option>
+                        <option value="this_week" {% if selected_filters.quick == 'this_week' %}selected{% endif %}>Due This Week</option>
+                        <option value="next_24_hours" {% if selected_filters.quick == 'next_24_hours' %}selected{% endif %}>Next 24 Hours</option>
+                        <option value="overdue" {% if selected_filters.quick == 'overdue' %}selected{% endif %}>Deadline Passed</option>
+                    </select>
+                </label>
+                <label class="filter-field">
+                    <span>Priority</span>
+                    <select name="priority">
+                        <option value="">All Priorities</option>
+                        {% for value, label in priority_choices %}
+                            <option value="{{ value }}" {% if selected_filters.priority == value %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <label class="filter-field">
+                    <span>Status</span>
+                    <select name="status">
+                        <option value="">All Statuses</option>
+                        {% for value, label in status_choices %}
+                            <option value="{{ value }}" {% if selected_filters.status == value %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <label class="filter-field">
+                    <span>Department</span>
+                    <select name="department">
+                        <option value="">All Departments</option>
+                        {% for department in department_choices %}
+                            <option value="{{ department.name }}" {% if selected_filters.department == department.name %}selected{% endif %}>{{ department.name }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <label class="filter-field">
+                    <span>Deadline</span>
+                    <input type="date" name="deadline" value="{{ selected_filters.deadline }}">
+                </label>
+            {% endif %}
+
+            <div class="workspace-filter-actions">
+                <button type="submit" class="primary-action">Apply Filters</button>
+                <a href="{% url 'assigned_to_me' %}" class="secondary-action">Reset</a>
+            </div>
+        </form>
     </div>
 
-    <!-- Main Content -->
-    <div class="main-content">
-            <div class="greeting">
-                <h1>Welcome, {{ request.user.username }}!</h1>
-                <p>Here are the tasks assigned to you</p>
+    <div class="workspace-panel">
+        <div class="workspace-table-header">
+            <div>
+                <h2>{{ page_title }}</h2>
+                <p>{{ page_obj.paginator.count }} results</p>
             </div>
-            <div class="user-actions">
-                <div class="notification">
-                    <i class="fas fa-bell"></i>
-                    
-                </div>
-                <div class="user">
-                    <img src="{% static 'task_app/images/user-icon.png' %}" alt="User Avatar" class="avatar" />
-                    <span>{{ request.user.get_full_name }}</span>
-                    <i class="fas fa-chevron-down"></i>
-                </div>
-            
+            <a href="{% url 'create_task' %}" class="secondary-action">+ Create Ticket</a>
         </div>
 
-        <!-- Filter Section -->
-        <!-- Revised Filter Section with Quick Deadline Filters -->
-<div class="filter-section">
-    <div class="filter-container">
-        <h3><i class="fas fa-filter"></i> Task Filters</h3>
-        
-        <div class="filters">
-            <!-- Priority Filter -->
-            <div class="filter-group">
-                <label>Priority</label>
-                <div class="multi-select" id="priorityFilterContainer">
-                    <div class="multi-select-header" onclick="toggleDropdown('priorityDropdown')">
-                        <span class="placeholder">Select Priorities</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="multi-select-dropdown" id="priorityDropdown">
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="priorityHigh" value="high">
-                            <label for="priorityHigh">High</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="priorityMedium" value="medium">
-                            <label for="priorityMedium">Medium</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="priorityLow" value="low">
-                            <label for="priorityLow">Low</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="priorityUrgent" value="urgent">
-                            <label for="priorityUrgent">Urgent</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Status Filter -->
-            <div class="filter-group">
-                <label>Status</label>
-                <div class="multi-select" id="statusFilterContainer">
-                    <div class="multi-select-header" onclick="toggleDropdown('statusDropdown')">
-                        <span class="placeholder">Select Statuses</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="multi-select-dropdown" id="statusDropdown">
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="statusNotStarted" value="Not Started" checked>
-                            <label for="statusNotStarted">Not Started</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="statusInProgress" value="In Progress" checked>
-                            <label for="statusInProgress">In Progress</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="statusCompleted" value="Completed">
-                            <label for="statusCompleted">Completed</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="statusStalled" value="Stalled">
-                            <label for="statusStalled">Stalled</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="statusCancelled" value="Cancelled">
-                            <label for="statusCancelled">Cancelled</label>
-                        </div>
-                        <div class="checkbox-item">
-                                    <input type="checkbox" id="statusOverdue" value="Overdue">
-                                    <label for="statusOverdue">Overdue</label>
-                                </div>
-                        <div class="checkbox-item">
-                                    <input type="checkbox" id="statusOnHold" value="On-Hold">
-                                    <label for="statusOnHold">On Hold</label>
-                                </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Department Filter -->
-            <div class="filter-group">
-                <label>Department</label>
-                <div class="multi-select" id="departmentFilterContainer">
-                    <div class="multi-select-header" onclick="toggleDropdown('departmentDropdown')">
-                        <span class="placeholder">Select Departments</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="multi-select-dropdown" id="departmentDropdown">
-                        {% for department in departments %}
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="department{{ forloop.counter }}" value="{{ department.name }}">
-                                <label for="department{{ forloop.counter }}">{{ department.name }}</label>
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-
-            <!-- Assignor Department Filter -->
-            <div class="filter-group">
-                <label>Assignor Department</label>
-                <div class="multi-select" id="assignorDepartmentFilterContainer">
-                    <div class="multi-select-header" onclick="toggleDropdown('assignorDepartmentDropdown')">
-                        <span class="placeholder">Select Departments</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="multi-select-dropdown" id="assignorDepartmentDropdown">
-                        {% for department in departments %}
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="assignorDepartment{{ forloop.counter }}" value="{{ department.name }}">
-                                <label for="assignorDepartment{{ forloop.counter }}">{{ department.name }}</label>
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-
-            <!-- Assigned By Filter -->
-            <div class="filter-group">
-                <label>Assigned By</label>
-                <div class="multi-select" id="assignedByFilterContainer">
-                    <div class="multi-select-header" onclick="toggleDropdown('assignedByDropdown')">
-                        <span class="placeholder">Select Users</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="multi-select-dropdown" id="assignedByDropdown">
-                        {% for user in users %}
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="assignedBy{{ forloop.counter }}" value="{{ user.get_full_name }}">
-                                <label for="assignedBy{{ forloop.counter }}">{{ user.get_full_name }}</label>
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-
-            <!-- Deadline Filter -->
-            <div class="filter-group">
-                <label>Deadline</label>
-                <input type="date" id="deadlineFilter" class="date-input">
-            </div>
-            
-            <!-- Quick Deadline Filter -->
-            <div class="filter-group">
-                <label>Quick Deadline Filter</label>
-                <div class="deadline-quick-filter">
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="deadlineNext24Hours" value="next24">
-                        <label for="deadlineNext24Hours">Next 24 Hours</label>
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="deadlinePassed" value="passed">
-                        <label for="deadlinePassed">Deadline Passed</label>
-                    </div>
-                </div>
-            </div>
-            
-            <button class="filter-btn" onclick="applyFilters()">Apply Filters</button>
-            <button class="reset-btn" onclick="resetFilters()">Reset</button>
-        </div>
-    </div>
-</div>
-
-        <!-- Task Table -->
-        <div class="task-table-container">
-            <table id="taskTable">
-                <thead>
-                    <tr>
-                        <th>Keyword</th>
-                        <th>Subject</th>
-                        <th>Priority</th>
-                        <th>Status</th>
-                        <th>Department</th>
-                        <th>Deadline</th>
-                        <th>Assigned By</th>
-                        <th>Assignor Department</th>
-                        <th>Revised Deadline</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for task in tasks %}
+        <div class="workspace-table-scroll">
+            {% if is_external_ticket_mode %}
+                <table class="workspace-table">
+                    <thead>
                         <tr>
-                            <td><a href="{% url 'task_detail' task.task_id %}" class="task-keyword-link" target="_blank">{{ task.task_id }}</a></td>
-                            <td>{{ task.subject }}</td>
-                            <td>
-                                <span class="priority-badge {{ task.priority|lower }}">
-                                    {{ task.priority }}
-                                </span>
-                            </td>
-                            <td>
-                                <span class="status-badge {{ task.status|slugify }}">
-                                    {{ task.status }}
-                                </span>
-                            </td>
-                            <td>{{ task.department.name }}</td>
-                            <td>{{ task.deadline }}</td>
-                            <td>{{ task.assigned_by.get_full_name }}</td>
-                            <td>{{ task.assigned_by.userprofile.department.name }}</td>
-                            <td>{{ task.revised_completion_date|default:"NA" }}</td>
+                            <th>Ticket ID</th>
+                            <th>Client / Subject</th>
+                            <th>Priority</th>
+                            <th>Source System</th>
+                            <th>Deadline / Updated</th>
+                            <th>Action</th>
                         </tr>
-                    {% empty %}
+                    </thead>
+                    <tbody>
+                        {% for record in records %}
+                            <tr>
+                                <td>
+                                    <a class="record-link" href="{% url 'client_tickets:ticket_detail' record.ticket_number %}">{{ record.ticket_number }}</a>
+                                </td>
+                                <td>
+                                    <div class="record-main">
+                                        <span class="record-avatar">{{ record.requester_name|slice:":1"|upper }}</span>
+                                        <div>
+                                            <strong>{{ record.requester_name }}</strong>
+                                            <p>{{ record.title }}</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="record-badge record-badge--priority-{{ record.priority }}">{{ record.get_priority_display }}</span>
+                                    <small class="record-meta">{{ record.get_status_display|default:"---------" }}</small>
+                                </td>
+                                <td>
+                                    <strong>{{ record.get_source_system_display }}</strong>
+                                    <small class="record-meta">{{ record.department.name|default:"Unassigned" }}</small>
+                                </td>
+                                <td>
+                                    <strong>{% if record.closed_at %}Closed{% else %}{{ record.updated_at|date:"d M Y" }}{% endif %}</strong>
+                                    <small class="record-meta">{{ record.project_manager.get_full_name|default:record.project_manager.username }}</small>
+                                </td>
+                                <td>
+                                    <a href="{% url 'client_tickets:ticket_detail' record.ticket_number %}" class="table-action">Details</a>
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="6" class="workspace-empty">No external client tickets matched the current filters.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <table class="workspace-table">
+                    <thead>
                         <tr>
-                            <td colspan="9">
-                                <div class="no-tasks">
-                                    <i class="fas fa-clipboard-list"></i>
-                                    <p>No tasks assigned to you.</p>
-                                </div>
-                            </td>
+                            <th>Ticket ID</th>
+                            <th>Subject</th>
+                            <th>Priority</th>
+                            <th>Department</th>
+                            <th>Deadline</th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {% for record in records %}
+                            <tr>
+                                <td>
+                                    <a class="record-link" href="{% url 'task_detail' record.task_id %}">{{ record.task_id }}</a>
+                                </td>
+                                <td>
+                                    <div class="record-main">
+                                        <span class="record-avatar">{{ record.assigned_by.get_full_name|default:record.assigned_by.username|slice:":1"|upper }}</span>
+                                        <div>
+                                            <strong>{{ record.subject }}</strong>
+                                            <p>{{ record.assigned_by.get_full_name|default:record.assigned_by.username }}</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="record-badge record-badge--priority-{{ record.priority }}">{{ record.get_priority_display }}</span>
+                                    <small class="record-meta">{{ record.status }}</small>
+                                </td>
+                                <td>
+                                    <strong>{{ record.department.name|default:"Unassigned" }}</strong>
+                                    <small class="record-meta">{{ record.ticket_type }}</small>
+                                </td>
+                                <td>
+                                    <strong>{{ record.deadline|date:"d M Y" }}</strong>
+                                    {% if record.revised_completion_date %}
+                                        <small class="record-meta">Revised: {{ record.revised_completion_date|date:"d M Y" }}</small>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="5" class="workspace-empty">No internal tickets matched the current filters.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
         </div>
+
+        {% if page_obj.paginator.num_pages > 1 %}
+            <nav class="workspace-pagination" aria-label="Pagination">
+                {% if page_obj.has_previous %}
+                    <a href="?{% if filter_query %}{{ filter_query }}&{% endif %}page={{ page_obj.previous_page_number }}">Previous</a>
+                {% else %}
+                    <span class="is-disabled">Previous</span>
+                {% endif %}
+
+                <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+
+                {% if page_obj.has_next %}
+                    <a href="?{% if filter_query %}{{ filter_query }}&{% endif %}page={{ page_obj.next_page_number }}">Next</a>
+                {% else %}
+                    <span class="is-disabled">Next</span>
+                {% endif %}
+            </nav>
+        {% endif %}
     </div>
-</div>
-
-<!-- Link to Font Awesome for icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
-<!-- Inline CSS -->
-<style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    }
-
-    body {
-        background-color: #f5f7fb;
-        color: #333;
-    }
-
-    .task-manager-container {
-        display: flex;
-        height: 100vh;
-        overflow: hidden;
-    }
-
-    /* Modern Sidebar */
-    .sidebar {
-        width: 240px;
-        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-        color: #fff;
-        display: flex;
-        flex-direction: column;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-        z-index: 10;
-    }
-
-    .logo-container {
-        padding: 25px 20px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .logo-container h2 {
-        font-size: 24px;
-        font-weight: 700;
-        letter-spacing: 1px;
-    }
-
-    .logo-container h2 span {
-        color: #3ee9e5;
-    }
-
-    .menu-container {
-        flex: 1;
-        padding: 15px 0;
-    }
-
-    .sidebar ul {
-        list-style: none;
-    }
-    
-    .sidebar ul li {
-        margin: 5px 0;
-    }
-
-    .sidebar ul li a {
-        text-decoration: none;
-        color: rgba(255, 255, 255, 0.8);
-        font-size: 16px;
-        padding: 12px 20px;
-        display: flex;
-        align-items: center;
-        transition: all 0.3s ease;
-        border-left: 4px solid transparent;
-    }
-
-    .sidebar ul li a i {
-        margin-right: 10px;
-        font-size: 18px;
-    }
-
-    .sidebar ul li a.active, .sidebar ul li a:hover {
-        background-color: rgba(255, 255, 255, 0.1);
-        color: #fff;
-        border-left: 4px solid #3ee9e5;
-    }
-
-    /* Main Content */
-    .main-content {
-        flex: 1;
-        padding: 20px 30px;
-        background-color: #f5f7fb;
-        overflow-y: auto;
-    }
-
-    /* Header */
-    .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 30px;
-        padding: 0px 0;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    }
-
-    .greeting h1 {
-        font-size: 24px;
-        color: #333;
-        margin-bottom: 5px;
-    }
-
-    .greeting p {
-        color: #666;
-        font-size: 14px;
-    }
-
-    .user-actions {
-        display: flex;
-        align-items: center;
-    }
-
-    .notification {
-        position: relative;
-        margin-right: 25px;
-        cursor: pointer;
-    }
-
-    .notification i {
-        font-size: 20px;
-        color: #666;
-    }
-
-    .badge {
-        position: absolute;
-        top: -8px;
-        right: -8px;
-        background: linear-gradient(135deg, #ff416c, #ff4b2b);
-        color: white;
-        border-radius: 50%;
-        width: 18px;
-        height: 18px;
-        font-size: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .user {
-        display: flex;
-        align-items: center;
-        cursor: pointer;
-    }
-
-    .avatar {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        margin-right: 10px;
-        object-fit: cover;
-        border: 2px solid #fff;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-
-    .user span {
-        font-size: 14px;
-        font-weight: 500;
-        margin-right: 10px;
-    }
-
-    /* Filter Section */
-    .filter-section {
-        background: white;
-        border-radius: 15px;
-        padding: 25px;
-        margin-bottom: 30px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        position: relative;
-    }
-
-    .filter-container h3 {
-        font-size: 18px;
-        margin-bottom: 20px;
-        color: #333;
-        display: flex;
-        align-items: center;
-    }
-
-    .filter-container h3 i {
-        margin-right: 8px;
-        color: #2a5298;
-    }
-
-    .filters {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 15px;
-        align-items: flex-end;
-    }
-
-    .filter-group {
-        flex: 1;
-        min-width: 200px;
-    }
-
-    .filter-group label {
-        display: block;
-        margin-bottom: 8px;
-        font-size: 14px;
-        color: #666;
-    }
-
-    /* Multi-select dropdown */
-    .multi-select {
-        position: relative;
-        width: 100%;
-    }
-
-    .multi-select-header {
-        padding: 10px 15px;
-        border: 1px solid #e0e0e0;
-        border-radius: 8px;
-        background-color: #fff;
-        cursor: pointer;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    }
-
-    .multi-select-header:hover {
-        border-color: #2a5298;
-    }
-
-    .multi-select-header .placeholder {
-        color: #999;
-        font-size: 14px;
-    }
-
-    .multi-select-dropdown {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: white;
-        border: 1px solid #e0e0e0;
-        border-radius: 8px;
-        margin-top: 5px;
-        max-height: 200px;
-        overflow-y: auto;
-        z-index: 100;
-        box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-        display: none;
-    }
-
-    .checkbox-item {
-        padding: 10px 15px;
-        display: flex;
-        align-items: center;
-        cursor: pointer;
-        transition: background-color 0.2s;
-    }
-
-    .checkbox-item:hover {
-        background-color: #f5f7fb;
-    }
-
-    .checkbox-item input[type="checkbox"] {
-        margin-right: 10px;
-        cursor: pointer;
-        accent-color: #2a5298;
-    }
-
-    .checkbox-item label {
-        font-size: 14px;
-        color: #333;
-        cursor: pointer;
-        margin-bottom: 0;
-    }
-
-    /* Date input field */
-    .date-input {
-        width: 100%;
-        padding: 10px 15px;
-        border: 1px solid #e0e0e0;
-        border-radius: 8px;
-        font-size: 14px;
-        color: #333;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    }
-
-    .date-input:focus {
-        border-color: #2a5298;
-        outline: none;
-    }
-
-    /* Filter and Reset Buttons */
-    .filter-btn, .reset-btn {
-        padding: 10px 20px;
-        border: none;
-        border-radius: 8px;
-        font-size: 14px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-    .filter-btn {
-        background: linear-gradient(135deg, #1e3c72, #2a5298);
-        color: white;
-    }
-
-    .reset-btn {
-        background-color: #f5f5f5;
-        color: #666;
-        margin-left: 10px;
-    }
-
-    .filter-btn:hover {
-        background: linear-gradient(135deg, #2a5298, #1e3c72);
-        transform: translateY(-2px);
-    }
-
-    .reset-btn:hover {
-        background-color: #e5e5e5;
-        transform: translateY(-2px);
-    }
-
-    /* Task Table */
-    .task-table-container {
-        background: white;
-        border-radius: 15px;
-        padding: 5px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        overflow-x: auto;
-        height: calc(100vh - 250px); /* Adjusted height to fill more space */
-    }
-
-    #taskTable {
-        width: 100%;
-        border-collapse: separate;
-        border-spacing: 0;
-    }
-
-    #taskTable th, #taskTable td {
-        padding: 15px;
-        text-align: left;
-    }
-
-    #taskTable th {
-        background-color: #f5f7fb;
-        color: #555;
-        font-weight: 600;
-        font-size: 14px;
-        position: sticky;
-        top: 0;
-        z-index: 5;
-    }
-
-    #taskTable th:first-child {
-        border-top-left-radius: 10px;
-    }
-
-    #taskTable th:last-child {
-        border-top-right-radius: 10px;
-    }
-
-    #taskTable tr {
-        transition: background-color 0.2s;
-    }
-
-    #taskTable tbody tr:hover {
-        background-color: #f9fafc;
-    }
-
-    #taskTable td {
-        border-bottom: 1px solid #eee;
-        font-size: 14px;
-        color: #333;
-    }
-
-    /* Custom task link styling */
-    .task-keyword-link {
-        color: #1e3c72;
-        text-decoration: none;
-        font-weight: 600;
-        transition: color 0.2s;
-    }
-
-    .task-keyword-link:hover {
-        color: #3ee9e5;
-        text-decoration: underline;
-    }
-
-    /* Priority and Status badges */
-    .priority-badge, .status-badge {
-        padding: 5px 10px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 500;
-        display: inline-block;
-    }
-
-    .priority-badge.high {
-        background-color: #ffebee;
-        color: #e53935;
-    }
-
-    .priority-badge.medium {
-        background-color: #fff8e1;
-        color: #ffb300;
-    }
-
-    .priority-badge.low {
-        background-color: #e8f5e9;
-        color: #43a047;
-    }
-    .create-task-container {
-        display: flex;
-        justify-content: flex-end;
-        margin-bottom: 20px;
-    }
-
-    .create-task-btn {
-        padding: 12px 25px;
-        background: linear-gradient(135deg, #2a5298, #1e3c72);
-        color: white;
-        border: none;
-        border-radius: 8px;
-        font-size: 15px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-
-    .create-task-btn i {
-        margin-right: 8px;
-    }
-
-    .create-task-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-    }
-
-    .priority-badge.urgent {
-        background-color: #fce4ec;
-        color: #d81b60;
-    }
-    .deadline-quick-filter {
-        background-color: #fff;
-        border: 1px solid #e0e0e0;
-        border-radius: 8px;
-        padding: 10px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    }
-
-    .deadline-quick-filter .checkbox-item {
-        padding: 8px 10px;
-        transition: background-color 0.2s;
-    }
-    
-    .deadline-quick-filter .checkbox-item:hover {
-        background-color: #f5f7fb;
-    }
-
-    /* Add a slight distinction between the quick filter options */
-    .deadline-quick-filter .checkbox-item:first-child {
-        border-bottom: 1px solid #f0f0f0;
-    }
-    
-    /* Style for checkbox labels */
-    .deadline-quick-filter .checkbox-item label {
-        font-size: 14px;
-        color: #333;
-        cursor: pointer;
-        margin-bottom: 0;
-    }
-    
-    /* Style for checkboxes */
-    .deadline-quick-filter .checkbox-item input[type="checkbox"] {
-        margin-right: 10px;
-        cursor: pointer;
-        accent-color: #2a5298;
-    }
-
-    .status-badge.not-started {
-        background-color: #e3f2fd;
-        color: #1976d2;
-    }
-
-    .status-badge.in-progress {
-        background-color: #e8f5e9;
-        color: #43a047;
-    }
-
-    .status-badge.completed {
-        background-color: #e0f2f1;
-        color: #00897b;
-    }
-
-    .status-badge.stalled {
-        background-color: #ede7f6;
-        color: #7b1fa2;
-    }
-
-    .status-badge.cancelled {
-        background-color: #fafafa;
-        color: #757575;
-    }
-    .status-badge.overdue{
-        background-color: #fafafa;
-        color: #757575;
-    }
-    .status-badge.onhold {
-        background-color: #fafafa;
-        color: #757575;
-    }
-
-    /* No tasks message */
-    .no-tasks {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 40px;
-        color: #bbb;
-    }
-
-    .no-tasks i {
-        font-size: 48px;
-        margin-bottom: 10px;
-    }
-
-    .no-tasks p {
-        font-size: 16px;
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 1200px) {
-        .filter-group {
-            min-width: 150px;
-        }
-    }
-
-    @media (max-width: 768px) {
-        .sidebar {
-            width: 70px;
-        }
-        
-        .logo-container h2 {
-            display: none;
-        }
-        
-        .sidebar ul li a span {
-            display: none;
-        }
-        
-        .sidebar ul li a i {
-            margin-right: 0;
-        }
-        
-        .filter-group {
-            flex: 100%;
-        }
-    }
-</style>
-
-<!-- JavaScript for filters -->
-<script>
-    // Toggle dropdown menus
-    function toggleDropdown(dropdownId) {
-        const dropdown = document.getElementById(dropdownId);
-        
-        // Close all other dropdowns first
-        const allDropdowns = document.querySelectorAll('.multi-select-dropdown');
-        allDropdowns.forEach(element => {
-            if (element.id !== dropdownId) {
-                element.style.display = 'none';
-            }
-        });
-        
-        // Toggle the selected dropdown
-        if (dropdown.style.display === 'block') {
-            dropdown.style.display = 'none';
-        } else {
-            dropdown.style.display = 'block';
-        }
-    }
-    
-    // Handle window clicks to close dropdowns when clicking outside
-    window.addEventListener('click', function(e) {
-        if (!e.target.closest('.multi-select')) {
-            const allDropdowns = document.querySelectorAll('.multi-select-dropdown');
-            allDropdowns.forEach(dropdown => {
-                dropdown.style.display = 'none';
-            });
-        }
-    }, true);
-    
-    // Update placeholder text based on selections
-    function updatePlaceholder(containerId, selectedValues) {
-        const container = document.getElementById(containerId);
-        const placeholder = container.querySelector('.placeholder');
-        
-        if (selectedValues.length === 0) {
-            // Set default text based on filter type
-            switch(containerId) {
-                case 'statusFilterContainer':
-                    placeholder.textContent = 'Select Statuses';
-                    break;
-                case 'priorityFilterContainer':
-                    placeholder.textContent = 'Select Priorities';
-                    break;
-                case 'departmentFilterContainer':
-                    placeholder.textContent = 'Select Departments';
-                    break;
-                case 'assignorDepartmentFilterContainer':
-                    placeholder.textContent = 'Select Departments';
-                    break;
-                case 'assignedByFilterContainer':
-                    placeholder.textContent = 'Select Users';
-                    break;
-                default:
-                    placeholder.textContent = 'Select Options';
-            }
-        } else if (selectedValues.length === 1) {
-            placeholder.textContent = selectedValues[0];
-        } else {
-            placeholder.textContent = `${selectedValues.length} selected`;
-        }
-    }
-    
-    // Apply filters to table
-    function applyFilters() {
-    // Get all filter values
-            const priorityValues = getSelectedCheckboxValues('priorityDropdown');
-            const statusValues = getSelectedCheckboxValues('statusDropdown');
-            const departmentValues = getSelectedCheckboxValues('departmentDropdown');
-            const assignorDepartmentValues = getSelectedCheckboxValues('assignorDepartmentDropdown');
-            const assignedByValues = getSelectedCheckboxValues('assignedByDropdown');
-            const deadlineFilter = document.getElementById('deadlineFilter').value;
-            
-            // Get quick deadline filter values
-            const next24HoursChecked = document.getElementById('deadlineNext24Hours').checked;
-            const deadlinePassedChecked = document.getElementById('deadlinePassed').checked;
-            
-            // Update placeholders
-            updatePlaceholder('priorityFilterContainer', priorityValues);
-            updatePlaceholder('statusFilterContainer', statusValues);
-            updatePlaceholder('departmentFilterContainer', departmentValues);
-            updatePlaceholder('assignorDepartmentFilterContainer', assignorDepartmentValues);
-            updatePlaceholder('assignedByFilterContainer', assignedByValues);
-            
-            // Get today and tomorrow dates for comparison
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            
-            const tomorrow = new Date(today);
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            
-            // Filter the table
-            const table = document.getElementById('taskTable');
-            const rows = table.getElementsByTagName('tr');  
-            
-            for (let i = 1; i < rows.length; i++) {
-                const cells = rows[i].getElementsByTagName('td');
-                if (cells.length > 0) {
-                    const priority = cells[2].textContent.trim();
-                    const status = cells[3].textContent.trim();
-                    const department = cells[4].textContent.trim();
-                    const deadline = cells[5].textContent.trim();
-                    const assignedBy = cells[6].textContent.trim();
-                    const assignorDepartment = cells[7].textContent.trim();
-                    const revisedDeadline = cells[8].textContent.trim();
-                    
-                    let displayRow = true;
-                    
-                    // Multi-select filter logic - if any filters are selected, row must match at least one selected value
-                    if (priorityValues.length > 0 && !priorityValues.includes(priority)) displayRow = false;
-                    if (statusValues.length > 0 && !statusValues.includes(status)) displayRow = false;
-                    if (departmentValues.length > 0 && !departmentValues.includes(department)) displayRow = false;
-                    if (assignorDepartmentValues.length > 0 && !assignorDepartmentValues.includes(assignorDepartment)) displayRow = false;
-                    if (assignedByValues.length > 0 && !assignedByValues.includes(assignedBy)) displayRow = false;
-                    
-                    // Determine which deadline to use (revised or original)
-                    let effectiveDeadline = deadline;
-                    if (revisedDeadline && revisedDeadline !== 'NA') {
-                        effectiveDeadline = revisedDeadline;
-                    }
-                    
-                    // Parse the effective deadline
-                    const deadlineDate = new Date(effectiveDeadline);
-                    deadlineDate.setHours(0, 0, 0, 0);
-                    
-                    // Date filter for specific date
-                    if (deadlineFilter) {
-                        const selectedDate = new Date(deadlineFilter);
-                        selectedDate.setHours(0, 0, 0, 0);
-                        if (deadlineDate.getTime() !== selectedDate.getTime()) {
-                            displayRow = false;
-                        }
-                    }
-                    
-                    // Handle deadline quick filters with OR relationship between them
-                    if (next24HoursChecked || deadlinePassedChecked) {
-                        let meetsDeadlineCondition = false;
-                        
-                        // Next 24 Hours filter (today or tomorrow)
-                        if (next24HoursChecked) {
-                            if (deadlineDate.getTime() === today.getTime() || deadlineDate.getTime() === tomorrow.getTime()) {
-                                meetsDeadlineCondition = true;
-                            }
-                        }
-                        
-                        // Deadline Passed filter
-                        if (deadlinePassedChecked) {
-                            if (deadlineDate.getTime() < today.getTime()) {
-                                meetsDeadlineCondition = true;
-                            }
-                        }
-                        
-                        // If neither condition is met, don't display the row
-                        if (!meetsDeadlineCondition) {
-                            displayRow = false;
-                        }
-                    }
-                    
-                    rows[i].style.display = displayRow ? '' : 'none';
-                }
-            }
-            
-            // Close all dropdowns
-            const allDropdowns = document.querySelectorAll('.multi-select-dropdown');
-            allDropdowns.forEach(dropdown => {
-                dropdown.style.display = 'none';
-            });
-        }
-    
-    // Get all selected values from a multi-select dropdown
-    function getSelectedCheckboxValues(dropdownId) {
-        const dropdown = document.getElementById(dropdownId);
-        const checkboxes = dropdown.querySelectorAll('input[type="checkbox"]');
-        const values = [];
-        
-        checkboxes.forEach(checkbox => {
-            if (checkbox.checked) {
-                values.push(checkbox.value);
-            }
-        });
-        
-        return values;
-    }
-    
-    // Reset all filters
-    function resetFilters() {
-        // Uncheck all checkboxes except for default "Not Started" and "In Progress"
-        const allCheckboxes = document.querySelectorAll('.multi-select-dropdown input[type="checkbox"]');
-        allCheckboxes.forEach(checkbox => {
-            if (checkbox.id === 'statusNotStarted' || checkbox.id === 'statusInProgress') {
-                checkbox.checked = true;
-            } else {
-                checkbox.checked = false;
-            }
-        });
-        
-        // Reset date filter
-        document.getElementById('deadlineFilter').value = '';
-        
-        // Reset quick deadline filters
-        document.getElementById('deadlineNext24Hours').checked = false;
-        document.getElementById('deadlinePassed').checked = false;
-        
-        // Reset placeholders
-        updatePlaceholder('priorityFilterContainer', []);
-        updatePlaceholder('statusFilterContainer', ['Not Started', 'In Progress']);
-        updatePlaceholder('departmentFilterContainer', []);
-        updatePlaceholder('assignorDepartmentFilterContainer', []);
-        updatePlaceholder('assignedByFilterContainer', []);
-        
-        // Apply the default filters (Not Started and In Progress)
-        applyFilters();
-    }
-    
-    // Initialize the page with default filters (Not Started and In Progress)
-    document.addEventListener('DOMContentLoaded', function() {
-        // Make sure Not Started and In Progress are checked by default
-        document.getElementById('statusNotStarted').checked = true;
-        document.getElementById('statusInProgress').checked = true;
-        
-        // Set the default values in the placeholder
-        updatePlaceholder('statusFilterContainer', ['Not Started', 'In Progress']);
-        
-        // Apply the default filters
-        applyFilters();
-    });
-</script>
+</section>
 {% endblock %}

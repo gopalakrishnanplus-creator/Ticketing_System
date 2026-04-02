@@ -57,7 +57,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-LOGIN_REDIRECT_URL = '/tasks/dashboard/'
+LOGIN_REDIRECT_URL = '/tasks/assigned_to_me/'
 LOGOUT_REDIRECT_URL = '/accounts/logout/'
 
 ROOT_URLCONF = 'task_manage.urls'

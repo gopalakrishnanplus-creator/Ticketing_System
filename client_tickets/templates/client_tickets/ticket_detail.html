@@ -2,7 +2,7 @@
 
 {% block title %}{{ ticket.ticket_number }}{% endblock %}
 
-{% block content %}
+{% block client_ticket_content %}
 <div class="button-row" style="margin-bottom: 16px;">
     <a class="btn btn-secondary" href="{% url 'client_tickets:ticket_list' %}">Back to Client Tickets</a>
 </div>
