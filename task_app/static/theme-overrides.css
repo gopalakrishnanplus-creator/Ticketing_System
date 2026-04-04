@@ -1176,6 +1176,35 @@ body.support-shell.ticket-mode-external {
     margin-top: 14px;
 }
 
+.ticket-attachment-groups {
+    display: grid;
+    gap: 18px;
+}
+
+.ticket-attachment-group {
+    padding: 18px;
+    border-radius: 22px;
+    border: 1px solid #edf0f5;
+    background: #fbfcff;
+}
+
+.ticket-attachment-group__header {
+    margin-bottom: 16px;
+}
+
+.ticket-attachment-group__header h4 {
+    margin: 0;
+    font-size: 1rem;
+    color: #111827;
+    letter-spacing: -0.02em;
+}
+
+.ticket-attachment-group__header p {
+    margin: 8px 0 0;
+    color: var(--support-muted);
+    line-height: 1.6;
+}
+
 .ticket-download-card {
     display: flex;
     align-items: center;
@@ -1324,6 +1353,15 @@ body.support-shell.ticket-mode-external {
 .ticket-update-form .form-group {
     display: grid;
     gap: 8px;
+}
+
+.ticket-layout--task-detail {
+    align-items: start;
+}
+
+.ticket-side--collaboration {
+    display: grid;
+    gap: 22px;
 }
 
 @media (max-width: 1180px) {
@@ -1641,7 +1679,8 @@ body.support-shell.ticket-mode-external {
 
     .ticket-download-card,
     .thread-item__meta,
-    .ticket-mail-section__header {
+    .ticket-mail-section__header,
+    .ticket-attachment-group__header {
         flex-direction: column;
         align-items: flex-start;
     }

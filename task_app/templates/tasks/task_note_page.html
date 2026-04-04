@@ -1,497 +1,172 @@
-{% extends 'base_generic.html' %}
-{% load static %}
+{% extends "base_generic.html" %}
+
+{% block title %}Return To Creator | {{ task.task_id }}{% endblock %}
 
 {% block content %}
-<div class="task-manager-container">
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="logo-container">
-            <h2>Task<span>Flow</span></h2>
+<section class="ticket-workspace handoff-workspace">
+    <header class="workspace-header">
+        <div>
+            <p class="workspace-kicker">Return To Creator</p>
+            <h1>{{ task.subject }}</h1>
+            <p class="workspace-copy">Add the handoff note, upload the assignee attachment if needed, and send the ticket back to {{ task.assigned_by.get_full_name|default:task.assigned_by.username }} with proper context.</p>
         </div>
-        <div class="menu-container">
-            <ul>
-                {% with request.user.userprofile as profile %}
-                    {% if profile.category == 'Task Management System Manager' %}
-                        <li><a href="{% url 'activity' %}" class="{% if request.resolver_match.url_name == 'activity' %}active{% endif %}">
-                            <i class="fas fa-chart-line"></i> Activity
-                        </a></li>
-                        <li><a href="{% url 'metrics' %}" class="{% if request.resolver_match.url_name == 'metrics' %}active{% endif %}">
-                            <i class="fas fa-tachometer-alt"></i> Metrics
-                        </a></li>
-                        <li><a href="{% url 'user_profile' %}" class="{% if request.resolver_match.url_name == 'user_profile' %}active{% endif %}">
-                            <i class="fas fa-user"></i> User Profile
-                        </a></li>
-                    {% else %}
-                        {% if profile.category == "Departmental Manager" %}
-                            <li><a href="{% url 'home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">
-                                <i class="fas fa-home"></i> Home
-                            </a></li>
-                        {% endif %}
-                        <li><a href="{% url 'assigned_to_me' %}" class="{% if request.resolver_match.url_name == 'assigned_to_me' %}active{% endif %}">
-                            <i class="fas fa-tasks"></i> Assigned To Me
-                        </a></li>
-                        <li><a href="{% url 'assigned_by_me' %}" class="{% if request.resolver_match.url_name == 'assigned_by_me' %}active{% endif %}">
-                            <i class="fas fa-project-diagram"></i> Assigned By Me
-                        </a></li>
-                        <li><a href="{% url 'user_profile' %}" class="{% if request.resolver_match.url_name == 'user_profile' %}active{% endif %}">
-                            <i class="fas fa-user"></i> User Profile
-                        </a></li>
-                    {% endif %}
-                {% endwith %}
-            </ul>
+
+        <div class="create-page-badge">
+            <span>Current Assignee</span>
+            <strong>{{ task.assigned_to.get_full_name|default:task.assigned_to.username }}</strong>
         </div>
+    </header>
+
+    <div class="button-row ticket-detail-back-row">
+        <a class="btn btn-secondary" href="{% url 'task_detail' task.task_id %}">Back to Ticket</a>
     </div>
 
-    <!-- Main Content -->
-    <div class="main-content">
-        <div class="greeting">
-            <h1>Task Note</h1>
-            <p>Task ID: {{ task.task_id }}</p>
-        </div>
-        <div class="user-actions">
-            <div class="notification">
-                <i class="fas fa-bell"></i>
-            </div>
-            <div class="user">
-                <img src="{% static 'task_app/images/user-icon.png' %}" alt="User Avatar" class="avatar" />
-                <span>{{ request.user.get_full_name }}</span>
-                <i class="fas fa-chevron-down"></i>
-            </div>
-        </div>
+    <div class="ticket-layout ticket-layout--task-detail">
+        <div class="ticket-main">
+            <article class="form-panel">
+                <div class="form-panel__header">
+                    <h2>Handoff Details</h2>
+                    <p>Everything added here becomes part of the return-to-creator handoff for this ticket.</p>
+                </div>
 
-        <!-- Back Button -->
-        <div class="back-button-container">
-            <a href="{% url 'task_detail' task.task_id %}" class="back-button">
-                <i class="fas fa-arrow-left"></i> Back to Task Details
-            </a>
-        </div>
+                <form method="post" enctype="multipart/form-data" class="chat-compose">
+                    {% csrf_token %}
 
-        <!-- Task Note Form Container -->
-        <div class="task-note-form-container">
-            <div class="form-header">
-                <i class="fas fa-sticky-note"></i>
-                <h2>Add Note</h2>
-            </div>
-            
-            <form method="post" enctype="multipart/form-data" class="task-note-form">
-                {% csrf_token %}
-                
-                <div class="form-group">
-    <label>
-        <i class="fas fa-history"></i> Previous Notes
-    </label>
-    <div class="existing-notes">{{ task.notes|default:"No previous notes" }}</div>
-    
-    <label for="note" style="margin-top: 15px;">
-        <i class="fas fa-pen"></i> Add New Note
-    </label>
-    <textarea id="note" name="note" rows="4" placeholder="Enter your new note here..." required></textarea>
-</div>
-                
-                <div class="form-group">
-                    <label for="attachment_by_assignee">
-                        <i class="fas fa-paperclip"></i> Attachment
-                    </label>
-                    <div class="file-upload-container">
-                        <input type="file" id="attachment_by_assignee" name="attachment_by_assignee" class="file-input" />
-                        <div class="file-upload-button">
-                            <i class="fas fa-upload"></i> Choose File
+                    <label class="form-field form-field--full">
+                        <span>Previous Notes</span>
+                        <div class="ticket-mail-note">
+                            {% if task.notes %}
+                                {{ task.notes|linebreaksbr }}
+                            {% else %}
+                                <span class="ticket-mail-empty">No previous notes added yet.</span>
+                            {% endif %}
                         </div>
-                        <span id="file-chosen">No file chosen</span>
+                    </label>
+
+                    <label class="form-field form-field--full">
+                        <span>Add New Note</span>
+                        <textarea id="note" name="note" rows="6" placeholder="Explain the progress made, blockers found, and what the creator needs to pick up next." required></textarea>
+                    </label>
+
+                    <label class="form-field form-field--full form-field--upload">
+                        <span>Attachment</span>
+                        <label class="upload-dropzone js-file-upload">
+                            <div class="upload-dropzone__copy">
+                                <strong>Upload handoff file</strong>
+                                <p class="js-file-upload-label">Optional. Add the latest file, screenshot, or document before returning this ticket.</p>
+                            </div>
+                            <input type="file" id="attachment_by_assignee" name="attachment_by_assignee">
+                        </label>
+                        <small>If you upload a file here, it will appear in the assignee handoff section on the ticket detail page.</small>
+                    </label>
+
+                    <div class="form-actions-bar">
+                        <a href="{% url 'task_detail' task.task_id %}" class="secondary-action">Cancel</a>
+                        <button type="submit" class="primary-action">Save Note and Return</button>
+                    </div>
+                </form>
+            </article>
+        </div>
+
+        <aside class="ticket-side ticket-side--collaboration">
+            <article class="detail-panel">
+                <div class="ticket-mail-section__header">
+                    <div>
+                        <h3>Ticket Snapshot</h3>
+                        <p class="field-help">Quick task context while preparing the handoff.</p>
                     </div>
                 </div>
-                
-                <div class="form-actions">
-                    <button type="submit" class="submit-button">
-                        <i class="fas fa-save"></i> Save Note and Reassign
-                    </button>
+                <div class="ticket-mail-grid">
+                    <div class="ticket-mail-field">
+                        <span>Ticket Number</span>
+                        <strong>{{ task.task_id }}</strong>
+                    </div>
+                    <div class="ticket-mail-field">
+                        <span>Status</span>
+                        <strong>{{ task.status }}</strong>
+                    </div>
+                    <div class="ticket-mail-field">
+                        <span>Priority</span>
+                        <strong>{{ task.get_priority_display }}</strong>
+                    </div>
+                    <div class="ticket-mail-field">
+                        <span>Deadline</span>
+                        <strong>{{ task.deadline|date:"d M Y" }}</strong>
+                    </div>
+                    <div class="ticket-mail-field ticket-mail-field--full">
+                        <span>Request Body</span>
+                        <div class="ticket-mail-note">{{ task.request_details|default:"No request details were added."|linebreaksbr }}</div>
+                    </div>
                 </div>
-            </form>
-        </div>
+            </article>
+
+            <article class="detail-panel">
+                <div class="ticket-mail-section__header">
+                    <div>
+                        <h3>Creator Files</h3>
+                        <p class="field-help">Existing attachments from the original task side.</p>
+                    </div>
+                </div>
+                <div class="ticket-download-grid">
+                    {% for attachment in creator_attachment_items %}
+                        <div class="ticket-download-card">
+                            <div class="ticket-download-card__copy">
+                                <strong>{{ attachment.name }}</strong>
+                                <p>{{ attachment.meta }}</p>
+                            </div>
+                            <a class="ticket-download-button" href="{{ attachment.url }}" download>Download</a>
+                        </div>
+                    {% empty %}
+                        <div class="empty-state">No creator attachments uploaded yet.</div>
+                    {% endfor %}
+                </div>
+            </article>
+
+            <article class="detail-panel">
+                <div class="ticket-mail-section__header">
+                    <div>
+                        <h3>Current Assignee Handoff File</h3>
+                        <p class="field-help">The latest assignee-side upload attached to this return flow.</p>
+                    </div>
+                </div>
+                <div class="ticket-download-grid">
+                    {% for attachment in assignee_attachment_items %}
+                        <div class="ticket-download-card">
+                            <div class="ticket-download-card__copy">
+                                <strong>{{ attachment.name }}</strong>
+                                <p>{{ attachment.meta }}</p>
+                            </div>
+                            <a class="ticket-download-button" href="{{ attachment.url }}" download>Download</a>
+                        </div>
+                    {% empty %}
+                        <div class="empty-state">No assignee handoff attachment uploaded yet.</div>
+                    {% endfor %}
+                </div>
+            </article>
+        </aside>
     </div>
-</div>
+</section>
 
-<!-- Link to Font Awesome for icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
-<!-- Inline CSS -->
-<style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    }
-
-    body {
-        background-color: #f5f7fb;
-        color: #333;
-    }
-
-    .task-manager-container {
-        display: flex;
-        height: 100vh;
-        overflow: hidden;
-    }
-
-    /* Modern Sidebar */
-    .sidebar {
-        width: 240px;
-        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-        color: #fff;
-        display: flex;
-        flex-direction: column;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-        z-index: 10;
-    }
-
-    .logo-container {
-        padding: 25px 20px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .logo-container h2 {
-        font-size: 24px;
-        font-weight: 700;
-        letter-spacing: 1px;
-    }
-
-    .logo-container h2 span {
-        color: #3ee9e5;
-    }
-
-    .menu-container {
-        flex: 1;
-        padding: 15px 0;
-    }
-
-    .sidebar ul {
-        list-style: none;
-    }
-    
-    .sidebar ul li {
-        margin: 5px 0;
-    }
-
-    .sidebar ul li a {
-        text-decoration: none;
-        color: rgba(255, 255, 255, 0.8);
-        font-size: 16px;
-        padding: 12px 20px;
-        display: flex;
-        align-items: center;
-        transition: all 0.3s ease;
-        border-left: 4px solid transparent;
-    }
-.existing-notes {
-    background-color: #f5f7fb;
-    padding: 12px 15px;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    min-height: 80px;
-    color: #666;
-    white-space: pre-wrap;
-    font-size: 14px;
-}
-    .sidebar ul li a i {
-        margin-right: 10px;
-        font-size: 18px;
-    }
-
-    .sidebar ul li a.active, .sidebar ul li a:hover {
-        background-color: rgba(255, 255, 255, 0.1);
-        color: #fff;
-        border-left: 4px solid #3ee9e5;
-    }
-
-    /* Main Content */
-    .main-content {
-        flex: 1;
-        padding: 20px 30px;
-        background-color: #f5f7fb;
-        overflow-y: auto;
-    }
-
-    /* Header */
-    .greeting {
-        margin-bottom: 5px;
-    }
-
-    .greeting h1 {
-        font-size: 24px;
-        color: #333;
-        margin-bottom: 5px;
-    }
-
-    .greeting p {
-        color: #666;
-        font-size: 14px;
-    }
-
-    .user-actions {
-        display: flex;
-        align-items: center;
-        margin-bottom: 20px;
-    }
-
-    .notification {
-        position: relative;
-        margin-right: 25px;
-        cursor: pointer;
-    }
-
-    .notification i {
-        font-size: 20px;
-        color: #666;
-    }
-
-    .badge {
-        position: absolute;
-        top: -8px;
-        right: -8px;
-        background: linear-gradient(135deg, #ff416c, #ff4b2b);
-        color: white;
-        border-radius: 50%;
-        width: 18px;
-        height: 18px;
-        font-size: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .user {
-        display: flex;
-        align-items: center;
-        cursor: pointer;
-    }
-
-    .avatar {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        margin-right: 10px;
-        object-fit: cover;
-        border: 2px solid #fff;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-
-    .user span {
-        font-size: 14px;
-        font-weight: 500;
-        margin-right: 10px;
-    }
-
-    /* Back Button */
-    .back-button-container {
-        margin-bottom: 20px;
-    }
-
-    .back-button {
-        display: inline-flex;
-        align-items: center;
-        padding: 8px 15px;
-        background-color: #f0f2f5;
-        color: #2a5298;
-        border-radius: 8px;
-        text-decoration: none;
-        font-size: 14px;
-        font-weight: 500;
-        transition: all 0.3s ease;
-    }
-
-    .back-button i {
-        margin-right: 8px;
-    }
-
-    .back-button:hover {
-        background-color: #e4e6eb;
-        transform: translateX(-3px);
-    }
-
-    /* Task Note Form Container */
-    .task-note-form-container {
-        background: white;
-        border-radius: 15px;
-        padding: 30px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        margin-bottom: 30px;
-    }
-
-    .form-header {
-        display: flex;
-        align-items: center;
-        margin-bottom: 25px;
-    }
-
-    .form-header i {
-        font-size: 24px;
-        color: #2a5298;
-        margin-right: 15px;
-    }
-
-    .form-header h2 {
-        font-size: 22px;
-        color: #333;
-        font-weight: 600;
-    }
-
-    .task-note-form {
-        width: 100%;
-    }
-
-    .form-group {
-        margin-bottom: 20px;
-    }
-
-    .form-group label {
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-        font-size: 15px;
-        color: #555;
-        font-weight: 500;
-    }
-
-    .form-group label i {
-        margin-right: 8px;
-        color: #2a5298;
-    }
-
-    textarea {
-        width: 100%;
-        padding: 12px 15px;
-        border: 1px solid #e0e0e0;
-        border-radius: 8px;
-        font-size: 14px;
-        color: #333;
-        resize: vertical;
-        min-height: 120px;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    }
-
-    textarea:focus {
-        border-color: #2a5298;
-        outline: none;
-        box-shadow: 0 3px 8px rgba(42, 82, 152, 0.1);
-    }
-
-    /* Custom File Upload */
-    .file-upload-container {
-        position: relative;
-        display: flex;
-        align-items: center;
-    }
-
-    .file-input {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        opacity: 0;
-        cursor: pointer;
-        z-index: 2;
-    }
-
-    .file-upload-button {
-        padding: 10px 15px;
-        background-color: #f0f2f5;
-        color: #2a5298;
-        border-radius: 8px;
-        font-size: 14px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-    }
-
-    .file-upload-button i {
-        margin-right: 8px;
-    }
-
-    .file-upload-button:hover {
-        background-color: #e4e6eb;
-    }
-
-    #file-chosen {
-        margin-left: 15px;
-        font-size: 14px;
-        color: #777;
-    }
-
-    /* Form Actions */
-    .form-actions {
-        display: flex;
-        justify-content: flex-end;
-        margin-top: 25px;
-    }
-
-    .submit-button {
-        padding: 12px 25px;
-        background: linear-gradient(135deg, #1e3c72, #2a5298);
-        color: white;
-        border: none;
-        border-radius: 8px;
-        font-size: 15px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-
-    .submit-button i {
-        margin-right: 8px;
-    }
-
-    .submit-button:hover {
-        background: linear-gradient(135deg, #2a5298, #1e3c72);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-        .sidebar {
-            width: 70px;
-        }
-        
-        .logo-container h2 {
-            display: none;
-        }
-        
-        .sidebar ul li a span {
-            display: none;
-        }
-        
-        .sidebar ul li a i {
-            margin-right: 0;
-        }
-        
-        .task-note-form-container {
-            padding: 20px;
-        }
-    }
-</style>
-
-<!-- JavaScript for file input -->
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const fileInput = document.getElementById('attachment_by_assignee');
-        const fileChosen = document.getElementById('file-chosen');
-        
-        fileInput.addEventListener('change', function() {
-            if (fileInput.files.length > 0) {
-                fileChosen.textContent = fileInput.files[0].name;
-            } else {
-                fileChosen.textContent = 'No file chosen';
+    document.querySelectorAll(".js-file-upload").forEach((uploadShell) => {
+        const fileInput = uploadShell.querySelector("input[type='file']");
+        const label = uploadShell.querySelector(".js-file-upload-label");
+        if (!fileInput || !label) {
+            return;
+        }
+
+        const defaultLabel = label.textContent.trim();
+        const syncFileLabel = () => {
+            const files = Array.from(fileInput.files || []);
+            if (!files.length) {
+                label.textContent = defaultLabel;
+                return;
             }
-        });
+            label.textContent = files[0].name;
+        };
+
+        fileInput.addEventListener("change", syncFileLabel);
+        syncFileLabel();
     });
 </script>
 {% endblock %}

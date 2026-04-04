@@ -8,21 +8,28 @@
         <a class="btn btn-secondary" href="{{ back_url }}">Back to Tickets</a>
     </div>
 
-    <div class="ticket-layout">
+    <div class="ticket-layout ticket-layout--task-detail">
         <div class="ticket-main">
             <article class="detail-panel ticket-mail-card">
                 <div class="ticket-mail-card__hero">
                     <p class="ticket-mail-card__eyebrow">Internal Ticket</p>
                     <h1>{{ task.subject }}</h1>
-                    <p class="ticket-mail-card__lead">A mail-style summary of the ticket, so the web view matches the handoff format stakeholders receive over email.</p>
+                    <p class="ticket-mail-card__lead">The main task information stays on the left, while collaboration and handoff stay together on the right for faster review.</p>
                     <div class="ticket-mail-pill-row">
-                        <span class="badge status-{{ task.status|slugify }}">{{ task.status }}</span>
                         <span class="badge priority-{{ task.priority }}">{{ task.get_priority_display }}</span>
-                        <span class="ticket-mail-pill">{{ task.ticket_type }}</span>
+                        <span class="badge status-{{ task.status|slugify }}">{{ task.status }}</span>
                         <span class="ticket-mail-pill">{{ task.task_id }}</span>
                     </div>
                 </div>
+            </article>
 
+            <article class="detail-panel">
+                <div class="ticket-mail-section__header">
+                    <div>
+                        <h3>Ticket Details</h3>
+                        <p class="field-help">Core ownership, routing, and deadline information for this task.</p>
+                    </div>
+                </div>
                 <div class="ticket-mail-grid">
                     <div class="ticket-mail-field">
                         <span>Ticket Number</span>
@@ -53,8 +60,8 @@
                         <strong>{% if task.revised_completion_date %}{{ task.revised_completion_date|date:"d M Y" }}{% else %}Not revised{% endif %}</strong>
                     </div>
                     <div class="ticket-mail-field">
-                        <span>Current Status</span>
-                        <strong>{{ task.status }}</strong>
+                        <span>Ticket Type</span>
+                        <strong>{{ task.ticket_type }}</strong>
                     </div>
                     <div class="ticket-mail-field ticket-mail-field--full">
                         <span>Viewers</span>
@@ -73,7 +80,7 @@
                 <div class="ticket-mail-section__header">
                     <div>
                         <h3>Request Body</h3>
-                        <p class="field-help">The original task subject and body shown in the same structure used for email updates.</p>
+                        <p class="field-help">The original task request exactly as it was raised.</p>
                     </div>
                 </div>
                 <div class="ticket-mail-body">
@@ -85,60 +92,85 @@
                 <div class="ticket-mail-section__header">
                     <div>
                         <h3>Attachments</h3>
-                        <p class="field-help">Every uploaded file is available here with a direct download action.</p>
+                        <p class="field-help">Split by creator files and the assignee handoff file so ownership stays clear.</p>
                     </div>
                 </div>
-                <div class="ticket-download-grid">
-                    {% for attachment in attachment_items %}
-                        <div class="ticket-download-card">
-                            <div class="ticket-download-card__copy">
-                                <strong>{{ attachment.name }}</strong>
-                                <p>{{ attachment.meta }}</p>
+
+                <div class="ticket-attachment-groups">
+                    <section class="ticket-attachment-group">
+                        <div class="ticket-attachment-group__header">
+                            <h4>Creator</h4>
+                            <p>Files added when the ticket was created or updated from the creator side.</p>
+                        </div>
+                        <div class="ticket-download-grid">
+                            {% for attachment in creator_attachment_items %}
+                                <div class="ticket-download-card">
+                                    <div class="ticket-download-card__copy">
+                                        <strong>{{ attachment.name }}</strong>
+                                        <p>{{ attachment.meta }}</p>
+                                    </div>
+                                    <a class="ticket-download-button" href="{{ attachment.url }}" download>Download</a>
+                                </div>
+                            {% empty %}
+                                <div class="empty-state">No creator attachments uploaded yet.</div>
+                            {% endfor %}
+                        </div>
+                    </section>
+
+                    <section class="ticket-attachment-group">
+                        <div class="ticket-attachment-group__header">
+                            <h4>Assignee + Upload</h4>
+                            <p>Handoff files from the assignee, plus a direct path to upload and return the ticket to the creator.</p>
+                        </div>
+                        <div class="ticket-download-grid">
+                            {% for attachment in assignee_attachment_items %}
+                                <div class="ticket-download-card">
+                                    <div class="ticket-download-card__copy">
+                                        <strong>{{ attachment.name }}</strong>
+                                        <p>{{ attachment.meta }}</p>
+                                    </div>
+                                    <a class="ticket-download-button" href="{{ attachment.url }}" download>Download</a>
+                                </div>
+                            {% empty %}
+                                <div class="empty-state">No assignee handoff file uploaded yet.</div>
+                            {% endfor %}
+                        </div>
+
+                        {% if can_update_task %}
+                            <div class="button-row">
+                                <a href="{% url 'reassign_task' task.task_id %}" class="btn btn-warning">Open Return to Creator</a>
                             </div>
-                            <a class="ticket-download-button" href="{{ attachment.url }}" download>Download</a>
-                        </div>
-                    {% empty %}
-                        <div class="empty-state">No attachments have been uploaded for this ticket yet.</div>
-                    {% endfor %}
+                        {% endif %}
+                    </section>
                 </div>
             </article>
 
-            <article class="detail-panel">
-                <div class="ticket-mail-section__header">
-                    <div>
-                        <h3>Inditech Notes & Handoff</h3>
-                        <p class="field-help">Comments and notes captured from the assignee side of the workflow.</p>
-                    </div>
-                </div>
-                <div class="ticket-mail-grid">
-                    <div class="ticket-mail-field ticket-mail-field--full">
-                        <span>Comments by Assignee</span>
-                        <div class="ticket-mail-note">
-                            {% if task.comments_by_assignee %}
-                                {{ task.comments_by_assignee|urlize|linebreaksbr }}
-                            {% else %}
-                                <span class="ticket-mail-empty">No assignee comments yet.</span>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="ticket-mail-field ticket-mail-field--full">
-                        <span>Note by Assignee</span>
-                        <div class="ticket-mail-note">
-                            {% if task.notes %}
-                                {{ task.notes|urlize|linebreaksbr }}
-                            {% else %}
-                                <span class="ticket-mail-empty">No handoff note from the assignee yet.</span>
-                            {% endif %}
-                        </div>
-                    </div>
+            <article class="detail-panel detail-sidebar-card">
+                <h3>Quick Actions</h3>
+                <p class="field-help">Operational actions for the task stay grouped here under the main task content.</p>
+                <div class="button-row button-row--stacked">
+                    {% if can_update_task %}
+                        <a href="{% url 'update_task_status' task.task_id %}" class="btn btn-primary">Update Status</a>
+                        <a href="{% url 'reassign_task' task.task_id %}" class="btn btn-warning">Return to Creator</a>
+                    {% endif %}
+
+                    {% if can_edit_task %}
+                        <a href="{% url 'edit_task' task.task_id %}" class="btn btn-secondary">Edit Ticket</a>
+                    {% endif %}
+
+                    {% if can_reassign_within_department %}
+                        <a href="{% url 'reassign_within_department' task.task_id %}" class="btn btn-secondary">Reassign Within Department</a>
+                    {% endif %}
                 </div>
             </article>
+        </div>
 
+        <aside class="ticket-side ticket-side--collaboration">
             <article class="detail-panel">
                 <div class="ticket-mail-section__header">
                     <div>
-                        <h3>Task Communication</h3>
-                        <p class="field-help">Internal discussion thread for this ticket.</p>
+                        <h3>Chat</h3>
+                        <p class="field-help">Conversation history and new messages for this task.</p>
                     </div>
                 </div>
 
@@ -168,53 +200,45 @@
                     </div>
                 </form>
             </article>
-        </div>
 
-        <aside class="ticket-side">
-            <article class="form-panel detail-sidebar-card">
-                <h3>Quick Actions</h3>
-                <p class="field-help">Use the same operational actions available from the rest of the ticketing flow.</p>
-                <div class="button-row button-row--stacked">
-                    {% if can_update_task %}
-                        <a href="{% url 'update_task_status' task.task_id %}" class="btn btn-primary">Update Status</a>
-                        <a href="{% url 'reassign_task' task.task_id %}" class="btn btn-warning">Reassign to Creator</a>
-                    {% endif %}
-
-                    {% if can_edit_task %}
-                        <a href="{% url 'edit_task' task.task_id %}" class="btn btn-secondary">Edit Ticket</a>
-                    {% endif %}
-
-                    {% if can_reassign_within_department %}
-                        <a href="{% url 'reassign_within_department' task.task_id %}" class="btn btn-secondary">Reassign Within Department</a>
-                    {% endif %}
+            <article class="detail-panel">
+                <div class="ticket-mail-section__header">
+                    <div>
+                        <h3>Notes & Handoff</h3>
+                        <p class="field-help">Assignee comments, notes, and the current handoff state.</p>
+                    </div>
                 </div>
-            </article>
-
-            <article class="form-panel detail-sidebar-card">
-                <h3>Mail Summary</h3>
-                <p class="field-help">This side panel mirrors the compact summary blocks used in notifications.</p>
-                <div class="ticket-quick-facts">
-                    <div class="ticket-quick-fact">
-                        <span>Priority</span>
-                        <strong>{{ task.get_priority_display }}</strong>
+                <div class="ticket-mail-grid">
+                    <div class="ticket-mail-field ticket-mail-field--full">
+                        <span>Comments by Assignee</span>
+                        <div class="ticket-mail-note">
+                            {% if task.comments_by_assignee %}
+                                {{ task.comments_by_assignee|urlize|linebreaksbr }}
+                            {% else %}
+                                <span class="ticket-mail-empty">No assignee comments yet.</span>
+                            {% endif %}
+                        </div>
                     </div>
-                    <div class="ticket-quick-fact">
-                        <span>Status</span>
-                        <strong>{{ task.status }}</strong>
-                    </div>
-                    <div class="ticket-quick-fact">
-                        <span>Attachments</span>
-                        <strong>{{ attachment_items|length }}</strong>
-                    </div>
-                    <div class="ticket-quick-fact">
-                        <span>Chat Messages</span>
-                        <strong>{{ chat_messages|length }}</strong>
+                    <div class="ticket-mail-field ticket-mail-field--full">
+                        <span>Note by Assignee</span>
+                        <div class="ticket-mail-note">
+                            {% if task.notes %}
+                                {{ task.notes|urlize|linebreaksbr }}
+                            {% else %}
+                                <span class="ticket-mail-empty">No handoff note from the assignee yet.</span>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </article>
 
-            <article class="form-panel detail-sidebar-card">
-                <h3>Latest Activity</h3>
+            <article class="detail-panel">
+                <div class="ticket-mail-section__header">
+                    <div>
+                        <h3>Latest Activity</h3>
+                        <p class="field-help">The most recent tracked events for this ticket.</p>
+                    </div>
+                </div>
                 <div class="thread-list thread-list--compact">
                     {% for entry in activity_entries %}
                         <div class="thread-item thread-item--compact">

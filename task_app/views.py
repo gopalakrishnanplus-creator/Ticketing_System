@@ -75,18 +75,36 @@ def _task_attachment_items(task):
     seen = set()
 
     def add_item(name, url, meta):
-        if not url:
+        item = _build_task_attachment_item(name, url, meta)
+        if not item:
             return
-        absolute_url = _absolute_support_url(url)
-        key = (name, absolute_url)
+        key = (item["name"], item["url"])
         if key in seen:
             return
         seen.add(key)
-        items.append({
-            "name": name,
-            "url": absolute_url,
-            "meta": meta,
-        })
+        items.append(item)
+
+    for item in _creator_attachment_items(task):
+        add_item(item["name"], item["url"], item["meta"])
+
+    for item in _assignee_attachment_items(task):
+        add_item(item["name"], item["url"], item["meta"])
+
+    return items
+
+
+def _build_task_attachment_item(name, url, meta):
+    if not url:
+        return None
+    return {
+        "name": name,
+        "url": _absolute_support_url(url),
+        "meta": meta,
+    }
+
+
+def _creator_attachment_items(task):
+    items = []
 
     for attachment in task.attachments.all():
         uploader_name = ""
@@ -96,18 +114,32 @@ def _task_attachment_items(task):
             meta = f"Uploaded by {uploader_name} on {attachment.uploaded_at:%d %b %Y, %I:%M %p}"
         else:
             meta = f"Uploaded on {attachment.uploaded_at:%d %b %Y, %I:%M %p}"
-        add_item(attachment.filename, attachment.file.url, meta)
+        item = _build_task_attachment_item(attachment.filename, attachment.file.url, meta)
+        if item:
+            items.append(item)
 
     if task.attach_file:
-        add_item(os.path.basename(task.attach_file.name), task.attach_file.url, "Original ticket attachment")
+        item = _build_task_attachment_item(
+            os.path.basename(task.attach_file.name),
+            task.attach_file.url,
+            "Original ticket attachment",
+        )
+        if item:
+            items.append(item)
 
+    return items
+
+
+def _assignee_attachment_items(task):
+    items = []
     if task.attachment_by_assignee:
-        add_item(
+        item = _build_task_attachment_item(
             os.path.basename(task.attachment_by_assignee.name),
             task.attachment_by_assignee.url,
-            "Attachment uploaded by assignee",
+            "Attachment uploaded by assignee during handoff",
         )
-
+        if item:
+            items.append(item)
     return items
 
 
@@ -796,6 +828,8 @@ def task_detail(request, task_id):
     chat_messages = TaskChat.objects.filter(task=task).select_related('sender').order_by('timestamp')
     activity_entries = ActivityLog.objects.filter(task=task).select_related('user').order_by('-timestamp')[:8]
     attachment_items = _task_attachment_items(task)
+    creator_attachment_items = _creator_attachment_items(task)
+    assignee_attachment_items = _assignee_attachment_items(task)
     viewer_items = _task_viewer_items(task)
 
     assigned_to_profile = UserProfile.objects.filter(user=task.assigned_to).first() if task.assigned_to else None
@@ -831,6 +865,8 @@ def task_detail(request, task_id):
         'chat_messages': chat_messages,
         'activity_entries': activity_entries,
         'attachment_items': attachment_items,
+        'creator_attachment_items': creator_attachment_items,
+        'assignee_attachment_items': assignee_attachment_items,
         'viewer_items': viewer_items,
         'back_url': back_url,
         'can_update_task': can_update_task,
@@ -886,12 +922,21 @@ def send_new_message_notification(request, task, chat_message):
 
 @login_required
 def update_task_status(request, task_id):
-    task = get_object_or_404(Task, task_id=task_id)
+    task = get_object_or_404(
+        Task.objects.select_related('assigned_by', 'assigned_to', 'department').prefetch_related('attachments'),
+        task_id=task_id,
+    )
 
     old_deadline = task.revised_completion_date
     old_comments = task.comments_by_assignee
     initial_deadline = task.deadline
     old_status = task.status  # Capture the old status
+
+    base_context = {
+        'task': task,
+        'creator_attachment_items': _creator_attachment_items(task),
+        'assignee_attachment_items': _assignee_attachment_items(task),
+    }
 
     if request.method == 'POST':
         form = TaskStatusUpdateForm(request.POST, instance=task)
@@ -904,11 +949,12 @@ def update_task_status(request, task_id):
                 # Only the task owner (assigned_by) can mark status as "Completed"
                 if new_status.lower() == 'completed' and request.user != task.assigned_by:
                     messages.error(request, "Only the task owner can mark the task as Completed.")
-                    return render(request, 'tasks/update_task_status.html', {
-                        'task': task, 
+                    error_context = dict(base_context)
+                    error_context.update({
                         'form': form,
-                        'error_message': 'Only the task owner can mark the task as Completed.'
+                        'error_message': 'Only the task owner can mark the task as Completed.',
                     })
+                    return render(request, 'tasks/update_task_status.html', error_context)
                 
                 updated_task.status = new_status
 
@@ -989,7 +1035,9 @@ def update_task_status(request, task_id):
     else:
         form = TaskStatusUpdateForm(instance=task)
 
-    return render(request, 'tasks/update_task_status.html', {'task': task, 'form': form})
+    context = dict(base_context)
+    context.update({'form': form})
+    return render(request, 'tasks/update_task_status.html', context)
 
 
 @login_required
@@ -1033,7 +1081,10 @@ def reassign_task(request, task_id):
 
 @login_required
 def task_note_page(request, task_id):
-    task = get_object_or_404(Task, task_id=task_id)
+    task = get_object_or_404(
+        Task.objects.select_related('assigned_by', 'assigned_to', 'department').prefetch_related('attachments'),
+        task_id=task_id,
+    )
     old_assignee = task.assigned_to
     user_profile = UserProfile.objects.get(user=request.user)
     if task.assigned_to != request.user and not (
@@ -1106,7 +1157,11 @@ def task_note_page(request, task_id):
 
         return redirect('task_detail', task_id=task.task_id)
 
-    return render(request, 'tasks/task_note_page.html', {'task': task})
+    return render(request, 'tasks/task_note_page.html', {
+        'task': task,
+        'creator_attachment_items': _creator_attachment_items(task),
+        'assignee_attachment_items': _assignee_attachment_items(task),
+    })
 
 
 @login_required
