@@ -7,10 +7,10 @@ from django.test import TestCase, override_settings
 from django.urls import reverse
 from django.utils import timezone
 
-from task_app.models import Department
+from task_app.models import Department, UserProfile
 
 from .models import ClientContact, ClientTicket, ClientTicketAttachment, ClientTicketType
-from .services import auto_close_stale_tickets, notify_ticket_created, send_unchecked_ticket_reminders
+from .services import auto_close_stale_tickets, create_ticket_update, notify_ticket_created, send_unchecked_ticket_reminders
 
 
 @override_settings(
@@ -33,6 +33,16 @@ class ClientTicketTests(TestCase):
             password="password123",
             first_name="Project",
             last_name="Manager",
+        )
+        UserProfile.objects.create(
+            user=self.assigned_to,
+            category="Non-Management",
+            department=self.department,
+        )
+        UserProfile.objects.create(
+            user=self.project_manager,
+            category="Departmental Manager",
+            department=self.department,
         )
         self.ticket_type, _ = ClientTicketType.objects.get_or_create(
             name="PM Dashboard",
@@ -67,6 +77,229 @@ class ClientTicketTests(TestCase):
         self.assertEqual(ticket.requester_email, "asha@example.com")
         self.assertEqual(ticket.requester_number, "+919876543210")
         self.assertEqual(ticket.status, ClientTicket.STATUS_OPEN)
+
+    def test_api_create_ticket_supports_external_reference_and_machine_fields(self):
+        response = self.client.post(
+            reverse("client_tickets:api_create_ticket"),
+            data={
+                "title": "Campaign mirrored ticket",
+                "description": "Created from campaign system.",
+                "ticket_type_id": self.ticket_type.id,
+                "requester_name": "Mirror User",
+                "requester_email": "mirror@example.com",
+                "requester_number": "+91 90000 11111",
+                "assigned_to_email": self.assigned_to.email,
+                "project_manager_email": self.project_manager.email,
+                "department_id": self.department.id,
+                "source_system": ClientTicket.SOURCE_CAMPAIGN,
+                "priority": ClientTicket.PRIORITY_URGENT,
+                "status": ClientTicket.STATUS_OPEN,
+                "external_reference": "TKT-632AB97A",
+            },
+        )
+
+        self.assertEqual(response.status_code, 201)
+        payload = response.json()["ticket"]
+        self.assertEqual(payload["external_reference"], "TKT-632AB97A")
+        self.assertEqual(payload["source_system_code"], ClientTicket.SOURCE_CAMPAIGN)
+        self.assertEqual(payload["priority_code"], ClientTicket.PRIORITY_URGENT)
+        self.assertEqual(payload["status_code"], ClientTicket.STATUS_OPEN)
+        self.assertEqual(payload["assigned_to_email"], self.assigned_to.email)
+        self.assertEqual(payload["project_manager_email"], self.project_manager.email)
+
+    def test_api_ticket_detail_returns_machine_codes_and_updates(self):
+        contact = ClientContact.objects.create(
+            name="Detail User",
+            email="detail@example.com",
+            phone_number="9999911111",
+        )
+        ticket = ClientTicket.objects.create(
+            external_reference="TKT-DETAIL-1",
+            title="Detail contract ticket",
+            description="Need machine readable response.",
+            requester=contact,
+            requester_name=contact.name,
+            requester_email=contact.email,
+            requester_number=contact.phone_number,
+            assigned_to=self.assigned_to,
+            project_manager=self.project_manager,
+            department=self.department,
+            ticket_type=self.ticket_type,
+            source_system=ClientTicket.SOURCE_CAMPAIGN,
+            priority=ClientTicket.PRIORITY_HIGH,
+            status=ClientTicket.STATUS_OPEN,
+        )
+        create_ticket_update(
+            ticket,
+            actor_type="system",
+            message="Ticket created.",
+            status=ClientTicket.STATUS_OPEN,
+        )
+        create_ticket_update(
+            ticket,
+            actor_type="inditech",
+            message="Working on it",
+            status=ClientTicket.STATUS_IN_PROGRESS,
+            inditech_status=ClientTicket.PARTICIPANT_IN_PROGRESS,
+            user=self.assigned_to,
+        )
+
+        response = self.client.get(reverse("client_tickets:api_ticket_detail", args=[ticket.ticket_number]))
+
+        self.assertEqual(response.status_code, 200)
+        payload = response.json()["ticket"]
+        self.assertEqual(payload["external_reference"], "TKT-DETAIL-1")
+        self.assertEqual(payload["ticket_type_id"], self.ticket_type.id)
+        self.assertEqual(payload["department_id"], self.department.id)
+        self.assertEqual(payload["assigned_to_id"], self.assigned_to.id)
+        self.assertEqual(payload["project_manager_id"], self.project_manager.id)
+        self.assertEqual(payload["source_system_code"], ClientTicket.SOURCE_CAMPAIGN)
+        self.assertEqual(payload["status_code"], ClientTicket.STATUS_IN_PROGRESS)
+        self.assertEqual(payload["inditech_status_code"], ClientTicket.PARTICIPANT_IN_PROGRESS)
+        self.assertEqual(payload["updates"][0]["status_code"], ClientTicket.STATUS_OPEN)
+        self.assertEqual(payload["updates"][1]["inditech_status_code"], ClientTicket.PARTICIPANT_IN_PROGRESS)
+
+    def test_lookup_and_sync_apis_return_expected_payloads(self):
+        contact = ClientContact.objects.create(
+            name="Sync User",
+            email="sync@example.com",
+            phone_number="8888811111",
+        )
+        old_ticket = ClientTicket.objects.create(
+            external_reference="TKT-OLD-1",
+            title="Old ticket",
+            description="Old",
+            requester=contact,
+            requester_name=contact.name,
+            requester_email=contact.email,
+            requester_number=contact.phone_number,
+            assigned_to=self.assigned_to,
+            project_manager=self.project_manager,
+            department=self.department,
+            ticket_type=self.ticket_type,
+            source_system=ClientTicket.SOURCE_CAMPAIGN,
+            priority=ClientTicket.PRIORITY_LOW,
+            status=ClientTicket.STATUS_OPEN,
+        )
+        fresh_ticket = ClientTicket.objects.create(
+            external_reference="TKT-FRESH-1",
+            title="Fresh ticket",
+            description="Fresh",
+            requester=contact,
+            requester_name=contact.name,
+            requester_email=contact.email,
+            requester_number=contact.phone_number,
+            assigned_to=self.assigned_to,
+            project_manager=self.project_manager,
+            department=self.department,
+            ticket_type=self.ticket_type,
+            source_system=ClientTicket.SOURCE_CAMPAIGN,
+            priority=ClientTicket.PRIORITY_URGENT,
+            status=ClientTicket.STATUS_IN_PROGRESS,
+        )
+        ClientTicket.objects.filter(id=old_ticket.id).update(updated_at=timezone.now() - timedelta(days=2))
+
+        departments_response = self.client.get(reverse("client_tickets:api_lookup_departments"))
+        ticket_types_response = self.client.get(reverse("client_tickets:api_lookup_ticket_types"))
+        users_response = self.client.get(reverse("client_tickets:api_lookup_users"), {"department_id": self.department.id})
+        managers_response = self.client.get(reverse("client_tickets:api_lookup_project_managers"))
+        sync_response = self.client.get(
+            reverse("client_tickets:api_create_ticket"),
+            {
+                "source_system": ClientTicket.SOURCE_CAMPAIGN,
+                "updated_after": (timezone.now() - timedelta(hours=1)).isoformat(),
+                "page": 1,
+                "page_size": 50,
+            },
+        )
+        external_response = self.client.get(
+            reverse("client_tickets:api_ticket_by_external_reference"),
+            {"external_reference": fresh_ticket.external_reference, "source_system": ClientTicket.SOURCE_CAMPAIGN},
+        )
+
+        self.assertEqual(departments_response.status_code, 200)
+        self.assertEqual(ticket_types_response.status_code, 200)
+        self.assertEqual(users_response.status_code, 200)
+        self.assertEqual(managers_response.status_code, 200)
+        self.assertEqual(sync_response.status_code, 200)
+        self.assertEqual(external_response.status_code, 200)
+
+        self.assertIn(
+            self.department.id,
+            [row["id"] for row in departments_response.json()["departments"]],
+        )
+        self.assertIn(
+            self.ticket_type.id,
+            [row["id"] for row in ticket_types_response.json()["ticket_types"]],
+        )
+        self.assertTrue(
+            any(row["department_id"] == self.department.id for row in users_response.json()["users"])
+        )
+        self.assertIn(
+            self.assigned_to.id,
+            [row["id"] for row in managers_response.json()["project_managers"]],
+        )
+        self.assertEqual(sync_response.json()["count"], 1)
+        self.assertEqual(sync_response.json()["results"][0]["external_reference"], fresh_ticket.external_reference)
+        self.assertEqual(external_response.json()["ticket"]["ticket_number"], fresh_ticket.ticket_number)
+
+    def test_inditech_update_api_can_reassign_and_store_external_reference(self):
+        new_assignee = User.objects.create_user(
+            username="newassignee",
+            email="newassignee@example.com",
+            password="password123",
+            first_name="New",
+            last_name="Assignee",
+        )
+        new_pm = User.objects.create_user(
+            username="newpm",
+            email="newpm@example.com",
+            password="password123",
+            first_name="New",
+            last_name="PM",
+        )
+        contact = ClientContact.objects.create(
+            name="Reassign User",
+            email="reassign@example.com",
+            phone_number="7777711111",
+        )
+        ticket = ClientTicket.objects.create(
+            title="Reassign ticket",
+            description="Needs reassignment.",
+            requester=contact,
+            requester_name=contact.name,
+            requester_email=contact.email,
+            requester_number=contact.phone_number,
+            assigned_to=self.assigned_to,
+            project_manager=self.project_manager,
+            department=self.department,
+            ticket_type=self.ticket_type,
+            source_system=ClientTicket.SOURCE_CAMPAIGN,
+            priority=ClientTicket.PRIORITY_LOW,
+            status=ClientTicket.STATUS_OPEN,
+        )
+
+        response = self.client.post(
+            reverse("client_tickets:api_inditech_update_ticket", args=[ticket.ticket_number]),
+            data={
+                "updated_by_email": self.assigned_to.email,
+                "assigned_to_email": new_assignee.email,
+                "project_manager_email": new_pm.email,
+                "external_reference": "TKT-REASSIGN-1",
+                "priority": ClientTicket.PRIORITY_HIGH,
+                "status": ClientTicket.STATUS_IN_PROGRESS,
+                "inditech_status": ClientTicket.PARTICIPANT_IN_PROGRESS,
+                "message": "Reassigned to the correct owner.",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        ticket.refresh_from_db()
+        self.assertEqual(ticket.assigned_to_id, new_assignee.id)
+        self.assertEqual(ticket.project_manager_id, new_pm.id)
+        self.assertEqual(ticket.external_reference, "TKT-REASSIGN-1")
+        self.assertEqual(ticket.status, ClientTicket.STATUS_IN_PROGRESS)
+        self.assertEqual(ticket.inditech_status, ClientTicket.PARTICIPANT_IN_PROGRESS)
 
     def test_unchecked_ticket_reminder_sends_mail(self):
         contact = ClientContact.objects.create(

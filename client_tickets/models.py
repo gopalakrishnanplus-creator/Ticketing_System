@@ -3,6 +3,7 @@ import uuid
 
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models import Q
 from django.urls import reverse
 from django.utils import timezone
 
@@ -124,6 +125,7 @@ class ClientTicket(models.Model):
     ]
 
     ticket_number = models.CharField(max_length=20, unique=True, editable=False)
+    external_reference = models.CharField(max_length=100, blank=True, db_index=True)
     title = models.CharField(max_length=255)
     description = models.TextField()
     ticket_type = models.ForeignKey(ClientTicketType, null=True, blank=True, on_delete=models.SET_NULL)
@@ -193,9 +195,17 @@ class ClientTicket(models.Model):
 
     class Meta:
         ordering = ["-updated_at", "-created_at"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["source_system", "external_reference"],
+                condition=~Q(external_reference=""),
+                name="unique_client_ticket_source_external_reference",
+            )
+        ]
 
     def save(self, *args, **kwargs):
         now = timezone.now()
+        self.external_reference = (self.external_reference or "").strip()
         self.requester_email = normalize_email(self.requester_email)
         self.requester_number = normalize_phone_number(self.requester_number)
         self.requester_name = (self.requester_name or "").strip()

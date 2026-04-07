@@ -32,6 +32,7 @@ class ClientTicketUpdateInline(admin.TabularInline):
 class ClientTicketAdmin(admin.ModelAdmin):
     list_display = (
         "ticket_number",
+        "external_reference",
         "title",
         "requester_name",
         "assigned_to",
@@ -41,7 +42,7 @@ class ClientTicketAdmin(admin.ModelAdmin):
         "updated_at",
     )
     list_filter = ("priority", "status", "source_system", "department")
-    search_fields = ("ticket_number", "title", "requester_name", "requester_email")
+    search_fields = ("ticket_number", "external_reference", "title", "requester_name", "requester_email")
     inlines = [ClientTicketUpdateInline, ClientTicketAttachmentInline]
 
 

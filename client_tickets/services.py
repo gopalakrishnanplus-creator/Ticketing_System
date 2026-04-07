@@ -6,6 +6,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.db.models import Q
 from django.template.loader import render_to_string
 from django.utils import timezone
+from django.utils.text import slugify
 
 from .models import ClientContact, ClientTicket, ClientTicketAttachment, ClientTicketUpdate
 from .utils import build_absolute_link, normalize_email, normalize_phone_number, priority_color
@@ -70,42 +71,132 @@ def attachment_items(ticket):
     for attachment in ticket.attachments.all():
         items.append(
             {
+                "id": attachment.id,
                 "name": attachment.filename,
                 "role": attachment.get_uploaded_by_role_display(),
+                "role_code": attachment.uploaded_by_role,
                 "url": build_absolute_link(attachment.file.url),
+                "uploaded_at": attachment.uploaded_at.isoformat(),
             }
         )
     return items
 
 
+def department_code(department):
+    if not department:
+        return ""
+    return slugify(department.name or "").replace("-", "_").upper()
+
+
+def display_or_blank(value, default="---------"):
+    return value or default
+
+
+def user_display_name(user):
+    if not user:
+        return ""
+    return user.get_full_name() or user.username
+
+
+def user_to_lookup_dict(user):
+    profile = getattr(user, "userprofile", None)
+    department = getattr(profile, "department", None)
+    return {
+        "id": user.id,
+        "full_name": user_display_name(user),
+        "email": user.email or "",
+        "department_id": department.id if department else None,
+        "department_name": department.name if department else "",
+        "is_active": user.is_active,
+    }
+
+
+def ticket_update_to_dict(update):
+    return {
+        "id": update.id,
+        "actor_type": update.actor_type,
+        "actor_label": update.get_actor_type_display(),
+        "message": update.message,
+        "status": display_or_blank(update.get_status_display()),
+        "status_code": update.status or "",
+        "inditech_status": display_or_blank(update.get_inditech_status_display()),
+        "inditech_status_code": update.inditech_status or "",
+        "client_status": display_or_blank(update.get_client_status_display()),
+        "client_status_code": update.client_status or "",
+        "created_at": update.created_at.isoformat(),
+        "attachments": [
+            {
+                "id": attachment.id,
+                "name": attachment.filename,
+                "role": attachment.get_uploaded_by_role_display(),
+                "role_code": attachment.uploaded_by_role,
+                "url": build_absolute_link(attachment.file.url),
+                "uploaded_at": attachment.uploaded_at.isoformat(),
+            }
+            for attachment in update.attachments.all()
+        ],
+    }
+
+
 def ticket_to_dict(ticket):
-    assigned_to = ""
-    if ticket.assigned_to:
-        assigned_to = ticket.assigned_to.get_full_name() or ticket.assigned_to.username
-    project_manager = ""
-    if ticket.project_manager:
-        project_manager = ticket.project_manager.get_full_name() or ticket.project_manager.username
+    assigned_to = user_display_name(ticket.assigned_to)
+    project_manager = user_display_name(ticket.project_manager)
     return {
         "ticket_number": ticket.ticket_number,
+        "external_reference": ticket.external_reference,
         "title": ticket.title,
         "description": ticket.description,
         "ticket_type": ticket.ticket_type_label,
+        "ticket_type_id": ticket.ticket_type_id,
+        "ticket_type_other": ticket.ticket_type_other,
         "requester_name": ticket.requester_name,
         "requester_email": ticket.requester_email,
         "requester_number": ticket.requester_number,
         "assigned_to": assigned_to,
+        "assigned_to_id": ticket.assigned_to_id,
+        "assigned_to_email": ticket.assigned_to.email if ticket.assigned_to and ticket.assigned_to.email else "",
         "project_manager": project_manager,
+        "project_manager_id": ticket.project_manager_id,
+        "project_manager_email": (
+            ticket.project_manager.email if ticket.project_manager and ticket.project_manager.email else ""
+        ),
         "user_type": ticket.get_user_type_display(),
+        "user_type_code": ticket.user_type,
         "source_system": ticket.get_source_system_display(),
+        "source_system_code": ticket.source_system,
         "priority": ticket.get_priority_display(),
+        "priority_code": ticket.priority,
         "department": ticket.department.name if ticket.department else "",
-        "status": ticket.get_status_display() or "---------",
-        "inditech_status": ticket.get_inditech_status_display() or "---------",
-        "client_status": ticket.get_client_status_display() or "---------",
+        "department_id": ticket.department_id,
+        "department_code": department_code(ticket.department),
+        "status": display_or_blank(ticket.get_status_display()),
+        "status_code": ticket.status or "",
+        "inditech_status": display_or_blank(ticket.get_inditech_status_display()),
+        "inditech_status_code": ticket.inditech_status or "",
+        "client_status": display_or_blank(ticket.get_client_status_display()),
+        "client_status_code": ticket.client_status or "",
         "created_at": ticket.created_at.isoformat(),
         "updated_at": ticket.updated_at.isoformat(),
         "ticket_url": build_absolute_link(ticket.get_absolute_url()),
         "attachments": attachment_items(ticket),
+    }
+
+
+def ticket_summary_to_dict(ticket):
+    return {
+        "ticket_number": ticket.ticket_number,
+        "external_reference": ticket.external_reference,
+        "title": ticket.title,
+        "status_code": ticket.status or "",
+        "status_label": display_or_blank(ticket.get_status_display()),
+        "priority_code": ticket.priority,
+        "priority_label": ticket.get_priority_display(),
+        "assigned_to_email": ticket.assigned_to.email if ticket.assigned_to and ticket.assigned_to.email else "",
+        "project_manager_email": (
+            ticket.project_manager.email if ticket.project_manager and ticket.project_manager.email else ""
+        ),
+        "updated_at": ticket.updated_at.isoformat(),
+        "ticket_url": build_absolute_link(ticket.get_absolute_url()),
     }
 
 
