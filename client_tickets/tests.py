@@ -44,6 +44,8 @@ class ClientTicketTests(TestCase):
             category="Departmental Manager",
             department=self.department,
         )
+        self.department.manager = self.project_manager
+        self.department.save(update_fields=["manager"])
         self.ticket_type, _ = ClientTicketType.objects.get_or_create(
             name="PM Dashboard",
             defaults={"department": self.department},
@@ -242,6 +244,26 @@ class ClientTicketTests(TestCase):
         self.assertEqual(sync_response.json()["count"], 1)
         self.assertEqual(sync_response.json()["results"][0]["external_reference"], fresh_ticket.external_reference)
         self.assertEqual(external_response.json()["ticket"]["ticket_number"], fresh_ticket.ticket_number)
+
+    def test_system_directory_lookup_returns_users_and_departments(self):
+        response = self.client.get(
+            reverse("client_tickets:api_lookup_system_directory"),
+            {"department_id": self.department.id},
+        )
+
+        self.assertEqual(response.status_code, 200)
+        payload = response.json()
+        self.assertTrue(payload["success"])
+        self.assertIn(self.department.id, [row["id"] for row in payload["departments"]])
+        self.assertTrue(any(row["id"] == self.assigned_to.id for row in payload["users"]))
+        department_row = next(row for row in payload["departments"] if row["id"] == self.department.id)
+        self.assertEqual(department_row["manager_id"], self.project_manager.id)
+        manager_row = next(
+            row for row in payload["department_managers"] if row["department_id"] == self.department.id
+        )
+        self.assertEqual(manager_row["department_name"], self.department.name)
+        self.assertEqual(manager_row["manager_id"], self.project_manager.id)
+        self.assertEqual(manager_row["manager_email"], self.project_manager.email)
 
     def test_inditech_update_api_can_reassign_and_store_external_reference(self):
         new_assignee = User.objects.create_user(

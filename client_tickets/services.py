@@ -111,6 +111,31 @@ def user_to_lookup_dict(user):
     }
 
 
+def department_to_lookup_dict(department):
+    manager = getattr(department, "manager", None)
+    return {
+        "id": department.id,
+        "name": department.name,
+        "code": department_code(department),
+        "manager_id": manager.id if manager else None,
+        "manager_name": user_display_name(manager),
+        "manager_email": manager.email if manager and manager.email else "",
+        "is_active": True,
+    }
+
+
+def department_manager_to_lookup_dict(department):
+    manager = getattr(department, "manager", None)
+    return {
+        "department_id": department.id,
+        "department_name": department.name,
+        "department_code": department_code(department),
+        "manager_id": manager.id if manager else None,
+        "manager_name": user_display_name(manager),
+        "manager_email": manager.email if manager and manager.email else "",
+    }
+
+
 def ticket_update_to_dict(update):
     return {
         "id": update.id,

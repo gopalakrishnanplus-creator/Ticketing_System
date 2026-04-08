@@ -16,6 +16,7 @@ urlpatterns = [
     path("api/tickets/<str:ticket_number>/inditech-update/", views.api_inditech_update_ticket, name="api_inditech_update_ticket"),
     path("api/tickets/<str:ticket_number>/client-update/", views.api_client_update_ticket, name="api_client_update_ticket"),
     path("api/lookups/departments/", views.api_lookup_departments, name="api_lookup_departments"),
+    path("api/lookups/system-directory/", views.api_lookup_system_directory, name="api_lookup_system_directory"),
     path("api/lookups/ticket-types/", views.api_lookup_ticket_types, name="api_lookup_ticket_types"),
     path("api/lookups/users/", views.api_lookup_users, name="api_lookup_users"),
     path("api/lookups/project-managers/", views.api_lookup_project_managers, name="api_lookup_project_managers"),

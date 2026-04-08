@@ -22,8 +22,10 @@ from .models import ClientContact, ClientTicket, ClientTicketType, ClientTicketU
 from .services import (
     attachment_items as build_client_attachment_items,
     create_ticket_update,
+    department_manager_to_lookup_dict,
     notify_ticket_created,
     notify_ticket_updated,
+    department_to_lookup_dict,
     send_daily_summary_emails,
     send_unchecked_ticket_reminders,
     ticket_summary_to_dict,
@@ -32,7 +34,6 @@ from .services import (
     user_to_lookup_dict,
     upsert_client_contact,
     auto_close_stale_tickets,
-    department_code,
 )
 from .utils import normalize_email, normalize_phone_number, validate_attachment_batch
 
@@ -481,15 +482,7 @@ def api_lookup_departments(request):
     return JsonResponse(
         {
             "success": True,
-            "departments": [
-                {
-                    "id": department.id,
-                    "name": department.name,
-                    "code": department_code(department),
-                    "is_active": True,
-                }
-                for department in departments
-            ],
+            "departments": [department_to_lookup_dict(department) for department in departments],
         }
     )
 
@@ -543,6 +536,31 @@ def api_lookup_users(request):
         {
             "success": True,
             "users": [user_to_lookup_dict(user) for user in queryset],
+        }
+    )
+
+
+@require_http_methods(["GET"])
+def api_lookup_system_directory(request):
+    if not _api_token_is_valid(request):
+        return _json_error("Invalid API token.", status=403, code="auth_failed")
+
+    departments = Department.objects.select_related("manager").all().order_by("name")
+    users = _lookup_users_queryset()
+    department_id = request.GET.get("department_id")
+    is_active = request.GET.get("is_active", "").strip().lower()
+
+    if department_id:
+        users = users.filter(userprofile__department_id=department_id)
+    if is_active in {"0", "false", "no", "off"}:
+        users = User.objects.none()
+
+    return JsonResponse(
+        {
+            "success": True,
+            "departments": [department_to_lookup_dict(department) for department in departments],
+            "department_managers": [department_manager_to_lookup_dict(department) for department in departments],
+            "users": [user_to_lookup_dict(user) for user in users],
         }
     )
 
