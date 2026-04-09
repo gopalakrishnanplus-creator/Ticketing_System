@@ -67,7 +67,10 @@
 
             <div class="profile-action-row">
                 <a href="{% url 'assigned_to_me' %}" class="secondary-action">Assigned to Me</a>
-                <a href="{% url 'logout' %}" class="secondary-action">Logout</a>
+                <form method="post" action="{% url 'support_logout' %}" class="profile-action-form">
+                    {% csrf_token %}
+                    <button type="submit" class="secondary-action">Logout</button>
+                </form>
             </div>
         </section>
 

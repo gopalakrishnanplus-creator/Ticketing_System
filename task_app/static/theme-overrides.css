@@ -242,6 +242,11 @@ body.support-shell.ticket-mode-external {
     background: #fff;
 }
 
+.support-logout-form {
+    display: inline-flex;
+    margin: 0;
+}
+
 .support-main {
     max-width: 1360px;
     margin: 0 auto;
@@ -1011,6 +1016,16 @@ body.support-shell.ticket-mode-external {
     gap: 12px;
     flex-wrap: wrap;
     margin-top: 22px;
+}
+
+.profile-action-form {
+    display: flex;
+    flex: 1 1 0;
+    margin: 0;
+}
+
+.profile-action-form .secondary-action {
+    width: 100%;
 }
 
 .ticket-detail-back-row {

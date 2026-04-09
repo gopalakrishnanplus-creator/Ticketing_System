@@ -137,6 +137,26 @@ class TicketModeNavigationTests(TestCase):
 
 
 @override_settings(CLIENT_TICKETS_BASE_URL="http://127.0.0.1:5467")
+class LogoutFlowTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username="logoutuser",
+            email="logout@example.com",
+            password="password123",
+            first_name="Logout",
+            last_name="User",
+        )
+
+    def test_support_logout_clears_session_and_redirects_to_login(self):
+        self.client.force_login(self.user)
+
+        response = self.client.post(reverse("support_logout"))
+
+        self.assertRedirects(response, reverse("login"))
+        self.assertNotIn("_auth_user_id", self.client.session)
+
+
+@override_settings(CLIENT_TICKETS_BASE_URL="http://127.0.0.1:5467")
 class ManagerTicketVisibilityTests(TestCase):
     def setUp(self):
         self.department = Department.objects.create(name="Operations")

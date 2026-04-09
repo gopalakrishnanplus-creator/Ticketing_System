@@ -9,6 +9,7 @@ import csv
 import pandas as pd
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
@@ -532,6 +533,13 @@ def assigned_by_me(request):
 def set_ticket_mode(request, mode):
     request.session['ticket_ui_mode'] = mode if mode in TICKET_MODE_CHOICES else TICKET_MODE_INTERNAL
     return redirect(_safe_ticket_redirect_target(request))
+
+
+@login_required
+@require_http_methods(['POST'])
+def support_logout(request):
+    auth_logout(request)
+    return redirect('login')
 
 @login_required
 def user_profile(request):
