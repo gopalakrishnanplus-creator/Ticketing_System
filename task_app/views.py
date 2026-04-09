@@ -16,6 +16,7 @@ from django.core.exceptions import ValidationError
 from django.core.mail import EmailMultiAlternatives
 from django.core.mail import send_mail
 from django.core.paginator import Paginator
+from django.db import transaction
 from django.db.models import Count
 from django.db.models import F
 from django.db.models import Q
@@ -1621,6 +1622,138 @@ def department_metrics(request, department):
         'department_name': department_obj.name
     })
 from django.http import Http404
+
+
+USER_CATEGORY_CHOICES = [
+    ('Task Management System Manager', 'Task Management System Manager'),
+    ('Non-Management', 'Non-Management'),
+    ('Executive Management', 'Executive Management'),
+    ('Departmental Manager', 'Departmental Manager'),
+]
+
+
+def _is_task_system_manager(user):
+    if not user.is_authenticated:
+        return False
+    if user.is_superuser:
+        return True
+    profile = UserProfile.objects.filter(user=user).first()
+    return bool(profile and profile.category == 'Task Management System Manager')
+
+
+def _sync_department_manager_role(user, category, department):
+    managed_departments = Department.objects.filter(manager=user)
+    if category == 'Departmental Manager' and department:
+        managed_departments.exclude(id=department.id).update(manager=None)
+        if department.manager_id != user.id:
+            department.manager = user
+            department.save(update_fields=['manager'])
+    else:
+        managed_departments.update(manager=None)
+
+
+def _build_user_admin_rows(queryset):
+    users = list(queryset)
+    user_ids = [user.id for user in users]
+    profiles_by_user_id = {
+        profile.user_id: profile
+        for profile in UserProfile.objects.select_related('department').filter(user_id__in=user_ids)
+    }
+
+    internal_assigned_counts = {
+        row['assigned_to']: row['count']
+        for row in Task.objects.filter(assigned_to_id__in=user_ids)
+        .values('assigned_to')
+        .annotate(count=Count('id'))
+    }
+    internal_created_counts = {
+        row['assigned_by']: row['count']
+        for row in Task.objects.filter(assigned_by_id__in=user_ids)
+        .values('assigned_by')
+        .annotate(count=Count('id'))
+    }
+    external_assigned_counts = {
+        row['assigned_to']: row['count']
+        for row in ClientTicket.objects.filter(assigned_to_id__in=user_ids)
+        .values('assigned_to')
+        .annotate(count=Count('id'))
+    }
+    external_pm_counts = {
+        row['project_manager']: row['count']
+        for row in ClientTicket.objects.filter(project_manager_id__in=user_ids)
+        .values('project_manager')
+        .annotate(count=Count('id'))
+    }
+    external_created_counts = {
+        row['created_by']: row['count']
+        for row in ClientTicket.objects.filter(created_by_id__in=user_ids)
+        .values('created_by')
+        .annotate(count=Count('id'))
+    }
+    managed_department_counts = {
+        row['manager']: row['count']
+        for row in Department.objects.filter(manager_id__in=user_ids)
+        .values('manager')
+        .annotate(count=Count('id'))
+    }
+
+    rows = []
+    for user in users:
+        profile = profiles_by_user_id.get(user.id)
+        internal_assigned = internal_assigned_counts.get(user.id, 0)
+        internal_created = internal_created_counts.get(user.id, 0)
+        external_assigned = external_assigned_counts.get(user.id, 0)
+        external_pm = external_pm_counts.get(user.id, 0)
+        external_created = external_created_counts.get(user.id, 0)
+        managed_departments = managed_department_counts.get(user.id, 0)
+        rows.append(
+            {
+                'user': user,
+                'profile': profile,
+                'internal_assigned_count': internal_assigned,
+                'internal_created_count': internal_created,
+                'external_assigned_count': external_assigned,
+                'external_pm_count': external_pm,
+                'external_created_count': external_created,
+                'managed_departments_count': managed_departments,
+                'open_workload_count': (
+                    internal_assigned + internal_created + external_assigned + external_pm + external_created
+                ),
+                'requires_transfer': bool(
+                    internal_assigned
+                    or internal_created
+                    or external_assigned
+                    or external_pm
+                    or external_created
+                    or managed_departments
+                ),
+            }
+        )
+    return rows
+
+
+def _reassign_user_ownership(source_user, target_user):
+    reassignment_summary = {
+        'internal_assigned': Task.objects.filter(assigned_to=source_user).update(assigned_to=target_user),
+        'internal_created': Task.objects.filter(assigned_by=source_user).update(assigned_by=target_user),
+        'external_assigned': ClientTicket.objects.filter(assigned_to=source_user).update(assigned_to=target_user),
+        'external_project_managed': ClientTicket.objects.filter(project_manager=source_user).update(project_manager=target_user),
+        'external_created': ClientTicket.objects.filter(created_by=source_user).update(created_by=target_user),
+        'managed_departments': Department.objects.filter(manager=source_user).update(manager=target_user),
+    }
+
+    replacement_profile = UserProfile.objects.filter(user=target_user).first()
+    if reassignment_summary['managed_departments'] and replacement_profile and replacement_profile.category != 'Departmental Manager':
+        replacement_profile.category = 'Departmental Manager'
+        replacement_profile.save(update_fields=['category'])
+
+    source_profile = UserProfile.objects.filter(user=source_user).first()
+    if source_profile and replacement_profile:
+        UserProfile.objects.filter(reports_to=source_profile).update(reports_to=replacement_profile)
+    elif source_profile:
+        UserProfile.objects.filter(reports_to=source_profile).update(reports_to=None)
+
+    return reassignment_summary
 # View to list, edit, and delete users
 @login_required
 def manage_users(request):
@@ -1677,130 +1810,151 @@ def manage_users(request):
                 messages.error(request, "You can only edit users from your department.")
     
     return render(request, 'tasks/manage_users.html', {'users': users})
+@login_required
 def general_manage_users(request):
     """
-    General user management page without authentication
-    Allows adding, editing, and deleting users with category selection
+    System manager user administration page.
+    Allows adding, editing, viewing, role changes, and safe deactivation with ticket reassignment.
     """
-    
-    # Get all users and departments for the page
-    users = User.objects.all().select_related('userprofile')
-    departments = Department.objects.all()
-    
-    # Category choices for UserProfile
-    CATEGORY_CHOICES = [
-        ('Task Management System Manager', 'Task Management System Manager'),
-        ('Non-Management', 'Non-Management'),
-        ('Executive Management', 'Executive Management'),
-        ('Departmental Manager', 'Departmental Manager'),
-    ]
+    if not _is_task_system_manager(request.user):
+        raise PermissionDenied("Only Task Management System Managers can manage all users.")
+
+    users_qs = User.objects.all().select_related('userprofile', 'userprofile__department').order_by('username')
+    departments = Department.objects.select_related('manager').all().order_by('name')
+    active_transfer_users = User.objects.filter(is_active=True).select_related('userprofile').order_by('first_name', 'username')
 
     if request.method == "POST":
         action = request.POST.get("action")
-        
+
         if action == "add":
-            username = request.POST.get("username")
-            first_name = request.POST.get("first_name")
-            last_name = request.POST.get("last_name")
-            email = request.POST.get("email")
+            username = (request.POST.get("username") or "").strip()
+            first_name = (request.POST.get("first_name") or "").strip()
+            last_name = (request.POST.get("last_name") or "").strip()
+            email = (request.POST.get("email") or "").strip()
             password = request.POST.get("password")
             category = request.POST.get("category")
             department_id = request.POST.get("department")
-            
+
             try:
-                # Check if username already exists
                 if User.objects.filter(username=username).exists():
                     messages.error(request, f"Username '{username}' already exists!")
                     return redirect('general_manage_users')
-                
-                # Check if email already exists
                 if User.objects.filter(email=email).exists():
                     messages.error(request, f"Email '{email}' already exists!")
                     return redirect('general_manage_users')
-                
-                # Get department object
+
                 department = get_object_or_404(Department, id=department_id) if department_id else None
-                
-                # Create user
-                user = User.objects.create_user(
-                    username=username, 
-                    email=email, 
-                    password=password,
-                    first_name=first_name, 
-                    last_name=last_name
-                )
-                
-                # Create or update user profile
-                UserProfile.objects.create(
-                    user=user, 
-                    category=category, 
-                    department=department
-                )
-                
+                with transaction.atomic():
+                    user = User.objects.create_user(
+                        username=username,
+                        email=email,
+                        password=password,
+                        first_name=first_name,
+                        last_name=last_name,
+                    )
+                    UserProfile.objects.create(
+                        user=user,
+                        category=category,
+                        department=department,
+                    )
+                    _sync_department_manager_role(user, category, department)
+
                 messages.success(request, f"User '{username}' added successfully!")
-                
             except Exception as e:
                 messages.error(request, f"Error adding user: {str(e)}")
-                
+
         elif action == "edit":
             user_id = request.POST.get("user_id")
-            new_username = request.POST.get("username")
-            new_email = request.POST.get("email")
-            first_name = request.POST.get("first_name")
-            last_name = request.POST.get("last_name")
+            new_username = (request.POST.get("username") or "").strip()
+            new_email = (request.POST.get("email") or "").strip()
+            first_name = (request.POST.get("first_name") or "").strip()
+            last_name = (request.POST.get("last_name") or "").strip()
             category = request.POST.get("category")
             department_id = request.POST.get("department")
-            
+
             try:
                 user = get_object_or_404(User, id=user_id)
-                
-                # Check if username already exists for other users
                 if User.objects.filter(username=new_username).exclude(id=user_id).exists():
                     messages.error(request, f"Username '{new_username}' already exists!")
                     return redirect('general_manage_users')
-                
-                # Check if email already exists for other users
                 if User.objects.filter(email=new_email).exclude(id=user_id).exists():
                     messages.error(request, f"Email '{new_email}' already exists!")
                     return redirect('general_manage_users')
-                
-                # Get department object
+
                 department = get_object_or_404(Department, id=department_id) if department_id else None
-                
-                # Update user
-                user.username = new_username
-                user.email = new_email
-                user.first_name = first_name
-                user.last_name = last_name
-                user.save()
-                
-                # Update user profile
-                user_profile, created = UserProfile.objects.get_or_create(user=user)
-                user_profile.category = category
-                user_profile.department = department
-                user_profile.save()
-                
+                with transaction.atomic():
+                    user.username = new_username
+                    user.email = new_email
+                    user.first_name = first_name
+                    user.last_name = last_name
+                    user.save()
+
+                    user_profile, _created = UserProfile.objects.get_or_create(user=user)
+                    user_profile.category = category
+                    user_profile.department = department
+                    user_profile.save()
+                    _sync_department_manager_role(user, category, department)
+
                 messages.success(request, f"User '{new_username}' updated successfully!")
-                
             except Exception as e:
                 messages.error(request, f"Error updating user: {str(e)}")
-                
-        elif action == "delete":
+
+        elif action == "deactivate":
+            user_id = request.POST.get("user_id")
+            transfer_user_id = request.POST.get("transfer_user_id")
+            try:
+                user = get_object_or_404(User, id=user_id)
+                if user.id == request.user.id:
+                    messages.error(request, "You cannot deactivate your own account.")
+                    return redirect('general_manage_users')
+
+                transfer_user = get_object_or_404(User, id=transfer_user_id, is_active=True)
+                if transfer_user.id == user.id:
+                    messages.error(request, "Please select a different active user for reassignment.")
+                    return redirect('general_manage_users')
+
+                with transaction.atomic():
+                    summary = _reassign_user_ownership(user, transfer_user)
+                    user.is_active = False
+                    user.save(update_fields=['is_active'])
+
+                messages.success(
+                    request,
+                    (
+                        f"User '{user.username}' made inactive. "
+                        f"Transferred internal assigned: {summary['internal_assigned']}, "
+                        f"internal raised: {summary['internal_created']}, "
+                        f"external assigned: {summary['external_assigned']}, "
+                        f"external PM: {summary['external_project_managed']}, "
+                        f"external created: {summary['external_created']}, "
+                        f"departments shifted: {summary['managed_departments']}."
+                    ),
+                )
+            except Exception as e:
+                messages.error(request, f"Error making user inactive: {str(e)}")
+
+        elif action == "activate":
             user_id = request.POST.get("user_id")
             try:
                 user = get_object_or_404(User, id=user_id)
-                username = user.username
-                user.delete()
-                messages.success(request, f"User '{username}' deleted successfully!")
+                user.is_active = True
+                user.save(update_fields=['is_active'])
+                messages.success(request, f"User '{user.username}' activated successfully!")
             except Exception as e:
-                messages.error(request, f"Error deleting user: {str(e)}")
-    
+                messages.error(request, f"Error activating user: {str(e)}")
+
+        return redirect('general_manage_users')
+
     context = {
-        'users': users,
+        'users': users_qs,
+        'user_rows': _build_user_admin_rows(users_qs),
         'departments': departments,
-        'categories': CATEGORY_CHOICES,
+        'categories': USER_CATEGORY_CHOICES,
+        'transfer_users': active_transfer_users,
+        'active_user_count': users_qs.filter(is_active=True).count(),
+        'inactive_user_count': users_qs.filter(is_active=False).count(),
     }
-    
+
     return render(request, 'tasks/general_manage_users.html', context)
 from urllib.parse import unquote
 def get_user_by_email(email):

@@ -288,3 +288,137 @@ class InternalTaskAttachmentTests(TestCase):
         self.assertContains(response, "Request Body")
         self.assertContains(response, "handoff.txt")
         self.assertContains(response, "Download")
+
+
+@override_settings(CLIENT_TICKETS_BASE_URL="http://127.0.0.1:5467")
+class GeneralManageUsersAdminTests(TestCase):
+    def setUp(self):
+        self.department = Department.objects.create(name="Technology")
+        self.other_department = Department.objects.create(name="Operations")
+        self.admin_user = User.objects.create_user(
+            username="systemadmin",
+            email="systemadmin@example.com",
+            password="password123",
+            first_name="System",
+            last_name="Admin",
+        )
+        self.target_user = User.objects.create_user(
+            username="targetuser",
+            email="target@example.com",
+            password="password123",
+            first_name="Target",
+            last_name="User",
+        )
+        self.transfer_user = User.objects.create_user(
+            username="transferuser",
+            email="transfer@example.com",
+            password="password123",
+            first_name="Transfer",
+            last_name="User",
+        )
+        UserProfile.objects.create(
+            user=self.admin_user,
+            category="Task Management System Manager",
+            department=self.department,
+        )
+        UserProfile.objects.create(
+            user=self.target_user,
+            category="Departmental Manager",
+            department=self.department,
+        )
+        UserProfile.objects.create(
+            user=self.transfer_user,
+            category="Non-Management",
+            department=self.other_department,
+        )
+        self.department.manager = self.target_user
+        self.department.save(update_fields=["manager"])
+
+        self.ticket_type, _ = ClientTicketType.objects.get_or_create(
+            name="System Down",
+            defaults={"department": self.department},
+        )
+        if self.ticket_type.department_id != self.department.id:
+            self.ticket_type.department = self.department
+            self.ticket_type.save(update_fields=["department"])
+
+        self.internal_task = Task.objects.create(
+            department=self.department,
+            assigned_by=self.target_user,
+            assigned_to=self.target_user,
+            deadline=date.today() + timedelta(days=2),
+            ticket_type="Testing",
+            priority="medium",
+            status="Not Started",
+            subject="Ownership transfer task",
+            request_details="Should move on deactivation.",
+        )
+        self.external_ticket = ClientTicket.objects.create(
+            title="External ownership transfer",
+            description="Should move on deactivation.",
+            requester_name="Client",
+            requester_email="client@example.com",
+            requester_number="+919999999999",
+            assigned_to=self.target_user,
+            project_manager=self.target_user,
+            created_by=self.target_user,
+            department=self.department,
+            ticket_type=self.ticket_type,
+            status=ClientTicket.STATUS_OPEN,
+        )
+        self.client.force_login(self.admin_user)
+
+    def test_system_manager_can_edit_role_and_department(self):
+        response = self.client.post(
+            reverse("general_manage_users"),
+            data={
+                "action": "edit",
+                "user_id": self.transfer_user.id,
+                "username": self.transfer_user.username,
+                "email": self.transfer_user.email,
+                "first_name": self.transfer_user.first_name,
+                "last_name": self.transfer_user.last_name,
+                "category": "Executive Management",
+                "department": self.department.id,
+            },
+            follow=True,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        profile = UserProfile.objects.get(user=self.transfer_user)
+        self.assertEqual(profile.category, "Executive Management")
+        self.assertEqual(profile.department_id, self.department.id)
+
+    def test_deactivate_user_transfers_internal_external_and_department_ownership(self):
+        response = self.client.post(
+            reverse("general_manage_users"),
+            data={
+                "action": "deactivate",
+                "user_id": self.target_user.id,
+                "transfer_user_id": self.transfer_user.id,
+            },
+            follow=True,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.target_user.refresh_from_db()
+        self.transfer_user.refresh_from_db()
+        self.internal_task.refresh_from_db()
+        self.external_ticket.refresh_from_db()
+        self.department.refresh_from_db()
+
+        self.assertFalse(self.target_user.is_active)
+        self.assertEqual(self.internal_task.assigned_to_id, self.transfer_user.id)
+        self.assertEqual(self.internal_task.assigned_by_id, self.transfer_user.id)
+        self.assertEqual(self.external_ticket.assigned_to_id, self.transfer_user.id)
+        self.assertEqual(self.external_ticket.project_manager_id, self.transfer_user.id)
+        self.assertEqual(self.external_ticket.created_by_id, self.transfer_user.id)
+        self.assertEqual(self.department.manager_id, self.transfer_user.id)
+        self.assertEqual(UserProfile.objects.get(user=self.transfer_user).category, "Departmental Manager")
+
+    def test_non_system_manager_cannot_access_general_user_admin(self):
+        self.client.force_login(self.target_user)
+
+        response = self.client.get(reverse("general_manage_users"))
+
+        self.assertEqual(response.status_code, 403)
