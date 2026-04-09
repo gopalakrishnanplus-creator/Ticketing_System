@@ -187,6 +187,30 @@ class ManagerTicketVisibilityTests(TestCase):
 
 @override_settings(
     CLIENT_TICKETS_BASE_URL="http://127.0.0.1:5467",
+)
+class MissingUserProfileRecoveryTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username="legacyuser",
+            email="legacy@example.com",
+            password="password123",
+            first_name="Legacy",
+            last_name="User",
+        )
+
+    def test_assigned_to_me_recovers_when_user_profile_is_missing(self):
+        self.client.force_login(self.user)
+
+        response = self.client.get(reverse("assigned_to_me"))
+
+        self.assertEqual(response.status_code, 200)
+        profile = UserProfile.objects.get(user=self.user)
+        self.assertEqual(profile.category, "Non-Management")
+        self.assertIsNone(profile.department)
+
+
+@override_settings(
+    CLIENT_TICKETS_BASE_URL="http://127.0.0.1:5467",
     EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend",
 )
 class InternalTaskAttachmentTests(TestCase):

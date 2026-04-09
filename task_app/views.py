@@ -57,6 +57,30 @@ logger = logging.getLogger(__name__)
 TICKET_MODE_INTERNAL = 'internal'
 TICKET_MODE_EXTERNAL = 'external'
 TICKET_MODE_CHOICES = {TICKET_MODE_INTERNAL, TICKET_MODE_EXTERNAL}
+DEFAULT_USER_PROFILE_CATEGORY = 'Non-Management'
+
+
+def _get_request_user_profile(user, *, with_department=False):
+    if not user.is_authenticated:
+        raise PermissionDenied("Authentication required.")
+
+    queryset = UserProfile.objects
+    if with_department:
+        queryset = queryset.select_related('department')
+
+    profile = queryset.filter(user=user).first()
+    if profile:
+        return profile
+
+    with transaction.atomic():
+        profile, _ = UserProfile.objects.get_or_create(
+            user=user,
+            defaults={'category': DEFAULT_USER_PROFILE_CATEGORY},
+        )
+
+    if with_department:
+        return UserProfile.objects.select_related('department').get(pk=profile.pk)
+    return profile
 
 
 def _support_base_url():
@@ -398,7 +422,7 @@ def save_task_attachments(task, attachments, uploaded_by=None):
 
 @login_required
 def home(request):
-    user_profile = UserProfile.objects.get(user=request.user)
+    user_profile = _get_request_user_profile(request.user, with_department=True)
     today = date.today()
     print(today)
     if user_profile.category == 'Departmental Manager':
@@ -424,7 +448,7 @@ def home(request):
 
 @login_required
 def assigned_to_me(request):
-    user_profile = UserProfile.objects.select_related('department').get(user=request.user)
+    user_profile = _get_request_user_profile(request.user, with_department=True)
     mode = get_ticket_ui_mode(request)
     if mode == TICKET_MODE_EXTERNAL:
         queryset = _external_assigned_to_queryset(request.user, user_profile)
@@ -464,7 +488,7 @@ def assigned_to_me(request):
 
 @login_required
 def assigned_by_me(request):
-    user_profile = UserProfile.objects.select_related('department').get(user=request.user)
+    user_profile = _get_request_user_profile(request.user, with_department=True)
     mode = get_ticket_ui_mode(request)
     if mode == TICKET_MODE_EXTERNAL:
         queryset = _external_assigned_by_queryset(request.user, user_profile)
@@ -512,7 +536,7 @@ def set_ticket_mode(request, mode):
 @login_required
 def user_profile(request):
     # Display user profile details
-    user_profile = UserProfile.objects.select_related('department').get(user=request.user)
+    user_profile = _get_request_user_profile(request.user, with_department=True)
     internal_assigned_to_queryset = _internal_assigned_to_queryset(request.user, user_profile)
     internal_assigned_by_queryset = _internal_assigned_by_queryset(request.user, user_profile)
 
@@ -578,7 +602,7 @@ def task_list(request):
     Display task list with filtering options for Task Management System Managers.
     For other users, display only tasks created by or assigned to them.
     """
-    user_profile = UserProfile.objects.get(user=request.user)
+    user_profile = _get_request_user_profile(request.user, with_department=True)
 
     if user_profile.category == 'Task Management System Manager':
         tasks = Task.objects.all()  # Start with all tasks
@@ -750,7 +774,7 @@ def create_task(request):
 @login_required
 def edit_task(request, task_id):
     task = get_object_or_404(Task, task_id=task_id)
-    user_profile = UserProfile.objects.get(user=request.user)
+    user_profile = _get_request_user_profile(request.user, with_department=True)
     if task.assigned_by != request.user and not (
     user_profile.category == 'Departmental Manager' and
     task.assigned_by.userprofile.department == user_profile.department
@@ -800,7 +824,7 @@ def task_detail(request, task_id):
         task_id=task_id,
     )
 
-    user_profile = UserProfile.objects.get(user=request.user)
+    user_profile = _get_request_user_profile(request.user, with_department=True)
     is_viewer = request.user.email and request.user.email.lower() in (task.viewers or [])
     has_permission = (
         task.assigned_to == request.user or 
@@ -1067,7 +1091,7 @@ def mark_task_completed(request, task_id):
 def reassign_task(request, task_id):
     task = get_object_or_404(Task, task_id=task_id)
     old_assignee = task.assigned_to  # Capture the current assignee before reassigning
-    user_profile = UserProfile.objects.get(user=request.user)
+    user_profile = _get_request_user_profile(request.user, with_department=True)
     if task.assigned_to != request.user and not (
     user_profile.category == 'Departmental Manager' and
     task.assigned_to.userprofile.department == user_profile.department
@@ -1087,7 +1111,7 @@ def task_note_page(request, task_id):
         task_id=task_id,
     )
     old_assignee = task.assigned_to
-    user_profile = UserProfile.objects.get(user=request.user)
+    user_profile = _get_request_user_profile(request.user, with_department=True)
     if task.assigned_to != request.user and not (
     user_profile.category == 'Departmental Manager' and
     task.assigned_to.userprofile.department == user_profile.department
@@ -1466,7 +1490,7 @@ def download_metrics(request):
 @login_required
 def reassign_within_department(request, task_id):
     task = get_object_or_404(Task, task_id=task_id)
-    user_profile = UserProfile.objects.get(user=request.user)
+    user_profile = _get_request_user_profile(request.user, with_department=True)
 
     # Ensure only Departmental Managers can access this functionality
     if user_profile.category != 'Departmental Manager':
@@ -1757,7 +1781,7 @@ def _reassign_user_ownership(source_user, target_user):
 # View to list, edit, and delete users
 @login_required
 def manage_users(request):
-    user_profile = UserProfile.objects.get(user=request.user)
+    user_profile = _get_request_user_profile(request.user, with_department=True)
 
     # Ensure that only a departmental manager can access this page
     if user_profile.category != 'Departmental Manager':
@@ -2142,7 +2166,7 @@ def api_update_viewers(request, task_id, viewer_emails):
     task = get_object_or_404(Task, task_id=task_id)
 
     # Authorization: creator, current assignee, or departmental manager only
-    user_profile = UserProfile.objects.get(user=request.user)
+    user_profile = _get_request_user_profile(request.user, with_department=True)
     is_manager = user_profile.category == 'Departmental Manager'
     if not (task.assigned_by == request.user or task.assigned_to == request.user or is_manager):
         return JsonResponse({"error": "Forbidden"}, status=403)
