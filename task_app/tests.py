@@ -135,6 +135,31 @@ class TicketModeNavigationTests(TestCase):
         self.assertContains(next_page, "External reporting ticket")
         self.assertNotContains(next_page, "Internal launch task")
 
+    def test_external_assigned_to_me_handles_ticket_without_project_manager(self):
+        ClientTicket.objects.create(
+            title="External ticket without PM",
+            description="Should render safely in external mode.",
+            requester_name="Client Missing PM",
+            requester_email="nopm@example.com",
+            requester_number="+919999999997",
+            assigned_to=self.user,
+            project_manager=None,
+            created_by=self.user,
+            department=self.department,
+            ticket_type=self.ticket_type,
+            status=ClientTicket.STATUS_OPEN,
+        )
+
+        session = self.client.session
+        session["ticket_ui_mode"] = "external"
+        session.save()
+
+        response = self.client.get(reverse("assigned_to_me"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "External ticket without PM")
+        self.assertContains(response, "No project manager")
+
 
 @override_settings(CLIENT_TICKETS_BASE_URL="http://127.0.0.1:5467")
 class LogoutFlowTests(TestCase):

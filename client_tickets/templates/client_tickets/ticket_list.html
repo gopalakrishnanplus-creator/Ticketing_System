@@ -68,8 +68,20 @@
                         <td><a href="{% url 'client_tickets:ticket_detail' ticket.ticket_number %}">{{ ticket.ticket_number }}</a></td>
                         <td>{{ ticket.title }}</td>
                         <td>{{ ticket.requester_name }}<br><small>{{ ticket.requester_email }}</small></td>
-                        <td>{{ ticket.assigned_to.get_full_name|default:ticket.assigned_to.username }}</td>
-                        <td>{{ ticket.project_manager.get_full_name|default:ticket.project_manager.username }}</td>
+                        <td>
+                            {% if ticket.assigned_to %}
+                                {{ ticket.assigned_to.get_full_name|default:ticket.assigned_to.username }}
+                            {% else %}
+                                Unassigned
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if ticket.project_manager %}
+                                {{ ticket.project_manager.get_full_name|default:ticket.project_manager.username }}
+                            {% else %}
+                                No project manager
+                            {% endif %}
+                        </td>
                         <td><span class="badge priority-{{ ticket.priority }}">{{ ticket.get_priority_display }}</span></td>
                         <td><span class="badge status-{{ ticket.status|default:'open' }}">{{ ticket.get_status_display|default:"---------" }}</span></td>
                         <td>{{ ticket.get_source_system_display }}</td>

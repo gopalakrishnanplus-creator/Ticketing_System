@@ -184,7 +184,13 @@
                                 </td>
                                 <td data-label="Deadline / Updated">
                                     <strong>{{ record.updated_at|date:"d M Y" }}</strong>
-                                    <small class="record-meta">{{ record.assigned_to.get_full_name|default:record.assigned_to.username }}</small>
+                                    <small class="record-meta">
+                                        {% if record.assigned_to %}
+                                            {{ record.assigned_to.get_full_name|default:record.assigned_to.username }}
+                                        {% else %}
+                                            Unassigned
+                                        {% endif %}
+                                    </small>
                                 </td>
                                 <td data-label="Action">
                                     <a href="{% url 'client_tickets:ticket_detail' record.ticket_number %}" class="table-action">Details</a>

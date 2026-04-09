@@ -133,6 +133,37 @@ class ClientTicketTests(TestCase):
         self.assertIsNone(ticket.project_manager)
         self.assertEqual(payload["project_manager_email"], "")
 
+    def test_ticket_pages_render_when_project_manager_is_missing(self):
+        contact = ClientContact.objects.create(
+            name="UI User",
+            email="ui@example.com",
+            phone_number="9999922222",
+        )
+        ticket = ClientTicket.objects.create(
+            title="UI safe without PM",
+            description="The template should not crash without a project manager.",
+            requester=contact,
+            requester_name=contact.name,
+            requester_email=contact.email,
+            requester_number=contact.phone_number,
+            assigned_to=self.assigned_to,
+            project_manager=None,
+            department=self.department,
+            ticket_type=self.ticket_type,
+            source_system=ClientTicket.SOURCE_CAMPAIGN,
+            priority=ClientTicket.PRIORITY_MEDIUM,
+            status=ClientTicket.STATUS_OPEN,
+        )
+        self.client.force_login(self.assigned_to)
+
+        list_response = self.client.get(reverse("client_tickets:ticket_list"))
+        detail_response = self.client.get(reverse("client_tickets:ticket_detail", args=[ticket.ticket_number]))
+
+        self.assertEqual(list_response.status_code, 200)
+        self.assertContains(list_response, "No project manager")
+        self.assertEqual(detail_response.status_code, 200)
+        self.assertContains(detail_response, "No project manager")
+
     def test_api_ticket_detail_returns_machine_codes_and_updates(self):
         contact = ClientContact.objects.create(
             name="Detail User",

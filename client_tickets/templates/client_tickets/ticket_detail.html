@@ -30,11 +30,23 @@
                 </div>
                 <div class="ticket-mail-field">
                     <span>To</span>
-                    <strong>{{ ticket.assigned_to.get_full_name|default:ticket.assigned_to.username|default:"Unassigned" }}</strong>
+                    <strong>
+                        {% if ticket.assigned_to %}
+                            {{ ticket.assigned_to.get_full_name|default:ticket.assigned_to.username }}
+                        {% else %}
+                            Unassigned
+                        {% endif %}
+                    </strong>
                 </div>
                 <div class="ticket-mail-field">
                     <span>Project Manager</span>
-                    <strong>{{ ticket.project_manager.get_full_name|default:ticket.project_manager.username|default:"Unassigned" }}</strong>
+                    <strong>
+                        {% if ticket.project_manager %}
+                            {{ ticket.project_manager.get_full_name|default:ticket.project_manager.username }}
+                        {% else %}
+                            No project manager
+                        {% endif %}
+                    </strong>
                 </div>
                 <div class="ticket-mail-field">
                     <span>Department</span>

@@ -184,7 +184,13 @@
                                 </td>
                                 <td data-label="Deadline / Updated">
                                     <strong>{% if record.closed_at %}Closed{% else %}{{ record.updated_at|date:"d M Y" }}{% endif %}</strong>
-                                    <small class="record-meta">{{ record.project_manager.get_full_name|default:record.project_manager.username }}</small>
+                                    <small class="record-meta">
+                                        {% if record.project_manager %}
+                                            {{ record.project_manager.get_full_name|default:record.project_manager.username }}
+                                        {% else %}
+                                            No project manager
+                                        {% endif %}
+                                    </small>
                                 </td>
                                 <td data-label="Action">
                                     <a href="{% url 'client_tickets:ticket_detail' record.ticket_number %}" class="table-action">Details</a>
