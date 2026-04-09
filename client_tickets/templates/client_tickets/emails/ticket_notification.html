@@ -38,8 +38,19 @@
                 <tr>
                     <td style="width:180px;padding:14px 16px;border:1px solid #e7ecf4;border-radius:16px 0 0 16px;background:#f9fbff;color:#667085;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Routing</td>
                     <td style="padding:14px 16px;border:1px solid #e7ecf4;border-left:0;border-radius:0 16px 16px 0;background:#ffffff;color:#101828;">
-                        To: {{ ticket.assigned_to.get_full_name|default:ticket.assigned_to.username|default:"Unassigned" }}<br>
-                        Project Manager: {{ ticket.project_manager.get_full_name|default:ticket.project_manager.username|default:"Unassigned" }}
+                        To:
+                        {% if ticket.assigned_to %}
+                            {{ ticket.assigned_to.get_full_name|default:ticket.assigned_to.username }}
+                        {% else %}
+                            Unassigned
+                        {% endif %}
+                        <br>
+                        Project Manager:
+                        {% if ticket.project_manager %}
+                            {{ ticket.project_manager.get_full_name|default:ticket.project_manager.username }}
+                        {% else %}
+                            Unassigned
+                        {% endif %}
                     </td>
                 </tr>
                 <tr>

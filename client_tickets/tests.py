@@ -109,6 +109,30 @@ class ClientTicketTests(TestCase):
         self.assertEqual(payload["assigned_to_email"], self.assigned_to.email)
         self.assertEqual(payload["project_manager_email"], self.project_manager.email)
 
+    def test_api_create_ticket_ignores_unknown_project_manager_email(self):
+        response = self.client.post(
+            reverse("client_tickets:api_create_ticket"),
+            data={
+                "title": "Campaign ticket without valid pm",
+                "description": "Should still create even if PM email does not match a user.",
+                "ticket_type_id": self.ticket_type.id,
+                "requester_name": "Campaign Sync",
+                "requester_email": "sync@example.com",
+                "requester_number": "+91 99888 77777",
+                "assigned_to_email": self.assigned_to.email,
+                "project_manager_email": "campaignpm@inditech.co.in",
+                "department_id": self.department.id,
+                "source_system": ClientTicket.SOURCE_CAMPAIGN,
+                "priority": ClientTicket.PRIORITY_MEDIUM,
+            },
+        )
+
+        self.assertEqual(response.status_code, 201)
+        payload = response.json()["ticket"]
+        ticket = ClientTicket.objects.get(ticket_number=payload["ticket_number"])
+        self.assertIsNone(ticket.project_manager)
+        self.assertEqual(payload["project_manager_email"], "")
+
     def test_api_ticket_detail_returns_machine_codes_and_updates(self):
         contact = ClientContact.objects.create(
             name="Detail User",

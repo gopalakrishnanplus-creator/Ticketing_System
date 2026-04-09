@@ -99,6 +99,18 @@ def _resolve_user(payload, *, email_keys, id_keys=(), label):
     return user
 
 
+def _resolve_optional_user(payload, *, email_keys, id_keys=()):
+    user_id = _payload_value(payload, *id_keys)
+    email = _payload_value(payload, *email_keys)
+    if not user_id and not email:
+        return None
+
+    queryset = User.objects.filter(is_active=True)
+    if user_id:
+        return queryset.filter(id=user_id).first()
+    return queryset.filter(email__iexact=email).first()
+
+
 def _resolve_ticket_type(payload):
     type_id = _payload_value(payload, "ticket_type_id")
     type_name = _payload_value(payload, "ticket_type", "ticket_type_name")
@@ -179,11 +191,10 @@ def _create_ticket_from_payload(payload, attachments=None, created_by=None):
         raise ValueError("Department is required.")
 
     assigned_to = _resolve_user(payload, email_keys=("assigned_to_email", "to_email"), id_keys=("assigned_to_id", "to_user_id"), label="Assigned to user")
-    project_manager = _resolve_user(
+    project_manager = _resolve_optional_user(
         payload,
         email_keys=("project_manager_email", "pm_email"),
         id_keys=("project_manager_id", "pm_user_id"),
-        label="Project manager",
     )
 
     requester_name = _payload_value(payload, "requester_name")
@@ -686,12 +697,13 @@ def api_inditech_update_ticket(request, ticket_number):
                 label="Assigned to user",
             )
         if _payload_includes(payload, "project_manager_email", "project_manager_id", "pm_email", "pm_user_id"):
-            ticket.project_manager = _resolve_user(
+            resolved_project_manager = _resolve_optional_user(
                 payload,
                 email_keys=("project_manager_email", "pm_email"),
                 id_keys=("project_manager_id", "pm_user_id"),
-                label="Project manager",
             )
+            if resolved_project_manager:
+                ticket.project_manager = resolved_project_manager
         if _payload_includes(payload, "external_reference"):
             ticket.external_reference = _validate_external_reference(
                 ticket.source_system,
