@@ -12,6 +12,7 @@ DATABASES = {
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 CLIENT_TICKETS_BASE_URL = os.environ.get("CLIENT_TICKETS_BASE_URL", "http://127.0.0.1:5467")
+MEDIA_ROOT = os.environ.get("TICKET_MEDIA_ROOT", str(BASE_DIR / "media"))  # noqa: F405
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
