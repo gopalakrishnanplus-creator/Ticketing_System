@@ -11,6 +11,7 @@ from task_app.models import Department, UserProfile
 
 from .models import ClientContact, ClientTicket, ClientTicketAttachment, ClientTicketType
 from .services import auto_close_stale_tickets, create_ticket_update, notify_ticket_created, send_unchecked_ticket_reminders
+from .utils import build_absolute_link
 
 
 @override_settings(
@@ -478,3 +479,12 @@ class ClientTicketTests(TestCase):
         self.assertContains(response, "Ticket Body")
         self.assertContains(response, "proof.pdf")
         self.assertContains(response, "Download")
+
+
+@override_settings(CLIENT_TICKETS_BASE_URL="https://support.inditech.co.in")
+class ClientTicketPublicUrlTests(TestCase):
+    def test_build_absolute_link_uses_public_support_domain(self):
+        self.assertEqual(
+            build_absolute_link("/media/client_ticket_attachments/CLT-66D869F4/dummy.pdf"),
+            "https://support.inditech.co.in/media/client_ticket_attachments/CLT-66D869F4/dummy.pdf",
+        )

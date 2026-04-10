@@ -9,7 +9,7 @@ from .models import Task, User
 
 
 def _task_base_url():
-    return getattr(settings, "CLIENT_TICKETS_BASE_URL", "http://127.0.0.1:5467").rstrip("/")
+    return getattr(settings, "CLIENT_TICKETS_BASE_URL", "https://support.inditech.co.in").rstrip("/")
 
 
 def send_deadline_reminders_logic():

@@ -43,7 +43,7 @@ def validate_attachment_batch(files, existing_count=0):
 
 
 def get_base_url():
-    return getattr(settings, "CLIENT_TICKETS_BASE_URL", "http://127.0.0.1:5467").rstrip("/")
+    return getattr(settings, "CLIENT_TICKETS_BASE_URL", "https://support.inditech.co.in").rstrip("/")
 
 
 def build_absolute_link(path):

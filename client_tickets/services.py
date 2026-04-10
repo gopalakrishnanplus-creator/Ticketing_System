@@ -9,7 +9,7 @@ from django.utils import timezone
 from django.utils.text import slugify
 
 from .models import ClientContact, ClientTicket, ClientTicketAttachment, ClientTicketUpdate
-from .utils import build_absolute_link, normalize_email, normalize_phone_number, priority_color
+from .utils import build_absolute_link, get_base_url, normalize_email, normalize_phone_number, priority_color
 
 
 def upsert_client_contact(name, email, phone_number):
@@ -237,7 +237,7 @@ def send_ticket_email(subject, intro, ticket, recipients, update=None, template_
         "attachments": attachment_items(ticket),
         "update": update,
         "priority_color": priority_color(ticket.priority),
-        "base_url": getattr(settings, "CLIENT_TICKETS_BASE_URL", "http://127.0.0.1:5467"),
+        "base_url": get_base_url(),
     }
     if extra_context:
         context.update(extra_context)

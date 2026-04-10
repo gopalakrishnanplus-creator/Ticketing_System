@@ -152,7 +152,10 @@ STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-CLIENT_TICKETS_BASE_URL = os.environ.get('CLIENT_TICKETS_BASE_URL', 'http://127.0.0.1:5467')
+PUBLIC_SUPPORT_BASE_URL = os.environ.get('PUBLIC_SUPPORT_BASE_URL', 'https://support.inditech.co.in').rstrip('/')
+CLIENT_TICKETS_BASE_URL = os.environ.get('CLIENT_TICKETS_BASE_URL', PUBLIC_SUPPORT_BASE_URL).rstrip('/')
+if CLIENT_TICKETS_BASE_URL.startswith(('http://127.0.0.1', 'https://127.0.0.1', 'http://localhost', 'https://localhost')):
+    CLIENT_TICKETS_BASE_URL = PUBLIC_SUPPORT_BASE_URL
 CLIENT_TICKETS_API_TOKEN = os.environ.get('CLIENT_TICKETS_API_TOKEN', '')
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
