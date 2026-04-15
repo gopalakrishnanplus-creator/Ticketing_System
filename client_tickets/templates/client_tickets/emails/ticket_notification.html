@@ -1,3 +1,4 @@
+{% load user_extras %}
 <!DOCTYPE html>
 <html lang="en">
 <body style="margin:0;padding:24px;background:#f4f6fb;font-family:Arial,sans-serif;color:#1f2937;">
@@ -40,7 +41,7 @@
                     <td style="padding:14px 16px;border:1px solid #e7ecf4;border-left:0;border-radius:0 16px 16px 0;background:#ffffff;color:#101828;">
                         To:
                         {% if ticket.assigned_to %}
-                            {{ ticket.assigned_to.get_full_name|default:ticket.assigned_to.username }}
+                            {{ ticket.assigned_to|user_display_name }}
                         {% else %}
                             Unassigned
                         {% endif %}

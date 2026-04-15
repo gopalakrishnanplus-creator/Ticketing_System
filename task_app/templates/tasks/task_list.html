@@ -1,6 +1,7 @@
 <!-- task_app/templates/tasks/task_list.html -->
 {% extends 'base_generic.html' %}
 {% load static %}
+{% load user_extras %}
 
 {% block content %}
 <div class="task-manager-container">
@@ -88,7 +89,7 @@
                                     </div>
                                     <div class="task-detail-item">
                                         <i class="fas fa-user-check"></i>
-                                        <span>Assignee: {{ task.assigned_to.get_full_name|default:"Unassigned" }}</span>
+                                        <span>Assignee: {{ task.assigned_to|user_display_name }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -128,7 +129,7 @@
                                     </div>
                                     <div class="task-detail-item">
                                         <i class="fas fa-user"></i>
-                                        <span>Created by: {{ task.assigned_by.get_full_name }}</span>
+                                        <span>Created by: {{ task.assigned_by|user_display_name:"Unknown creator" }}</span>
                                     </div>
                                 </div>
                             </div>

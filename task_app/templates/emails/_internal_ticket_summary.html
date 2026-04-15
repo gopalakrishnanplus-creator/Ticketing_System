@@ -1,3 +1,4 @@
+{% load user_extras %}
 <table role="presentation" style="width:100%;border-collapse:separate;border-spacing:0 12px;">
     <tr>
         <td style="width:180px;padding:14px 16px;border:1px solid #e7ecf4;border-radius:16px 0 0 16px;background:#f9fbff;color:#667085;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Subject</td>
@@ -14,8 +15,8 @@
     <tr>
         <td style="width:180px;padding:14px 16px;border:1px solid #e7ecf4;border-radius:16px 0 0 16px;background:#f9fbff;color:#667085;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Routing</td>
         <td style="padding:14px 16px;border:1px solid #e7ecf4;border-left:0;border-radius:0 16px 16px 0;background:#ffffff;color:#101828;">
-            Assigned by {{ ticket.assigned_by.get_full_name|default:ticket.assigned_by.username|default:"Unassigned" }}<br>
-            Assigned to {{ ticket.assigned_to.get_full_name|default:ticket.assigned_to.username|default:"Unassigned" }}
+            Assigned by {{ ticket.assigned_by|user_display_name:"Unknown creator" }}<br>
+            Assigned to {{ ticket.assigned_to|user_display_name }}
         </td>
     </tr>
     <tr>

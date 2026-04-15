@@ -84,6 +84,20 @@ def _get_request_user_profile(user, *, with_department=False):
     return profile
 
 
+def _get_user_department(user):
+    if not user:
+        return None
+    profile = UserProfile.objects.filter(user=user).select_related('department').first()
+    return getattr(profile, 'department', None)
+
+
+def _get_user_display_name(user, default="Unassigned"):
+    if not user:
+        return default
+    full_name = (user.get_full_name() or '').strip()
+    return full_name or getattr(user, 'username', '') or default
+
+
 def _support_base_url():
     return getattr(settings, "CLIENT_TICKETS_BASE_URL", "https://support.inditech.co.in").rstrip("/")
 
@@ -765,7 +779,7 @@ def create_task(request):
                 action='created',
                 user=request.user,
                 task=task,
-                description=f"Task {task.task_id} created by {request.user.username} for {task.assigned_to.username if task.assigned_to else 'Unassigned'}"
+                description=f"Task {task.task_id} created by {request.user.username} for {_get_user_display_name(task.assigned_to)}"
             )
             messages.success(request, f'Task {task.task_id} created successfully.')
             if request.headers.get('x-requested-with') == 'XMLHttpRequest':
@@ -783,9 +797,11 @@ def create_task(request):
 def edit_task(request, task_id):
     task = get_object_or_404(Task, task_id=task_id)
     user_profile = _get_request_user_profile(request.user, with_department=True)
+    assigned_by_department = _get_user_department(task.assigned_by)
     if task.assigned_by != request.user and not (
-    user_profile.category == 'Departmental Manager' and
-    task.assigned_by.userprofile.department == user_profile.department
+        user_profile.category == 'Departmental Manager'
+        and user_profile.department
+        and assigned_by_department == user_profile.department
     ):
         raise PermissionDenied
 
@@ -1100,9 +1116,11 @@ def reassign_task(request, task_id):
     task = get_object_or_404(Task, task_id=task_id)
     old_assignee = task.assigned_to  # Capture the current assignee before reassigning
     user_profile = _get_request_user_profile(request.user, with_department=True)
+    assigned_to_department = _get_user_department(task.assigned_to)
     if task.assigned_to != request.user and not (
-    user_profile.category == 'Departmental Manager' and
-    task.assigned_to.userprofile.department == user_profile.department
+        user_profile.category == 'Departmental Manager'
+        and user_profile.department
+        and assigned_to_department == user_profile.department
     ):
         raise PermissionDenied
 
@@ -1120,9 +1138,11 @@ def task_note_page(request, task_id):
     )
     old_assignee = task.assigned_to
     user_profile = _get_request_user_profile(request.user, with_department=True)
+    assigned_to_department = _get_user_department(task.assigned_to)
     if task.assigned_to != request.user and not (
-    user_profile.category == 'Departmental Manager' and
-    task.assigned_to.userprofile.department == user_profile.department
+        user_profile.category == 'Departmental Manager'
+        and user_profile.department
+        and assigned_to_department == user_profile.department
     ):
         raise PermissionDenied
 
@@ -1143,7 +1163,7 @@ def task_note_page(request, task_id):
         else:
             task.notes = new_note_entry
         
-        from_dept = task.assigned_by.userprofile.department
+        from_dept = _get_user_department(task.assigned_by) or task.department
 
         # Handle the file attachment by assignee
         attachment = request.FILES.get('attachment_by_assignee')
@@ -1154,8 +1174,7 @@ def task_note_page(request, task_id):
         task.assigned_to = task.assigned_by
         task.department = from_dept
         task.save()
-        username = str(task.assigned_to)
-        new_assignee = User.objects.get(username=username)
+        new_assignee = task.assigned_to
         view_ticket_url = request.build_absolute_uri(f'/tasks/detail/{task.task_id}/')
         context = {
                     'user': task.assigned_to,
@@ -1163,7 +1182,7 @@ def task_note_page(request, task_id):
                     'view_ticket_url': view_ticket_url,
                 }
 
-        if new_assignee.email:
+        if new_assignee and new_assignee.email:
             send_email_notification(
                     subject="You Have Been Re-Assigned a New Task",
                     template_name='emails/ticket_reassigned.html',
@@ -1177,7 +1196,7 @@ def task_note_page(request, task_id):
             action='reassigned',
             user=request.user,
             task=task,
-            description=f"Task reassigned from {old_assignee.username} to {task.assigned_to.username}"
+            description=f"Task reassigned from {_get_user_display_name(old_assignee)} to {_get_user_display_name(task.assigned_to)}"
         )
 
         # Log the note addition
@@ -1289,8 +1308,9 @@ def metrics(request):
         # Group these tickets by the department of the user who assigned them
         pending_by_dept = {}
         for task in pending_tickets:
-            if task.assigned_by and hasattr(task.assigned_by, 'userprofile') and task.assigned_by.userprofile.department:
-                assignor_dept_name = task.assigned_by.userprofile.department.name
+            assignor_department = _get_user_department(task.assigned_by)
+            if assignor_department:
+                assignor_dept_name = assignor_department.name
                 if assignor_dept_name not in pending_by_dept:
                     pending_by_dept[assignor_dept_name] = 0
                 pending_by_dept[assignor_dept_name] += 1
@@ -1440,7 +1460,10 @@ def download_metrics(request):
 
         # Loop through tasks and populate pending_by_dept map
         for task in all_task_of_this_dept:
-            assignor_dept_name = task.assigned_by.userprofile.department.name  # Updated variable name
+            assignor_department = _get_user_department(task.assigned_by)
+            if not assignor_department:
+                continue
+            assignor_dept_name = assignor_department.name
 
             # Increment the pending ticket count for the assignor department
             if assignor_dept_name not in pending_by_dept:
@@ -1601,7 +1624,10 @@ def department_metrics(request, department):
 
     pending_by_dept = {}
     for task in pending_tickets:
-        assignor_dept_name = task.assigned_by.userprofile.department.name
+        assignor_department = _get_user_department(task.assigned_by)
+        if not assignor_department:
+            continue
+        assignor_dept_name = assignor_department.name
         if assignor_dept_name not in pending_by_dept:
             pending_by_dept[assignor_dept_name] = 0
         pending_by_dept[assignor_dept_name] += 1
@@ -2407,7 +2433,7 @@ def api_reassign_task(request, task_id, reassigned_by_email):
 
         # Store original assignee
         old_assignee = task.assigned_to
-        old_assignee_name = old_assignee.username if old_assignee else 'Unassigned'
+        old_assignee_name = _get_user_display_name(old_assignee)
 
         # Handle note from query parameter
         note = request.GET.get('note', '')
@@ -2415,7 +2441,7 @@ def api_reassign_task(request, task_id, reassigned_by_email):
             task.notes = note
 
         # Reassign back to creator (following your existing logic)
-        from_dept = task.assigned_by.userprofile.department
+        from_dept = _get_user_department(task.assigned_by) or task.department
         task.assigned_to = task.assigned_by
         task.department = from_dept
         task.save()

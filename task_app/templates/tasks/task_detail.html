@@ -1,4 +1,5 @@
 {% extends "base_generic.html" %}
+{% load user_extras %}
 
 {% block title %}{{ task.task_id }} | Inditech Support{% endblock %}
 
@@ -41,11 +42,11 @@
                     </div>
                     <div class="ticket-mail-field">
                         <span>Assigned By</span>
-                        <strong>{{ task.assigned_by.get_full_name|default:task.assigned_by.username|default:"Unassigned" }}</strong>
+                        <strong>{{ task.assigned_by|user_display_name:"Unknown creator" }}</strong>
                     </div>
                     <div class="ticket-mail-field">
                         <span>Assigned To</span>
-                        <strong>{{ task.assigned_to.get_full_name|default:task.assigned_to.username|default:"Unassigned" }}</strong>
+                        <strong>{{ task.assigned_to|user_display_name }}</strong>
                     </div>
                     <div class="ticket-mail-field">
                         <span>Assigned Date</span>
@@ -178,7 +179,7 @@
                     {% for message in chat_messages %}
                         <div class="thread-item {% if message.sender == user %}thread-item--self{% endif %}">
                             <div class="thread-item__meta">
-                                <strong>{{ message.sender.get_full_name|default:message.sender.username }}{% if message.sender == user %} (You){% endif %}</strong>
+                                <strong>{{ message.sender|user_display_name:"System" }}{% if message.sender == user %} (You){% endif %}</strong>
                                 <span>{{ message.timestamp|date:"d M Y, h:i A" }}</span>
                             </div>
                             <div class="thread-item__body">{{ message.message|urlize|linebreaks }}</div>
@@ -243,7 +244,7 @@
                     {% for entry in activity_entries %}
                         <div class="thread-item thread-item--compact">
                             <div class="thread-item__meta">
-                                <strong>{{ entry.user.get_full_name|default:entry.user.username }}</strong>
+                                <strong>{{ entry.user|user_display_name:"System" }}</strong>
                                 <span>{{ entry.timestamp|date:"d M Y, h:i A" }}</span>
                             </div>
                             <div class="thread-item__body">{{ entry.description }}</div>

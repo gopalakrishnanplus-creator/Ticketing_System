@@ -1,4 +1,5 @@
 {% extends "client_tickets/base.html" %}
+{% load user_extras %}
 
 {% block title %}{{ ticket.ticket_number }}{% endblock %}
 
@@ -32,7 +33,7 @@
                     <span>To</span>
                     <strong>
                         {% if ticket.assigned_to %}
-                            {{ ticket.assigned_to.get_full_name|default:ticket.assigned_to.username }}
+                            {{ ticket.assigned_to|user_display_name }}
                         {% else %}
                             Unassigned
                         {% endif %}

@@ -1,4 +1,5 @@
 {% extends "base_generic.html" %}
+{% load user_extras %}
 
 {% block title %}Update Status | {{ task.task_id }}{% endblock %}
 
@@ -93,11 +94,11 @@
                     </div>
                     <div class="ticket-mail-field">
                         <span>Assigned To</span>
-                        <strong>{{ task.assigned_to.get_full_name|default:task.assigned_to.username|default:"Unassigned" }}</strong>
+                        <strong>{{ task.assigned_to|user_display_name }}</strong>
                     </div>
                     <div class="ticket-mail-field">
                         <span>Assigned By</span>
-                        <strong>{{ task.assigned_by.get_full_name|default:task.assigned_by.username|default:"Unassigned" }}</strong>
+                        <strong>{{ task.assigned_by|user_display_name:"Unknown creator" }}</strong>
                     </div>
                     <div class="ticket-mail-field">
                         <span>Current Deadline</span>

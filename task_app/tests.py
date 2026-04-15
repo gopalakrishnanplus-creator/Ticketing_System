@@ -253,6 +253,84 @@ class MissingUserProfileRecoveryTests(TestCase):
         self.assertEqual(profile.category, "Non-Management")
         self.assertIsNone(profile.department)
 
+    def test_assigned_by_me_recovers_when_user_profile_is_missing(self):
+        Task.objects.create(
+            department=Department.objects.create(name="Legacy Tasks"),
+            assigned_by=self.user,
+            assigned_to=None,
+            deadline=date.today() + timedelta(days=1),
+            ticket_type="Testing",
+            priority="medium",
+            status="Not Started",
+            subject="Legacy assigned by me",
+            request_details="Should render safely even without a profile.",
+        )
+        self.client.force_login(self.user)
+
+        response = self.client.get(f"{reverse('assigned_by_me')}?page=2")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Legacy assigned by me")
+        profile = UserProfile.objects.get(user=self.user)
+        self.assertEqual(profile.category, "Non-Management")
+        self.assertIsNone(profile.department)
+
+
+@override_settings(CLIENT_TICKETS_BASE_URL="http://127.0.0.1:5467")
+class TaskRenderingSafetyTests(TestCase):
+    def setUp(self):
+        self.department = Department.objects.create(name="Technology")
+        self.owner = User.objects.create_user(
+            username="owner",
+            email="owner@example.com",
+            password="password123",
+            first_name="Owner",
+            last_name="User",
+        )
+        UserProfile.objects.create(
+            user=self.owner,
+            category="Non-Management",
+            department=self.department,
+        )
+        self.client.force_login(self.owner)
+
+    def test_assigned_by_me_renders_when_task_has_no_assignee(self):
+        task = Task.objects.create(
+            department=self.department,
+            assigned_by=self.owner,
+            assigned_to=None,
+            deadline=date.today() + timedelta(days=1),
+            ticket_type="Testing",
+            priority="medium",
+            status="Not Started",
+            subject="Unassigned internal task",
+            request_details="Should render without blowing up.",
+        )
+
+        response = self.client.get(f"{reverse('assigned_by_me')}?page=2")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, task.task_id)
+        self.assertContains(response, "Unassigned")
+
+    def test_task_detail_renders_when_assignment_links_are_missing(self):
+        task = Task.objects.create(
+            department=self.department,
+            assigned_by=self.owner,
+            assigned_to=None,
+            deadline=date.today() + timedelta(days=1),
+            ticket_type="Testing",
+            priority="medium",
+            status="In Progress",
+            subject="Detail without assignee",
+            request_details="Should render safely.",
+        )
+
+        response = self.client.get(reverse("task_detail", args=[task.task_id]))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Unassigned")
+
 
 @override_settings(
     CLIENT_TICKETS_BASE_URL="http://127.0.0.1:5467",
