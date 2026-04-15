@@ -1,5 +1,6 @@
 {% extends 'base_generic.html' %}
 {% load static %}
+{% load user_extras %}
 
 {% block content %}
 <div class="task-manager-container">
@@ -84,7 +85,7 @@
                 <div class="task-detail-row">
                     <div class="task-detail-label">Current Assignee:</div>
                     <div class="task-detail-value">
-                        <span class="current-assignee">{{ task.assigned_to.get_full_name }}</span>
+                        <span class="current-assignee">{{ task.assigned_to|user_display_name }}</span>
                     </div>
                 </div>
                 

@@ -1,6 +1,7 @@
 <!-- task_app/templates/registration/profile.html -->
 
 {% extends 'base_generic.html' %}
+{% load user_extras %}
 
 {% block content %}
   <style>
@@ -161,7 +162,7 @@
       {% for task in all_tasks %}
         <li>
           <a href="{% url 'task_detail' task.task_id %}">{{ task.task_id }}</a>
-          (Assigned to: {{ task.assigned_to.username }}, Status: {{ task.status_update_assignee }})
+          (Assigned to: {{ task.assigned_to|user_display_name }}, Status: {{ task.status_update_assignee }})
         </li>
       {% empty %}
         <p class="empty-state">No tasks available for the selected filters.</p>

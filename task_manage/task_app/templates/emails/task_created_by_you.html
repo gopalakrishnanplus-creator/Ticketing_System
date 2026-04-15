@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    {% load user_extras %}
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -76,7 +77,7 @@
             <p>Your task has been successfully created.</p>
             <p><strong>Ticket number:</strong> {{ ticket.task_id }}</p>
             <p><strong>Subject:</strong> {{ ticket.subject }}</p>
-            <p><strong>Assigned To:</strong> {{ ticket.assigned_to.get_full_name }}</p>
+            <p><strong>Assigned To:</strong> {{ ticket.assigned_to|user_display_name }}</p>
             <a href="{{ view_ticket_url }}" class="email-button">View Ticket</a>
             <p>Thank you!<br>Task Management System</p>
         </div>

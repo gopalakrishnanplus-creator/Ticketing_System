@@ -127,12 +127,12 @@
                 
                 <div class="detail-item">
                     <div class="detail-label">Assigned By</div>
-                    <div class="detail-value">{{ task.assigned_by.get_full_name }}</div>
+                    <div class="detail-value">{{ task.assigned_by|user_display_name:"Unknown creator" }}</div>
                 </div>
                 
                 <div class="detail-item">
                     <div class="detail-label">Assigned To</div>
-                    <div class="detail-value">{{ task.assigned_to.get_full_name }}</div>
+                    <div class="detail-value">{{ task.assigned_to|user_display_name }}</div>
                 </div>
                 <div class="detail-item">
                   <div><strong>Viewers:</strong>
@@ -226,7 +226,7 @@
                     <a href="{% url 'reassign_task' task.task_id %}" class="action-btn reassign">
                         <i class="fas fa-exchange-alt"></i> Reassign to Creator
                     </a>
-                {% elif user.userprofile.category == 'Departmental Manager' and task.assigned_to.userprofile.department.name == user.userprofile.department.name %}
+                {% elif user.userprofile.category == 'Departmental Manager' and task.assigned_to|user_department_name == user.userprofile.department.name %}
                     <a href="{% url 'update_task_status' task.task_id %}" class="action-btn update">
                         <i class="fas fa-sync-alt"></i> Update Status
                     </a>
@@ -239,7 +239,7 @@
                     <a href="{% url 'edit_task' task.task_id %}" class="action-btn edit">
                         <i class="fas fa-edit"></i> Edit Task
                     </a>
-                {% elif user.userprofile.category == 'Departmental Manager' and task.assigned_by.userprofile.department.name == user.userprofile.department.name %}
+                {% elif user.userprofile.category == 'Departmental Manager' and task.assigned_by|user_department_name == user.userprofile.department.name %}
                     <a href="{% url 'edit_task' task.task_id %}" class="action-btn edit">
                         <i class="fas fa-edit"></i> Edit Task
                     </a>

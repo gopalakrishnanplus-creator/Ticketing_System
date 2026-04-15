@@ -1,6 +1,7 @@
   
 {% extends 'base_generic.html' %}
 {% load static %}
+{% load user_extras %}
 
 {% block content %}
 <div class="task-manager-container">
@@ -263,8 +264,8 @@
                             </td>
                             <td>{{ task.department.name }}</td>
                             <td>{{ task.deadline }}</td>
-                            <td>{{ task.assigned_to.get_full_name }}</td>
-                            <td>{{ task.assigned_to.userprofile.department.name }}</td>
+                            <td>{{ task.assigned_to|user_display_name }}</td>
+                            <td>{{ task.assigned_to|user_department_name }}</td>
                             <td>{{ task.revised_completion_date|default:"NA" }}</td>
                         </tr>
                     {% empty %}

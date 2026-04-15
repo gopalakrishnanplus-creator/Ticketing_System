@@ -253,10 +253,13 @@ def create_task(request):
 def edit_task(request, task_id):
     task = get_object_or_404(Task, task_id=task_id)
     user_profile = UserProfile.objects.get(user=request.user)
-    if task.assigned_by != request.user and not (
-    user_profile.category == 'Departmental Manager' and
-    task.assigned_by.userprofile.department == user_profile.department
-    ):
+    manager_can_edit = (
+        user_profile.category == 'Departmental Manager' and
+        task.assigned_by and
+        hasattr(task.assigned_by, 'userprofile') and
+        task.assigned_by.userprofile.department == user_profile.department
+    )
+    if task.assigned_by != request.user and not manager_can_edit:
         raise PermissionDenied
 
     old_priority = task.priority  # Capture the current priority before changes
@@ -532,10 +535,13 @@ def reassign_task(request, task_id):
     task = get_object_or_404(Task, task_id=task_id)
     old_assignee = task.assigned_to  # Capture the current assignee before reassigning
     user_profile = UserProfile.objects.get(user=request.user)
-    if task.assigned_to != request.user and not (
-    user_profile.category == 'Departmental Manager' and
-    task.assigned_to.userprofile.department == user_profile.department
-    ):
+    manager_can_reassign = (
+        user_profile.category == 'Departmental Manager' and
+        task.assigned_to and
+        hasattr(task.assigned_to, 'userprofile') and
+        task.assigned_to.userprofile.department == user_profile.department
+    )
+    if task.assigned_to != request.user and not manager_can_reassign:
         raise PermissionDenied
 
     
@@ -549,10 +555,13 @@ def task_note_page(request, task_id):
     task = get_object_or_404(Task, task_id=task_id)
     old_assignee = task.assigned_to
     user_profile = UserProfile.objects.get(user=request.user)
-    if task.assigned_to != request.user and not (
-    user_profile.category == 'Departmental Manager' and
-    task.assigned_to.userprofile.department == user_profile.department
-    ):
+    manager_can_reassign = (
+        user_profile.category == 'Departmental Manager' and
+        task.assigned_to and
+        hasattr(task.assigned_to, 'userprofile') and
+        task.assigned_to.userprofile.department == user_profile.department
+    )
+    if task.assigned_to != request.user and not manager_can_reassign:
         raise PermissionDenied
 
     # Handle note addition and file attachment by assignee
@@ -572,7 +581,9 @@ def task_note_page(request, task_id):
         else:
             task.notes = new_note_entry
         
-        from_dept = task.assigned_by.userprofile.department
+        from_dept = task.department
+        if task.assigned_by and hasattr(task.assigned_by, 'userprofile') and task.assigned_by.userprofile.department:
+            from_dept = task.assigned_by.userprofile.department
 
         # Handle the file attachment by assignee
         attachment = request.FILES.get('attachment_by_assignee')
