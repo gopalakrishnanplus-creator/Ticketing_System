@@ -157,3 +157,46 @@ class TaskRenderingSafetyTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Unassigned")
+
+    def test_assigned_by_me_creates_missing_profile_for_logged_in_user(self):
+        legacy_owner = User.objects.create_user(
+            username="legacy-owner",
+            email="legacy-owner@example.com",
+            password="password123",
+            first_name="Legacy",
+            last_name="Owner",
+        )
+        task = Task.objects.create(
+            department=self.department,
+            assigned_by=legacy_owner,
+            assigned_to=None,
+            assigned_date=date.today(),
+            deadline=date.today() + timedelta(days=1),
+            ticket_type="Testing",
+            priority="medium",
+            status="Not Started",
+            subject="Legacy owner task",
+            request_details="Should create a default profile automatically.",
+        )
+        self.client.force_login(legacy_owner)
+
+        response = self.client.get(f"{reverse('assigned_by_me')}?page=2")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, task.task_id)
+        self.assertTrue(UserProfile.objects.filter(user=legacy_owner).exists())
+
+    def test_general_manage_users_renders_for_users_without_profiles(self):
+        legacy_user = User.objects.create_user(
+            username="legacy-user",
+            email="legacy-user@example.com",
+            password="password123",
+            first_name="Legacy",
+            last_name="User",
+        )
+
+        response = self.client.get(reverse("general_manage_users"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, legacy_user.username)
+        self.assertContains(response, "N/A")

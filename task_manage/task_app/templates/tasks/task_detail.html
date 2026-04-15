@@ -63,7 +63,7 @@
 
         <!-- Back to listing button -->
         <div class="back-container">
-            <a href="{% if user.userprofile.category == 'Departmental Manager' %}{% url 'home' %}
+            <a href="{% if user|user_category_name == 'Departmental Manager' %}{% url 'home' %}
                     {% elif task.assigned_by == user and task.assigned_to == user %}{% url 'assigned_to_me' %} 
                     {% elif task.assigned_by == user %}{% url 'assigned_by_me' %}
                     {% else %}{% url 'assigned_to_me' %}{% endif %}" class="back-btn">
@@ -140,7 +140,7 @@
                           {% for email in task.viewers %}
                             {% with user=email|get_user_by_email %}
                               <span class="chip">
-                                {% if user %}{{ user.get_full_name|default:user.username }}{% else %}{{ email }}{% endif %}
+                                {% if user %}{{ user|user_display_name }}{% else %}{{ email }}{% endif %}
                               </span>
                             {% endwith %}
                           {% endfor %}
@@ -226,7 +226,7 @@
                     <a href="{% url 'reassign_task' task.task_id %}" class="action-btn reassign">
                         <i class="fas fa-exchange-alt"></i> Reassign to Creator
                     </a>
-                {% elif user.userprofile.category == 'Departmental Manager' and task.assigned_to|user_department_name == user.userprofile.department.name %}
+                {% elif user|user_category_name == 'Departmental Manager' and task.assigned_to|user_department_name == user|user_department_name %}
                     <a href="{% url 'update_task_status' task.task_id %}" class="action-btn update">
                         <i class="fas fa-sync-alt"></i> Update Status
                     </a>
@@ -239,13 +239,13 @@
                     <a href="{% url 'edit_task' task.task_id %}" class="action-btn edit">
                         <i class="fas fa-edit"></i> Edit Task
                     </a>
-                {% elif user.userprofile.category == 'Departmental Manager' and task.assigned_by|user_department_name == user.userprofile.department.name %}
+                {% elif user|user_category_name == 'Departmental Manager' and task.assigned_by|user_department_name == user|user_department_name %}
                     <a href="{% url 'edit_task' task.task_id %}" class="action-btn edit">
                         <i class="fas fa-edit"></i> Edit Task
                     </a>
                 {% endif %}
                 
-                {% if task.assigned_to.userprofile.category == 'Departmental Manager' and user.userprofile.category == 'Departmental Manager' %}
+                {% if task.assigned_to|user_category_name == 'Departmental Manager' and user|user_category_name == 'Departmental Manager' %}
                     <a href="{% url 'reassign_within_department' task.task_id %}" class="action-btn reassign-dep">
                         <i class="fas fa-users"></i> Reassign Within Department
                     </a>
@@ -261,7 +261,7 @@
                 {% for message in chat_messages %}
                     <div class="chat-message {% if message.sender == user %}sent{% else %}received{% endif %}">
                         <div class="message-header">
-                            <span class="sender">{{ message.sender.get_full_name }}{% if message.sender == user %} (You){% endif %}</span>
+                            <span class="sender">{{ message.sender|user_display_name:"System" }}{% if message.sender == user %} (You){% endif %}</span>
                             <span class="timestamp">{{ message.timestamp|date:"M d, Y H:i" }}</span>
                         </div>
                         <div class="message-body">

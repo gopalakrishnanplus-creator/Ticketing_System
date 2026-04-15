@@ -33,6 +33,15 @@ def user_display_name(user, default_value="Unassigned"):
     return username or default_value
 
 
+@register.filter(name="user_category_name")
+def user_category_name(user, default_value="N/A"):
+    if not user:
+        return default_value
+    profile = getattr(user, "userprofile", None)
+    category = getattr(profile, "category", "")
+    return category or default_value
+
+
 @register.filter(name="user_department_name")
 def user_department_name(user, default_value="Not assigned"):
     if not user:
@@ -41,3 +50,13 @@ def user_department_name(user, default_value="Not assigned"):
     department = getattr(profile, "department", None)
     name = getattr(department, "name", "")
     return name or default_value
+
+
+@register.filter(name="user_department_id")
+def user_department_id(user, default_value=""):
+    if not user:
+        return default_value
+    profile = getattr(user, "userprofile", None)
+    department = getattr(profile, "department", None)
+    department_id = getattr(department, "id", "")
+    return department_id or default_value

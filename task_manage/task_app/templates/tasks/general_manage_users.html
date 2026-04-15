@@ -1,5 +1,6 @@
 {% extends 'base_generic.html' %}
 {% load static %}
+{% load user_extras %}
 
 {% block content %}
     <div class="container">
@@ -51,14 +52,14 @@
                                     <td>{{ user.first_name }} {{ user.last_name }}</td>
                                     <td>{{ user.email }}</td>
                                     <td>
-                                        <span class="category-badge category-{{ user.userprofile.category|lower|cut:' '|cut:'-' }}">
-                                            {{ user.userprofile.category|default:"N/A" }}
+                                        <span class="category-badge category-{{ user|user_category_name:'N/A'|lower|cut:' '|cut:'-' }}">
+                                            {{ user|user_category_name:"N/A" }}
                                         </span>
                                     </td>
-                                    <td>{{ user.userprofile.department.name|default:"N/A" }}</td>
+                                    <td>{{ user|user_department_name:"N/A" }}</td>
                                     <td>
                                         <div class="action-buttons">
-                                            <button class="btn btn-edit" onclick="editUser({{ user.id }}, '{{ user.username }}', '{{ user.first_name }}', '{{ user.last_name }}', '{{ user.email }}', '{{ user.userprofile.category }}', '{{ user.userprofile.department.id|default:'' }}')">
+                                            <button class="btn btn-edit" onclick="editUser({{ user.id }}, '{{ user.username|escapejs }}', '{{ user.first_name|escapejs }}', '{{ user.last_name|escapejs }}', '{{ user.email|escapejs }}', '{{ user|user_category_name:'Non-Management'|escapejs }}', '{{ user|user_department_id }}')">
                                                 <i class="fas fa-edit"></i> Edit
                                             </button>
                                             <button class="btn btn-delete" onclick="confirmDelete({{ user.id }}, '{{ user.username }}')">

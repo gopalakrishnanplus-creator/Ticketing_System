@@ -44,9 +44,37 @@ def send_email_notification(subject, template_name, context, recipient_email, cc
 def _norm_emails(iterable):
     return sorted(list({(e or "").strip().lower() for e in (iterable or []) if (e or "").strip()}))
 
+
+def _get_or_create_user_profile(user):
+    if not user or not getattr(user, "is_authenticated", False):
+        return None
+    profile, _ = UserProfile.objects.get_or_create(
+        user=user,
+        defaults={"category": "Non-Management"},
+    )
+    return profile
+
+
+def _get_user_department(user):
+    profile = _get_or_create_user_profile(user)
+    return getattr(profile, "department", None)
+
+
+def _get_user_category(user, default="Non-Management"):
+    profile = _get_or_create_user_profile(user)
+    category = getattr(profile, "category", "")
+    return category or default
+
+
+def _get_user_display_name(user, default="Unassigned"):
+    if not user:
+        return default
+    full_name = (user.get_full_name() or "").strip()
+    return full_name or getattr(user, "username", "") or default
+
 @login_required
 def home(request):
-    user_profile = UserProfile.objects.get(user=request.user)
+    user_profile = _get_or_create_user_profile(request.user)
     today = date.today()
     print(today)
     if user_profile.category == 'Departmental Manager':
@@ -106,7 +134,7 @@ def assigned_by_me(request):
 @login_required
 def user_profile(request):
     # Display user profile details
-    user_profile = UserProfile.objects.get(user=request.user)
+    user_profile = _get_or_create_user_profile(request.user)
     return render(request, 'tasks/user_profile.html', {'user_profile': user_profile})
 
 @login_required
@@ -124,7 +152,7 @@ def task_list(request):
     Display task list with filtering options for Task Management System Managers.
     For other users, display only tasks created by or assigned to them.
     """
-    user_profile = UserProfile.objects.get(user=request.user)
+    user_profile = _get_or_create_user_profile(request.user)
 
     if user_profile.category == 'Task Management System Manager':
         tasks = Task.objects.all()  # Start with all tasks
@@ -239,7 +267,7 @@ def create_task(request):
                 action='created',
                 user=request.user,
                 task=task,
-                description=f"Task {task.task_id} created by {request.user.username} for {task.assigned_to.username if task.assigned_to else 'Unassigned'}"
+                description=f"Task {task.task_id} created by {request.user.username} for {_get_user_display_name(task.assigned_to)}"
             )
             return JsonResponse({'message': 'Task created successfully!', 'task_id': task.task_id})
         else:
@@ -252,12 +280,12 @@ def create_task(request):
 @login_required
 def edit_task(request, task_id):
     task = get_object_or_404(Task, task_id=task_id)
-    user_profile = UserProfile.objects.get(user=request.user)
+    user_profile = _get_or_create_user_profile(request.user)
     manager_can_edit = (
         user_profile.category == 'Departmental Manager' and
+        user_profile.department and
         task.assigned_by and
-        hasattr(task.assigned_by, 'userprofile') and
-        task.assigned_by.userprofile.department == user_profile.department
+        _get_user_department(task.assigned_by) == user_profile.department
     )
     if task.assigned_by != request.user and not manager_can_edit:
         raise PermissionDenied
@@ -304,7 +332,7 @@ def task_detail(request, task_id):
     task = get_object_or_404(Task, task_id=task_id)
     
     # Check if user has permission to view this task
-    user_profile = UserProfile.objects.get(user=request.user)
+    user_profile = _get_or_create_user_profile(request.user)
     is_viewer = request.user.email and request.user.email.lower() in (task.viewers or [])
     has_permission = (
         task.assigned_to == request.user or 
@@ -534,12 +562,12 @@ def mark_task_completed(request, task_id):
 def reassign_task(request, task_id):
     task = get_object_or_404(Task, task_id=task_id)
     old_assignee = task.assigned_to  # Capture the current assignee before reassigning
-    user_profile = UserProfile.objects.get(user=request.user)
+    user_profile = _get_or_create_user_profile(request.user)
     manager_can_reassign = (
         user_profile.category == 'Departmental Manager' and
+        user_profile.department and
         task.assigned_to and
-        hasattr(task.assigned_to, 'userprofile') and
-        task.assigned_to.userprofile.department == user_profile.department
+        _get_user_department(task.assigned_to) == user_profile.department
     )
     if task.assigned_to != request.user and not manager_can_reassign:
         raise PermissionDenied
@@ -554,12 +582,12 @@ def reassign_task(request, task_id):
 def task_note_page(request, task_id):
     task = get_object_or_404(Task, task_id=task_id)
     old_assignee = task.assigned_to
-    user_profile = UserProfile.objects.get(user=request.user)
+    user_profile = _get_or_create_user_profile(request.user)
     manager_can_reassign = (
         user_profile.category == 'Departmental Manager' and
+        user_profile.department and
         task.assigned_to and
-        hasattr(task.assigned_to, 'userprofile') and
-        task.assigned_to.userprofile.department == user_profile.department
+        _get_user_department(task.assigned_to) == user_profile.department
     )
     if task.assigned_to != request.user and not manager_can_reassign:
         raise PermissionDenied
@@ -582,8 +610,9 @@ def task_note_page(request, task_id):
             task.notes = new_note_entry
         
         from_dept = task.department
-        if task.assigned_by and hasattr(task.assigned_by, 'userprofile') and task.assigned_by.userprofile.department:
-            from_dept = task.assigned_by.userprofile.department
+        assignor_department = _get_user_department(task.assigned_by)
+        if assignor_department:
+            from_dept = assignor_department
 
         # Handle the file attachment by assignee
         attachment = request.FILES.get('attachment_by_assignee')
@@ -594,8 +623,7 @@ def task_note_page(request, task_id):
         task.assigned_to = task.assigned_by
         task.department = from_dept
         task.save()
-        username = str(task.assigned_to)
-        new_assignee = User.objects.get(username=username)
+        new_assignee = task.assigned_to
         view_ticket_url = request.build_absolute_uri(f'/tasks/detail/{task.task_id}/')
         context = {
                     'user': task.assigned_to,
@@ -603,7 +631,7 @@ def task_note_page(request, task_id):
                     'view_ticket_url': view_ticket_url,
                 }
 
-        if new_assignee.email:
+        if new_assignee and new_assignee.email:
             send_email_notification(
                     subject="You Have Been Re-Assigned a New Task",
                     template_name='emails/ticket_reassigned.html',
@@ -617,7 +645,7 @@ def task_note_page(request, task_id):
             action='reassigned',
             user=request.user,
             task=task,
-            description=f"Task reassigned from {old_assignee.username} to {task.assigned_to.username}"
+            description=f"Task reassigned from {_get_user_display_name(old_assignee)} to {_get_user_display_name(task.assigned_to)}"
         )
 
         # Log the note addition
@@ -635,7 +663,7 @@ def task_note_page(request, task_id):
 
 @login_required
 def dashboard(request):
-    user_profile = UserProfile.objects.get(user=request.user)
+    user_profile = _get_or_create_user_profile(request.user)
     if user_profile.category == 'Task Management System Manager':
         return redirect('activity')  # Redirect Managers to Activity Page
     elif user_profile.category == 'Departmental Manager':
@@ -731,8 +759,9 @@ def metrics(request):
         # Group these tickets by the department of the user who assigned them
         pending_by_dept = {}
         for task in pending_tickets:
-            if task.assigned_by and hasattr(task.assigned_by, 'userprofile') and task.assigned_by.userprofile.department:
-                assignor_dept_name = task.assigned_by.userprofile.department.name
+            assignor_department = _get_user_department(task.assigned_by)
+            if assignor_department:
+                assignor_dept_name = assignor_department.name
                 if assignor_dept_name not in pending_by_dept:
                     pending_by_dept[assignor_dept_name] = 0
                 pending_by_dept[assignor_dept_name] += 1
@@ -882,7 +911,10 @@ def download_metrics(request):
 
         # Loop through tasks and populate pending_by_dept map
         for task in all_task_of_this_dept:
-            assignor_dept_name = task.assigned_by.userprofile.department.name  # Updated variable name
+            assignor_department = _get_user_department(task.assigned_by)
+            if not assignor_department:
+                continue
+            assignor_dept_name = assignor_department.name
 
             # Increment the pending ticket count for the assignor department
             if assignor_dept_name not in pending_by_dept:
@@ -940,7 +972,7 @@ def download_metrics(request):
 @login_required
 def reassign_within_department(request, task_id):
     task = get_object_or_404(Task, task_id=task_id)
-    user_profile = UserProfile.objects.get(user=request.user)
+    user_profile = _get_or_create_user_profile(request.user)
 
     # Ensure only Departmental Managers can access this functionality
     if user_profile.category != 'Departmental Manager':
@@ -1043,7 +1075,10 @@ def department_metrics(request, department):
 
     pending_by_dept = {}
     for task in pending_tickets:
-        assignor_dept_name = task.assigned_by.userprofile.department.name
+        assignor_department = _get_user_department(task.assigned_by)
+        if not assignor_department:
+            continue
+        assignor_dept_name = assignor_department.name
         if assignor_dept_name not in pending_by_dept:
             pending_by_dept[assignor_dept_name] = 0
         pending_by_dept[assignor_dept_name] += 1
@@ -1099,7 +1134,7 @@ from django.http import Http404
 # View to list, edit, and delete users
 @login_required
 def manage_users(request):
-    user_profile = UserProfile.objects.get(user=request.user)
+    user_profile = _get_or_create_user_profile(request.user)
 
     # Ensure that only a departmental manager can access this page
     if user_profile.category != 'Departmental Manager':
@@ -1463,7 +1498,7 @@ def api_update_viewers(request, task_id, viewer_emails):
     task = get_object_or_404(Task, task_id=task_id)
 
     # Authorization: creator, current assignee, or departmental manager only
-    user_profile = UserProfile.objects.get(user=request.user)
+    user_profile = _get_or_create_user_profile(request.user)
     is_manager = user_profile.category == 'Departmental Manager'
     if not (task.assigned_by == request.user or task.assigned_to == request.user or is_manager):
         return JsonResponse({"error": "Forbidden"}, status=403)
@@ -1696,7 +1731,7 @@ def api_reassign_task(request, task_id, reassigned_by_email):
 
         # Store original assignee
         old_assignee = task.assigned_to
-        old_assignee_name = old_assignee.username if old_assignee else 'Unassigned'
+        old_assignee_name = _get_user_display_name(old_assignee)
 
         # Handle note from query parameter
         note = request.GET.get('note', '')
@@ -1704,7 +1739,7 @@ def api_reassign_task(request, task_id, reassigned_by_email):
             task.notes = note
 
         # Reassign back to creator (following your existing logic)
-        from_dept = task.assigned_by.userprofile.department
+        from_dept = _get_user_department(task.assigned_by) or task.department
         task.assigned_to = task.assigned_by
         task.department = from_dept
         task.save()
@@ -1720,7 +1755,7 @@ def api_reassign_task(request, task_id, reassigned_by_email):
                 'view_ticket_url': view_ticket_url,
             }
 
-            if new_assignee.email:
+            if new_assignee and new_assignee.email:
                 send_email_notification(
                     subject="You Have Been Re-Assigned a Task",
                     template_name='emails/ticket_reassigned.html',
