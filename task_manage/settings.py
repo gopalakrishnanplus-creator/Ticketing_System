@@ -152,7 +152,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.environ.get('TICKET_MEDIA_ROOT', '/var/www/Ticket-media/')
+MEDIA_ROOT = os.environ.get('TICKET_MEDIA_ROOT', '/var/www/Ticketing-media/')
 PUBLIC_SUPPORT_BASE_URL = os.environ.get('PUBLIC_SUPPORT_BASE_URL', 'https://support.inditech.co.in').rstrip('/')
 CLIENT_TICKETS_BASE_URL = os.environ.get('CLIENT_TICKETS_BASE_URL', PUBLIC_SUPPORT_BASE_URL).rstrip('/')
 if CLIENT_TICKETS_BASE_URL.startswith(('http://127.0.0.1', 'https://127.0.0.1', 'http://localhost', 'https://localhost')):
