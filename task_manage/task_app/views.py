@@ -396,6 +396,24 @@ def update_task_status(request, task_id):
         form = TaskStatusUpdateForm(request.POST, instance=task)
         if form.is_valid():
             updated_task = form.save(commit=False)
+            view_ticket_url = request.build_absolute_uri(f'/tasks/detail/{task.task_id}/')
+
+            def notify_status_update(recipient, subject, template_name, update_message):
+                if not recipient or not recipient.email:
+                    return
+                context = {
+                    'user': recipient,
+                    'ticket': updated_task,
+                    'view_ticket_url': view_ticket_url,
+                    'update_message': update_message,
+                }
+                send_email_notification(
+                    subject=subject,
+                    template_name=template_name,
+                    context=context,
+                    recipient_email=recipient.email,
+                    cc_emails=task.viewers,
+                )
 
             # Check if the status is being updated
             new_status = request.POST.get('status')
@@ -415,47 +433,43 @@ def update_task_status(request, task_id):
 
             # Notify about deadline revision if needed
             if old_deadline != updated_task.revised_completion_date:
-                context = {
-                    'ticket': updated_task,
-                    'view_ticket_url': request.build_absolute_uri(f'/tasks/detail/{updated_task.task_id}/'),
-                }
-                send_email_notification(
+                revised_deadline = (
+                    updated_task.revised_completion_date.strftime('%d %b %Y')
+                    if updated_task.revised_completion_date else
+                    'cleared'
+                )
+                notify_status_update(
+                    updated_task.assigned_by,
                     subject=f"Deadline Revised: {updated_task.task_id}",
                     template_name='emails/ticket_deadline_updated.html',
-                    context=context,
-                    recipient_email=updated_task.assigned_by.email,
-                    cc_emails=task.viewers,
+                    update_message=f"The revised completion date for this ticket was updated to {revised_deadline}.",
                 )
-                if updated_task.assigned_to:
-                    send_email_notification(
-                        subject=f"Deadline Revised: {updated_task.task_id}",
-                        template_name='emails/ticket_deadline_updated.html',
-                        context=context,
-                        recipient_email=updated_task.assigned_to.email,
-                        cc_emails=task.viewers,
-                    )
+                notify_status_update(
+                    updated_task.assigned_to,
+                    subject=f"Deadline Revised: {updated_task.task_id}",
+                    template_name='emails/ticket_deadline_updated.html',
+                    update_message=f"The revised completion date for this ticket was updated to {revised_deadline}.",
+                )
 
             # Notify about comment updates if needed
             if old_comments != updated_task.comments_by_assignee:
-                context = {
-                    'ticket': updated_task,
-                    'view_ticket_url': request.build_absolute_uri(f'/tasks/detail/{updated_task.task_id}/'),
-                }
-                send_email_notification(
+                comment_message = (
+                    "The assignee updated the ticket comments."
+                    if updated_task.comments_by_assignee else
+                    "The assignee cleared the ticket comments."
+                )
+                notify_status_update(
+                    updated_task.assigned_by,
                     subject=f"Comment Updated: {updated_task.task_id}",
                     template_name='emails/ticket_comment_updated.html',
-                    context=context,
-                    recipient_email=updated_task.assigned_by.email,
-                    cc_emails=task.viewers,
+                    update_message=comment_message,
                 )
-                if updated_task.assigned_to:
-                    send_email_notification(
-                        subject=f"Comment Updated: {updated_task.task_id}",
-                        template_name='emails/ticket_comment_updated.html',
-                        context=context,
-                        recipient_email=updated_task.assigned_to.email,
-                        cc_emails=task.viewers,
-                    )
+                notify_status_update(
+                    updated_task.assigned_to,
+                    subject=f"Comment Updated: {updated_task.task_id}",
+                    template_name='emails/ticket_comment_updated.html',
+                    update_message=comment_message,
+                )
 
             # Log the status update in ActivityLog
             if old_status != updated_task.status:

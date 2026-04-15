@@ -72,8 +72,8 @@
             Task Management System
         </div>
         <div class="email-body">
-            <p>Hi {{ user.get_full_name }},</p>
-            <p>{{ update_message }}</p>
+            <p>Hi {% if user %}{{ user.get_full_name|default:user.username }}{% else %}there{% endif %},</p>
+            <p>{{ update_message|default:"A comment was updated on this ticket." }}</p>
             <p><strong>Ticket number:</strong> {{ ticket.task_id }}</p>
             <p><strong>Subject:</strong> {{ ticket.subject }}</p>
             <a href="{{ view_ticket_url }}" class="email-button">View Ticket</a>
