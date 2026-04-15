@@ -3,6 +3,6 @@
 {% block email_heading %}Ticket Deadline Updated{% endblock %}
 
 {% block email_intro %}
-    Hi {{ user.get_full_name|default:user.username }},<br>
+    Hi {% if user %}{{ user.get_full_name|default:user.username }}{% else %}there{% endif %},<br>
     The deadline or revised completion schedule on this ticket was updated. Please review the refreshed summary below.
 {% endblock %}

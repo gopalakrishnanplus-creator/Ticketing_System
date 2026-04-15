@@ -1011,14 +1011,14 @@ def update_task_status(request, task_id):
 
             # Notify about deadline revision if needed
             if old_deadline != updated_task.revised_completion_date:
-                context = {
+                deadline_context = {
                     'ticket': updated_task,
                     'view_ticket_url': request.build_absolute_uri(f'/tasks/detail/{updated_task.task_id}/'),
                 }
                 send_email_notification(
                     subject=f"Deadline Revised: {updated_task.task_id}",
                     template_name='emails/ticket_deadline_updated.html',
-                    context=context,
+                    context={**deadline_context, 'user': updated_task.assigned_by},
                     recipient_email=updated_task.assigned_by.email,
                     cc_emails=task.viewers,
                 )
@@ -1026,21 +1026,21 @@ def update_task_status(request, task_id):
                     send_email_notification(
                         subject=f"Deadline Revised: {updated_task.task_id}",
                         template_name='emails/ticket_deadline_updated.html',
-                        context=context,
+                        context={**deadline_context, 'user': updated_task.assigned_to},
                         recipient_email=updated_task.assigned_to.email,
                         cc_emails=task.viewers,
                     )
 
             # Notify about comment updates if needed
             if old_comments != updated_task.comments_by_assignee:
-                context = {
+                comment_context = {
                     'ticket': updated_task,
                     'view_ticket_url': request.build_absolute_uri(f'/tasks/detail/{updated_task.task_id}/'),
                 }
                 send_email_notification(
                     subject=f"Comment Updated: {updated_task.task_id}",
                     template_name='emails/ticket_comment_updated.html',
-                    context=context,
+                    context={**comment_context, 'user': updated_task.assigned_by},
                     recipient_email=updated_task.assigned_by.email,
                     cc_emails=task.viewers,
                 )
@@ -1048,7 +1048,7 @@ def update_task_status(request, task_id):
                     send_email_notification(
                         subject=f"Comment Updated: {updated_task.task_id}",
                         template_name='emails/ticket_comment_updated.html',
-                        context=context,
+                        context={**comment_context, 'user': updated_task.assigned_to},
                         recipient_email=updated_task.assigned_to.email,
                         cc_emails=task.viewers,
                     )
