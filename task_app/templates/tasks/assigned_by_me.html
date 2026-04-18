@@ -18,12 +18,42 @@
                 <strong>{{ summary.total }}</strong>
             </article>
             <article class="workspace-stat">
-                <span>Open</span>
-                <strong>{{ summary.open }}</strong>
+                <span>
+                    {% if is_external_ticket_mode %}
+                        Open
+                    {% elif archive_mode %}
+                        Completed
+                    {% else %}
+                        Open
+                    {% endif %}
+                </span>
+                <strong>
+                    {% if archive_mode %}
+                        {{ summary.completed }}
+                    {% else %}
+                        {{ summary.open }}
+                    {% endif %}
+                </strong>
             </article>
             <article class="workspace-stat">
-                <span>{% if is_external_ticket_mode %}Waiting{% else %}Overdue{% endif %}</span>
-                <strong>{% if is_external_ticket_mode %}{{ summary.waiting }}{% else %}{{ summary.overdue }}{% endif %}</strong>
+                <span>
+                    {% if is_external_ticket_mode %}
+                        Waiting
+                    {% elif archive_mode %}
+                        Cancelled
+                    {% else %}
+                        Overdue
+                    {% endif %}
+                </span>
+                <strong>
+                    {% if is_external_ticket_mode %}
+                        {{ summary.waiting }}
+                    {% elif archive_mode %}
+                        {{ summary.cancelled }}
+                    {% else %}
+                        {{ summary.overdue }}
+                    {% endif %}
+                </strong>
             </article>
             <article class="workspace-stat">
                 <span>Urgent</span>
@@ -89,15 +119,17 @@
                     <span>Search</span>
                     <input type="text" name="q" value="{{ selected_filters.search }}" placeholder="Task ID, subject, assignee">
                 </label>
-                <label class="filter-chip-group">
-                    <span>Quick Filter</span>
-                    <select name="quick">
-                        <option value="">All Tickets</option>
-                        <option value="this_week" {% if selected_filters.quick == 'this_week' %}selected{% endif %}>Due This Week</option>
-                        <option value="next_24_hours" {% if selected_filters.quick == 'next_24_hours' %}selected{% endif %}>Next 24 Hours</option>
-                        <option value="overdue" {% if selected_filters.quick == 'overdue' %}selected{% endif %}>Deadline Passed</option>
-                    </select>
-                </label>
+                {% if not archive_mode %}
+                    <label class="filter-chip-group">
+                        <span>Quick Filter</span>
+                        <select name="quick">
+                            <option value="">All Tickets</option>
+                            <option value="this_week" {% if selected_filters.quick == 'this_week' %}selected{% endif %}>Due This Week</option>
+                            <option value="next_24_hours" {% if selected_filters.quick == 'next_24_hours' %}selected{% endif %}>Next 24 Hours</option>
+                            <option value="overdue" {% if selected_filters.quick == 'overdue' %}selected{% endif %}>Deadline Passed</option>
+                        </select>
+                    </label>
+                {% endif %}
                 <label class="filter-field">
                     <span>Priority</span>
                     <select name="priority">
@@ -133,7 +165,7 @@
 
             <div class="workspace-filter-actions">
                 <button type="submit" class="primary-action">Apply Filters</button>
-                <a href="{% url 'assigned_by_me' %}" class="secondary-action">Reset</a>
+                <a href="{{ reset_url|default:''|default_if_none:''|default:request.path }}" class="secondary-action">Reset</a>
             </div>
         </form>
     </div>
@@ -144,7 +176,12 @@
                 <h2>{{ page_title }}</h2>
                 <p>{{ page_obj.paginator.count }} results</p>
             </div>
-            <a href="{% url 'create_task' %}" class="secondary-action">+ Create Ticket</a>
+            <div class="button-row">
+                {% if archive_toggle_url and not is_external_ticket_mode %}
+                    <a href="{{ archive_toggle_url }}" class="secondary-action">{{ archive_toggle_label }}</a>
+                {% endif %}
+                <a href="{% url 'create_task' %}" class="secondary-action">+ Create Ticket</a>
+            </div>
         </div>
 
         <div class="workspace-table-scroll">
@@ -247,7 +284,13 @@
                             </tr>
                         {% empty %}
                             <tr class="workspace-empty-row">
-                                <td colspan="5" class="workspace-empty">No internal tickets matched the current filters.</td>
+                                <td colspan="5" class="workspace-empty">
+                                    {% if archive_mode %}
+                                        No archived internal tickets matched the current filters.
+                                    {% else %}
+                                        No internal tickets matched the current filters.
+                                    {% endif %}
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>

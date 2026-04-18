@@ -60,10 +60,15 @@ TICKET_MODE_EXTERNAL = 'external'
 TICKET_MODE_CHOICES = {TICKET_MODE_INTERNAL, TICKET_MODE_EXTERNAL}
 DEFAULT_USER_PROFILE_CATEGORY = 'Non-Management'
 INTERNAL_ACTIVE_STATUSES = Task.ACTIVE_STATUSES
+INTERNAL_ARCHIVED_STATUSES = Task.ARCHIVED_STATUSES
 
 
 def _active_internal_queryset(queryset):
     return queryset.filter(status__in=INTERNAL_ACTIVE_STATUSES)
+
+
+def _archived_internal_queryset(queryset):
+    return queryset.filter(status__in=INTERNAL_ARCHIVED_STATUSES)
 
 
 def _get_request_user_profile(user, *, with_department=False):
@@ -259,8 +264,8 @@ def _paginate_records(request, queryset, per_page=10):
     return paginator.get_page(request.GET.get('page') or 1)
 
 
-def _apply_internal_filters(queryset, request):
-    queryset = _active_internal_queryset(queryset)
+def _apply_internal_filters(queryset, request, *, archived=False):
+    queryset = _archived_internal_queryset(queryset) if archived else _active_internal_queryset(queryset)
     today = date.today()
     search = (request.GET.get('q') or '').strip()
     quick_filter = (request.GET.get('quick') or '').strip()
@@ -281,11 +286,11 @@ def _apply_internal_filters(queryset, request):
             Q(assigned_to__first_name__icontains=search) |
             Q(assigned_to__last_name__icontains=search)
         )
-    if quick_filter == 'this_week':
+    if quick_filter == 'this_week' and not archived:
         queryset = queryset.filter(deadline__gte=today, deadline__lte=today + timedelta(days=7))
-    elif quick_filter == 'next_24_hours':
+    elif quick_filter == 'next_24_hours' and not archived:
         queryset = queryset.filter(deadline__gte=today, deadline__lte=today + timedelta(days=1))
-    elif quick_filter == 'overdue':
+    elif quick_filter == 'overdue' and not archived:
         queryset = queryset.filter(deadline__lt=today)
     if priority:
         queryset = queryset.filter(priority=priority)
@@ -356,6 +361,16 @@ def _internal_summary(queryset):
     }
 
 
+def _internal_archive_summary(queryset):
+    queryset = _archived_internal_queryset(queryset)
+    return {
+        'total': queryset.count(),
+        'completed': queryset.filter(status='Completed').count(),
+        'cancelled': queryset.filter(status='Cancelled').count(),
+        'urgent': queryset.filter(priority='urgent').count(),
+    }
+
+
 def _external_summary(queryset):
     return {
         'total': queryset.count(),
@@ -369,33 +384,35 @@ def _external_summary(queryset):
     }
 
 
-def _internal_assigned_to_queryset(user, user_profile):
+def _internal_assigned_to_queryset(user, user_profile, *, archived=False):
     queryset = Task.objects.select_related('department', 'assigned_by', 'assigned_to')
+    status_filter = _archived_internal_queryset if archived else _active_internal_queryset
     if user_profile.category == 'Task Management System Manager':
-        return _active_internal_queryset(queryset.all())
+        return status_filter(queryset.all())
     if user_profile.category == 'Departmental Manager' and user_profile.department_id:
         department = user_profile.department
-        return _active_internal_queryset(queryset.filter(
+        return status_filter(queryset.filter(
             Q(assigned_to=user) |
             Q(assigned_to__userprofile__department=department) |
             Q(assigned_by__userprofile__department=department) |
             Q(department=department)
         ).distinct())
-    return _active_internal_queryset(queryset.filter(assigned_to=user))
+    return status_filter(queryset.filter(assigned_to=user))
 
 
-def _internal_assigned_by_queryset(user, user_profile):
+def _internal_assigned_by_queryset(user, user_profile, *, archived=False):
     queryset = Task.objects.select_related('department', 'assigned_by', 'assigned_to')
+    status_filter = _archived_internal_queryset if archived else _active_internal_queryset
     if user_profile.category == 'Task Management System Manager':
-        return _active_internal_queryset(queryset.all())
+        return status_filter(queryset.all())
     if user_profile.category == 'Departmental Manager' and user_profile.department_id:
         department = user_profile.department
-        return _active_internal_queryset(queryset.filter(
+        return status_filter(queryset.filter(
             Q(assigned_by=user) |
             Q(assigned_by__userprofile__department=department) |
             Q(department=department)
         ).distinct())
-    return _active_internal_queryset(queryset.filter(assigned_by=user))
+    return status_filter(queryset.filter(assigned_by=user))
 
 
 def _external_assigned_to_queryset(user, user_profile):
@@ -506,6 +523,9 @@ def assigned_to_me(request):
         'priority_choices': Task.PRIORITY_LEVELS,
         'status_choices': Task.ACTIVE_STATUS_CHOICES,
         'filter_query': _query_string_without_page(request),
+        'archive_toggle_url': reverse('archived_assigned_to_me'),
+        'archive_toggle_label': 'View Archive',
+        'reset_url': reverse('assigned_to_me'),
     })
 
 @login_required
@@ -546,6 +566,61 @@ def assigned_by_me(request):
         'priority_choices': Task.PRIORITY_LEVELS,
         'status_choices': Task.ACTIVE_STATUS_CHOICES,
         'filter_query': _query_string_without_page(request),
+        'archive_toggle_url': reverse('archived_assigned_by_me'),
+        'archive_toggle_label': 'View Archive',
+        'reset_url': reverse('assigned_by_me'),
+    })
+
+
+@login_required
+def archived_assigned_to_me(request):
+    request.session['ticket_ui_mode'] = TICKET_MODE_INTERNAL
+    user_profile = _get_request_user_profile(request.user, with_department=True)
+    queryset = _internal_assigned_to_queryset(request.user, user_profile, archived=True)
+    queryset, selected_filters = _apply_internal_filters(queryset, request, archived=True)
+    page_obj = _paginate_records(request, queryset.order_by('-assigned_date', '-deadline'))
+
+    return render(request, 'tasks/assigned_to_me.html', {
+        'records': page_obj.object_list,
+        'page_obj': page_obj,
+        'page_title': 'Archived Tickets Assigned to Me',
+        'page_description': 'Review completed and cancelled internal tickets without cluttering the active work queue.',
+        'summary': _internal_archive_summary(queryset),
+        'selected_filters': selected_filters,
+        'department_choices': Department.objects.all().order_by('name'),
+        'priority_choices': Task.PRIORITY_LEVELS,
+        'status_choices': [('Completed', 'Completed'), ('Cancelled', 'Cancelled')],
+        'filter_query': _query_string_without_page(request),
+        'archive_mode': True,
+        'archive_toggle_url': reverse('assigned_to_me'),
+        'archive_toggle_label': 'Back to Active Tickets',
+        'reset_url': reverse('archived_assigned_to_me'),
+    })
+
+
+@login_required
+def archived_assigned_by_me(request):
+    request.session['ticket_ui_mode'] = TICKET_MODE_INTERNAL
+    user_profile = _get_request_user_profile(request.user, with_department=True)
+    queryset = _internal_assigned_by_queryset(request.user, user_profile, archived=True)
+    queryset, selected_filters = _apply_internal_filters(queryset, request, archived=True)
+    page_obj = _paginate_records(request, queryset.order_by('-assigned_date', '-deadline'))
+
+    return render(request, 'tasks/assigned_by_me.html', {
+        'records': page_obj.object_list,
+        'page_obj': page_obj,
+        'page_title': 'Archived Tickets Assigned By Me',
+        'page_description': 'Reference completed and cancelled internal tickets you created, separated from active work.',
+        'summary': _internal_archive_summary(queryset),
+        'selected_filters': selected_filters,
+        'department_choices': Department.objects.all().order_by('name'),
+        'priority_choices': Task.PRIORITY_LEVELS,
+        'status_choices': [('Completed', 'Completed'), ('Cancelled', 'Cancelled')],
+        'filter_query': _query_string_without_page(request),
+        'archive_mode': True,
+        'archive_toggle_url': reverse('assigned_by_me'),
+        'archive_toggle_label': 'Back to Active Tickets',
+        'reset_url': reverse('archived_assigned_by_me'),
     })
 
 
