@@ -57,7 +57,7 @@ class ClientTicketForm(forms.ModelForm):
         self.fields["assigned_to"].queryset = active_users
         self.fields["project_manager"].queryset = active_users
         self.fields["assigned_to"].required = True
-        self.fields["project_manager"].required = True
+        self.fields["project_manager"].required = False
         self.fields["ticket_type"].queryset = ClientTicketType.objects.filter(is_active=True).select_related("department")
         self.fields["department"].queryset = Department.objects.all().order_by("name")
         self.fields["ticket_type"].required = False
@@ -94,9 +94,8 @@ class ClientTicketForm(forms.ModelForm):
         return validate_attachment_batch(attachments, existing_count=existing_count)
 
 
-class ClientTicketInditechUpdateForm(forms.Form):
+class ClientTicketUpdateForm(forms.Form):
     status = forms.ChoiceField(choices=ClientTicket.STATUS_CHOICES, required=False)
-    inditech_status = forms.ChoiceField(choices=ClientTicket.PARTICIPANT_STATUS_CHOICES, required=False)
     message = forms.CharField(widget=forms.Textarea(attrs={"rows": 4}), required=False)
     attachments = MultipleFileField(required=False)
 
@@ -109,15 +108,9 @@ class ClientTicketInditechUpdateForm(forms.Form):
         return validate_attachment_batch(attachments, existing_count=self.ticket.attachments.count())
 
 
-class ClientTicketClientUpdateForm(forms.Form):
-    client_status = forms.ChoiceField(choices=ClientTicket.PARTICIPANT_STATUS_CHOICES, required=False)
-    message = forms.CharField(widget=forms.Textarea(attrs={"rows": 4}), required=False)
-    attachments = MultipleFileField(required=False)
+class ClientTicketInditechUpdateForm(ClientTicketUpdateForm):
+    pass
 
-    def __init__(self, *args, **kwargs):
-        self.ticket = kwargs.pop("ticket")
-        super().__init__(*args, **kwargs)
 
-    def clean_attachments(self):
-        attachments = self.files.getlist("attachments")
-        return validate_attachment_batch(attachments, existing_count=self.ticket.attachments.count())
+class ClientTicketClientUpdateForm(ClientTicketUpdateForm):
+    pass

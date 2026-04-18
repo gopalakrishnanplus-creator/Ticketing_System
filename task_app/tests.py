@@ -198,6 +198,41 @@ class TicketModeNavigationTests(TestCase):
         self.assertContains(next_page, "External reporting ticket")
         self.assertNotContains(next_page, "Internal launch task")
 
+    def test_internal_ticket_lists_hide_completed_and_cancelled_records(self):
+        Task.objects.create(
+            department=self.department,
+            assigned_by=self.user,
+            assigned_to=self.user,
+            deadline=date.today() + timedelta(days=1),
+            ticket_type="Testing",
+            priority="medium",
+            status="Completed",
+            subject="Archived completed task",
+            request_details="Should not appear in active lists.",
+        )
+        Task.objects.create(
+            department=self.department,
+            assigned_by=self.user,
+            assigned_to=self.user,
+            deadline=date.today() + timedelta(days=1),
+            ticket_type="Testing",
+            priority="medium",
+            status="Cancelled",
+            subject="Archived cancelled task",
+            request_details="Should not appear in active lists.",
+        )
+
+        response = self.client.get(reverse("assigned_to_me"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Internal launch task")
+        self.assertNotContains(response, "Archived completed task")
+        self.assertNotContains(response, "Archived cancelled task")
+        self.assertEqual(
+            [choice[0] for choice in response.context["status_choices"]],
+            ["Not Started", "In Progress", "Overdue"],
+        )
+
     def test_external_assigned_to_me_handles_ticket_without_project_manager(self):
         ClientTicket.objects.create(
             title="External ticket without PM",

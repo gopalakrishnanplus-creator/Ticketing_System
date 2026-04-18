@@ -44,6 +44,13 @@ class Task(models.Model):
         ('Cancelled', 'Cancelled'),
         ('Overdue', 'Overdue'),  # Added Overdue status
     ]
+    ACTIVE_STATUSES = ('Not Started', 'In Progress', 'Overdue')
+    ACTIVE_STATUS_CHOICES = [
+        ('Not Started', 'Not Started'),
+        ('In Progress', 'In Progress'),
+        ('Overdue', 'Overdue'),
+    ]
+    ARCHIVED_STATUSES = ('Completed', 'Cancelled')
 
     PRIORITY_LEVELS = [
         ('low', 'Low'),

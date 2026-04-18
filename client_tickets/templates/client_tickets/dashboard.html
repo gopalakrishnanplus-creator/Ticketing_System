@@ -128,7 +128,7 @@
                         <span>{{ update.created_at }}</span>
                     </div>
                     <div><strong>{{ update.get_actor_type_display }}</strong> updated the ticket.</div>
-                    <div>Status: {{ update.get_status_display|default:"---------" }} | Inditech: {{ update.get_inditech_status_display|default:"---------" }} | Client: {{ update.get_client_status_display|default:"---------" }}</div>
+                    <div>Status: {{ update.get_status_display|default:"---------" }}</div>
                     {% if update.message %}
                         <p>{{ update.message|linebreaksbr }}</p>
                     {% endif %}

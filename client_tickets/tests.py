@@ -213,9 +213,10 @@ class ClientTicketTests(TestCase):
         self.assertEqual(payload["project_manager_id"], self.project_manager.id)
         self.assertEqual(payload["source_system_code"], ClientTicket.SOURCE_CAMPAIGN)
         self.assertEqual(payload["status_code"], ClientTicket.STATUS_IN_PROGRESS)
-        self.assertEqual(payload["inditech_status_code"], ClientTicket.PARTICIPANT_IN_PROGRESS)
+        self.assertEqual(payload["inditech_status_code"], "")
         self.assertEqual(payload["updates"][0]["status_code"], ClientTicket.STATUS_OPEN)
-        self.assertEqual(payload["updates"][1]["inditech_status_code"], ClientTicket.PARTICIPANT_IN_PROGRESS)
+        self.assertEqual(payload["updates"][1]["status_code"], ClientTicket.STATUS_IN_PROGRESS)
+        self.assertEqual(payload["updates"][1]["inditech_status_code"], "")
 
     def test_lookup_and_sync_apis_return_expected_payloads(self):
         contact = ClientContact.objects.create(
@@ -377,7 +378,37 @@ class ClientTicketTests(TestCase):
         self.assertEqual(ticket.project_manager_id, new_pm.id)
         self.assertEqual(ticket.external_reference, "TKT-REASSIGN-1")
         self.assertEqual(ticket.status, ClientTicket.STATUS_IN_PROGRESS)
-        self.assertEqual(ticket.inditech_status, ClientTicket.PARTICIPANT_IN_PROGRESS)
+        self.assertEqual(ticket.inditech_status, "")
+
+    def test_external_detail_page_uses_single_status_update_flow(self):
+        contact = ClientContact.objects.create(
+            name="Simple Flow User",
+            email="simple@example.com",
+            phone_number="9999977777",
+        )
+        ticket = ClientTicket.objects.create(
+            title="Single status flow",
+            description="Should show one status model in the UI.",
+            requester=contact,
+            requester_name=contact.name,
+            requester_email=contact.email,
+            requester_number=contact.phone_number,
+            assigned_to=self.assigned_to,
+            project_manager=self.project_manager,
+            department=self.department,
+            ticket_type=self.ticket_type,
+            priority=ClientTicket.PRIORITY_MEDIUM,
+            status=ClientTicket.STATUS_OPEN,
+        )
+
+        self.client.force_login(self.assigned_to)
+        response = self.client.get(reverse("client_tickets:ticket_detail", args=[ticket.ticket_number]))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Ticket Update")
+        self.assertContains(response, "Status")
+        self.assertNotContains(response, "Inditech Status")
+        self.assertNotContains(response, "Client Status")
 
     def test_unchecked_ticket_reminder_sends_mail(self):
         contact = ClientContact.objects.create(

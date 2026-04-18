@@ -78,7 +78,7 @@
                         </td>
                         <td>
                             {% if ticket.project_manager %}
-                                {{ ticket.project_manager.get_full_name|default:ticket.project_manager.username }}
+                                {{ ticket.project_manager|user_display_name:"No project manager" }}
                             {% else %}
                                 No project manager
                             {% endif %}

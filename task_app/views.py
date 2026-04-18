@@ -59,6 +59,11 @@ TICKET_MODE_INTERNAL = 'internal'
 TICKET_MODE_EXTERNAL = 'external'
 TICKET_MODE_CHOICES = {TICKET_MODE_INTERNAL, TICKET_MODE_EXTERNAL}
 DEFAULT_USER_PROFILE_CATEGORY = 'Non-Management'
+INTERNAL_ACTIVE_STATUSES = Task.ACTIVE_STATUSES
+
+
+def _active_internal_queryset(queryset):
+    return queryset.filter(status__in=INTERNAL_ACTIVE_STATUSES)
 
 
 def _get_request_user_profile(user, *, with_department=False):
@@ -255,6 +260,7 @@ def _paginate_records(request, queryset, per_page=10):
 
 
 def _apply_internal_filters(queryset, request):
+    queryset = _active_internal_queryset(queryset)
     today = date.today()
     search = (request.GET.get('q') or '').strip()
     quick_filter = (request.GET.get('quick') or '').strip()
@@ -280,7 +286,7 @@ def _apply_internal_filters(queryset, request):
     elif quick_filter == 'next_24_hours':
         queryset = queryset.filter(deadline__gte=today, deadline__lte=today + timedelta(days=1))
     elif quick_filter == 'overdue':
-        queryset = queryset.filter(deadline__lt=today).exclude(status__in=['Completed', 'Cancelled'])
+        queryset = queryset.filter(deadline__lt=today)
     if priority:
         queryset = queryset.filter(priority=priority)
     if status:
@@ -340,11 +346,12 @@ def _apply_external_filters(queryset, request):
 
 
 def _internal_summary(queryset):
+    queryset = _active_internal_queryset(queryset)
     today = date.today()
     return {
         'total': queryset.count(),
-        'open': queryset.exclude(status__in=['Completed', 'Cancelled']).count(),
-        'overdue': queryset.filter(deadline__lt=today).exclude(status__in=['Completed', 'Cancelled']).count(),
+        'open': queryset.count(),
+        'overdue': queryset.filter(deadline__lt=today).count(),
         'urgent': queryset.filter(priority='urgent').count(),
     }
 
@@ -365,30 +372,30 @@ def _external_summary(queryset):
 def _internal_assigned_to_queryset(user, user_profile):
     queryset = Task.objects.select_related('department', 'assigned_by', 'assigned_to')
     if user_profile.category == 'Task Management System Manager':
-        return queryset.all()
+        return _active_internal_queryset(queryset.all())
     if user_profile.category == 'Departmental Manager' and user_profile.department_id:
         department = user_profile.department
-        return queryset.filter(
+        return _active_internal_queryset(queryset.filter(
             Q(assigned_to=user) |
             Q(assigned_to__userprofile__department=department) |
             Q(assigned_by__userprofile__department=department) |
             Q(department=department)
-        ).distinct()
-    return queryset.filter(assigned_to=user)
+        ).distinct())
+    return _active_internal_queryset(queryset.filter(assigned_to=user))
 
 
 def _internal_assigned_by_queryset(user, user_profile):
     queryset = Task.objects.select_related('department', 'assigned_by', 'assigned_to')
     if user_profile.category == 'Task Management System Manager':
-        return queryset.all()
+        return _active_internal_queryset(queryset.all())
     if user_profile.category == 'Departmental Manager' and user_profile.department_id:
         department = user_profile.department
-        return queryset.filter(
+        return _active_internal_queryset(queryset.filter(
             Q(assigned_by=user) |
             Q(assigned_by__userprofile__department=department) |
             Q(department=department)
-        ).distinct()
-    return queryset.filter(assigned_by=user)
+        ).distinct())
+    return _active_internal_queryset(queryset.filter(assigned_by=user))
 
 
 def _external_assigned_to_queryset(user, user_profile):
@@ -449,7 +456,7 @@ def home(request):
             # Tasks assigned to members of the manager's department
             Q(assigned_to__userprofile__department=department)|
             Q(department__name=department),
-
+            status__in=INTERNAL_ACTIVE_STATUSES,
             assigned_date__date__lte=today
         ).order_by('-assigned_date')
         
@@ -497,7 +504,7 @@ def assigned_to_me(request):
         'selected_filters': selected_filters,
         'department_choices': Department.objects.all().order_by('name'),
         'priority_choices': Task.PRIORITY_LEVELS,
-        'status_choices': Task.STATUS_CHOICES,
+        'status_choices': Task.ACTIVE_STATUS_CHOICES,
         'filter_query': _query_string_without_page(request),
     })
 
@@ -537,7 +544,7 @@ def assigned_by_me(request):
         'selected_filters': selected_filters,
         'department_choices': Department.objects.all().order_by('name'),
         'priority_choices': Task.PRIORITY_LEVELS,
-        'status_choices': Task.STATUS_CHOICES,
+        'status_choices': Task.ACTIVE_STATUS_CHOICES,
         'filter_query': _query_string_without_page(request),
     })
 
@@ -565,7 +572,7 @@ def user_profile(request):
     internal_ticket_summary = {
         'assigned_to_me': internal_assigned_to_queryset.count(),
         'assigned_by_me': internal_assigned_by_queryset.count(),
-        'open_related': internal_assigned_to_queryset.exclude(status__in=['Completed', 'Cancelled']).count(),
+        'open_related': internal_assigned_to_queryset.count(),
         'urgent_related': internal_assigned_to_queryset.filter(priority='urgent').count(),
     }
 
@@ -627,7 +634,7 @@ def task_list(request):
     user_profile = _get_request_user_profile(request.user, with_department=True)
 
     if user_profile.category == 'Task Management System Manager':
-        tasks = Task.objects.all()  # Start with all tasks
+        tasks = Task.objects.filter(status__in=INTERNAL_ACTIVE_STATUSES)
 
         # Apply filters if provided
         department_id = request.GET.get('department')
@@ -642,7 +649,7 @@ def task_list(request):
         if ageing_days:
             today = datetime.today().date()
             if ageing_days == 'overdue':
-                tasks = tasks.filter(deadline__lt=today, status__in=['Not Started', 'In Progress', 'Stalled', 'On-Hold'])
+                tasks = tasks.filter(deadline__lt=today)
             else:
                 ageing_days = int(ageing_days)
                 tasks = tasks.filter(assigned_date__lte=today - timedelta(days=ageing_days))
@@ -650,14 +657,13 @@ def task_list(request):
         status = request.GET.get('status')
         if status:
             if status == 'Overdue':
-                today = date.today()
-                tasks = tasks.filter(deadline__lt=today, status__in=['Not Started', 'In Progress', 'Stalled', 'On-Hold'])
+                tasks = tasks.filter(deadline__lt=date.today())
             else:
                 tasks = tasks.filter(status=status)
 
         departments = Department.objects.all()
         users = UserProfile.objects.filter(user__is_active=True)
-        status_choices = TaskForm.STATUS_CHOICES
+        status_choices = Task.ACTIVE_STATUS_CHOICES
 
         return render(request, 'tasks/task_list.html', {
             'tasks': tasks,
@@ -667,8 +673,8 @@ def task_list(request):
         })
 
     else:
-        created_tasks = Task.objects.filter(assigned_by=request.user)
-        assigned_tasks = Task.objects.filter(assigned_to=request.user)
+        created_tasks = Task.objects.filter(assigned_by=request.user, status__in=INTERNAL_ACTIVE_STATUSES)
+        assigned_tasks = Task.objects.filter(assigned_to=request.user, status__in=INTERNAL_ACTIVE_STATUSES)
         return render(request, 'tasks/task_list.html', {
             'created_tasks': created_tasks,
             'assigned_tasks': assigned_tasks,

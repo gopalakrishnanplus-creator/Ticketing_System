@@ -28,19 +28,36 @@ def upsert_client_contact(name, email, phone_number):
 
 
 def derive_ticket_status(ticket):
-    if ticket.status in {ClientTicket.STATUS_CANCELLED, ClientTicket.STATUS_AUTO_CLOSED}:
-        return ticket.status
-    if ticket.inditech_status in {ClientTicket.PARTICIPANT_COMPLETED, ClientTicket.PARTICIPANT_CLOSED}:
-        if ticket.client_status in {ClientTicket.PARTICIPANT_COMPLETED, ClientTicket.PARTICIPANT_CLOSED}:
+    return ticket.status or ClientTicket.STATUS_OPEN
+
+
+def normalized_ticket_status(actor_type, *, status="", inditech_status="", client_status="", current_status=""):
+    if status:
+        return status
+
+    legacy_status = ""
+    if actor_type == ClientTicketUpdate.ACTOR_CLIENT:
+        legacy_status = client_status or inditech_status
+    else:
+        legacy_status = inditech_status or client_status
+
+    if not legacy_status:
+        return current_status or ClientTicket.STATUS_OPEN
+
+    if legacy_status == ClientTicket.PARTICIPANT_PENDING:
+        return current_status or ClientTicket.STATUS_OPEN
+    if legacy_status == ClientTicket.PARTICIPANT_IN_PROGRESS:
+        return ClientTicket.STATUS_IN_PROGRESS
+    if legacy_status == ClientTicket.PARTICIPANT_NEEDS_CLARIFICATION:
+        if actor_type == ClientTicketUpdate.ACTOR_CLIENT:
+            return ClientTicket.STATUS_WAITING_FOR_INDITECH
+        return ClientTicket.STATUS_WAITING_FOR_CLIENT
+    if legacy_status in {ClientTicket.PARTICIPANT_COMPLETED, ClientTicket.PARTICIPANT_CLOSED}:
+        if actor_type == ClientTicketUpdate.ACTOR_CLIENT:
             return ClientTicket.STATUS_CLOSED
         return ClientTicket.STATUS_RESOLVED
-    if ticket.inditech_status == ClientTicket.PARTICIPANT_NEEDS_CLARIFICATION:
-        return ClientTicket.STATUS_WAITING_FOR_CLIENT
-    if ticket.client_status == ClientTicket.PARTICIPANT_NEEDS_CLARIFICATION:
-        return ClientTicket.STATUS_WAITING_FOR_INDITECH
-    if ticket.inditech_status == ClientTicket.PARTICIPANT_IN_PROGRESS or ticket.client_status == ClientTicket.PARTICIPANT_IN_PROGRESS:
-        return ClientTicket.STATUS_IN_PROGRESS
-    return ticket.status or ClientTicket.STATUS_OPEN
+
+    return current_status or ClientTicket.STATUS_OPEN
 
 
 def stakeholder_emails(ticket, extra=None, exclude=None, include_created_by=False):
@@ -289,28 +306,40 @@ def create_ticket_update(
     attachments=None,
 ):
     now = timezone.now()
-    if status:
-        ticket.status = status
-    if inditech_status:
-        ticket.inditech_status = inditech_status
-    if client_status:
-        ticket.client_status = client_status
+    ticket.status = normalized_ticket_status(
+        actor_type,
+        status=status,
+        inditech_status=inditech_status,
+        client_status=client_status,
+        current_status=ticket.status,
+    )
+    ticket.inditech_status = ""
+    ticket.client_status = ""
 
     if actor_type == ClientTicketUpdate.ACTOR_INDITECH:
         ticket.last_inditech_action_at = now
     elif actor_type == ClientTicketUpdate.ACTOR_CLIENT:
         ticket.last_client_action_at = now
 
-    if ticket.inditech_status in {ClientTicket.PARTICIPANT_COMPLETED, ClientTicket.PARTICIPANT_CLOSED} and not ticket.inditech_completed_at:
+    if ticket.status == ClientTicket.STATUS_RESOLVED and not ticket.inditech_completed_at:
         ticket.inditech_completed_at = now
-    if ticket.client_status in {ClientTicket.PARTICIPANT_COMPLETED, ClientTicket.PARTICIPANT_CLOSED} and not ticket.client_completed_at:
-        ticket.client_completed_at = now
+    elif ticket.status not in {ClientTicket.STATUS_CLOSED, ClientTicket.STATUS_AUTO_CLOSED}:
+        ticket.inditech_completed_at = None
 
-    if not status:
-        ticket.status = derive_ticket_status(ticket)
+    if ticket.status in {ClientTicket.STATUS_CLOSED, ClientTicket.STATUS_AUTO_CLOSED}:
+        if not ticket.inditech_completed_at:
+            ticket.inditech_completed_at = now
+        if not ticket.client_completed_at:
+            ticket.client_completed_at = now
+    else:
+        ticket.client_completed_at = None
 
     if ticket.status in {ClientTicket.STATUS_CLOSED, ClientTicket.STATUS_AUTO_CLOSED} and not ticket.closed_at:
         ticket.closed_at = now
+    elif ticket.status == ClientTicket.STATUS_CANCELLED and not ticket.closed_at:
+        ticket.closed_at = now
+    elif ticket.status not in {ClientTicket.STATUS_CLOSED, ClientTicket.STATUS_AUTO_CLOSED, ClientTicket.STATUS_CANCELLED}:
+        ticket.closed_at = None
     ticket.updated_at = now
     ticket.save()
 
@@ -321,8 +350,8 @@ def create_ticket_update(
         client=client,
         message=(message or "").strip(),
         status=ticket.status,
-        inditech_status=ticket.inditech_status,
-        client_status=ticket.client_status,
+        inditech_status="",
+        client_status="",
     )
     uploaded_by_role = resolve_uploaded_by_role(ticket, actor_type, user=user)
     save_ticket_attachments(ticket, attachments, uploaded_by_role=uploaded_by_role, user=user, update=update)
@@ -398,10 +427,13 @@ def auto_close_stale_tickets():
     tickets = (
         ClientTicket.objects.select_related("assigned_to", "project_manager")
         .prefetch_related("attachments")
-        .filter(inditech_completed_at__lte=threshold, auto_closed_at__isnull=True)
+        .filter(
+            status=ClientTicket.STATUS_RESOLVED,
+            inditech_completed_at__lte=threshold,
+            auto_closed_at__isnull=True,
+        )
         .exclude(status__in=[ClientTicket.STATUS_CLOSED, ClientTicket.STATUS_AUTO_CLOSED, ClientTicket.STATUS_CANCELLED])
     )
-    tickets = tickets.exclude(client_status__in=[ClientTicket.PARTICIPANT_COMPLETED, ClientTicket.PARTICIPANT_CLOSED])
     for ticket in tickets:
         ticket.status = ClientTicket.STATUS_AUTO_CLOSED
         ticket.auto_closed_at = now
@@ -413,8 +445,8 @@ def auto_close_stale_tickets():
             actor_type=ClientTicketUpdate.ACTOR_SYSTEM,
             message="Ticket auto closed because the client did not close it within 7 days of Inditech completion.",
             status=ticket.status,
-            inditech_status=ticket.inditech_status,
-            client_status=ticket.client_status,
+            inditech_status="",
+            client_status="",
         )
         notify_ticket_auto_closed(ticket)
         closed_count += 1

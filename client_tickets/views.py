@@ -17,7 +17,7 @@ from django.views.decorators.http import require_http_methods
 
 from task_app.models import Department
 
-from .forms import ClientTicketClientUpdateForm, ClientTicketForm, ClientTicketInditechUpdateForm
+from .forms import ClientTicketForm, ClientTicketUpdateForm
 from .models import ClientContact, ClientTicket, ClientTicketType, ClientTicketUpdate
 from .services import (
     attachment_items as build_client_attachment_items,
@@ -339,46 +339,26 @@ def ticket_detail(request, ticket_number):
     )
     _touch_inditech_activity(ticket, request.user)
 
-    inditech_form = ClientTicketInditechUpdateForm(ticket=ticket)
-    client_form = ClientTicketClientUpdateForm(ticket=ticket)
+    update_form = ClientTicketUpdateForm(ticket=ticket)
 
     if request.method == "POST":
-        if "submit_inditech_update" in request.POST:
-            inditech_form = ClientTicketInditechUpdateForm(request.POST, request.FILES, ticket=ticket)
-            client_form = ClientTicketClientUpdateForm(ticket=ticket)
-            if inditech_form.is_valid():
-                update = create_ticket_update(
-                    ticket,
-                    ClientTicketUpdate.ACTOR_INDITECH,
-                    message=inditech_form.cleaned_data["message"],
-                    status=inditech_form.cleaned_data["status"],
-                    inditech_status=inditech_form.cleaned_data["inditech_status"],
-                    user=request.user,
-                    attachments=inditech_form.cleaned_data["attachments"],
-                )
-                notify_ticket_updated(ticket, update)
-                messages.success(request, "Inditech update saved and emailed.")
-                return redirect("client_tickets:ticket_detail", ticket.ticket_number)
-        elif "submit_client_update" in request.POST:
-            client_form = ClientTicketClientUpdateForm(request.POST, request.FILES, ticket=ticket)
-            inditech_form = ClientTicketInditechUpdateForm(ticket=ticket)
-            if client_form.is_valid():
-                update = create_ticket_update(
-                    ticket,
-                    ClientTicketUpdate.ACTOR_CLIENT,
-                    message=client_form.cleaned_data["message"],
-                    client_status=client_form.cleaned_data["client_status"],
-                    client=ticket.requester,
-                    attachments=client_form.cleaned_data["attachments"],
-                )
-                notify_ticket_updated(ticket, update)
-                messages.success(request, "Client update recorded and emailed.")
-                return redirect("client_tickets:ticket_detail", ticket.ticket_number)
+        update_form = ClientTicketUpdateForm(request.POST, request.FILES, ticket=ticket)
+        if update_form.is_valid():
+            update = create_ticket_update(
+                ticket,
+                ClientTicketUpdate.ACTOR_INDITECH,
+                message=update_form.cleaned_data["message"],
+                status=update_form.cleaned_data["status"],
+                user=request.user,
+                attachments=update_form.cleaned_data["attachments"],
+            )
+            notify_ticket_updated(ticket, update)
+            messages.success(request, "Ticket update saved and emailed.")
+            return redirect("client_tickets:ticket_detail", ticket.ticket_number)
 
     context = {
         "ticket": ticket,
-        "inditech_form": inditech_form,
-        "client_form": client_form,
+        "update_form": update_form,
         "mail_attachments": build_client_attachment_items(ticket),
     }
     return render(request, "client_tickets/ticket_detail.html", context)
@@ -755,6 +735,12 @@ def api_client_update_ticket(request, ticket_number):
             request.FILES.getlist("attachments"),
             existing_count=ticket.attachments.count(),
         )
+        status = _coerce_choice(
+            _payload_value(payload, "status", default=""),
+            ClientTicket.STATUS_CHOICES,
+            label="Status",
+            allow_blank=True,
+        )
         client_status = _coerce_choice(
             _payload_value(payload, "client_status", default=""),
             ClientTicket.PARTICIPANT_STATUS_CHOICES,
@@ -765,6 +751,7 @@ def api_client_update_ticket(request, ticket_number):
             ticket,
             ClientTicketUpdate.ACTOR_CLIENT,
             message=_payload_value(payload, "message", default=""),
+            status=status,
             client_status=client_status,
             client=ticket.requester,
             attachments=attachments,

@@ -48,7 +48,7 @@
                         <br>
                         Project Manager:
                         {% if ticket.project_manager %}
-                            {{ ticket.project_manager.get_full_name|default:ticket.project_manager.username }}
+                            {{ ticket.project_manager|user_display_name:"Unassigned" }}
                         {% else %}
                             Unassigned
                         {% endif %}
@@ -65,9 +65,7 @@
                 <tr>
                     <td style="width:180px;padding:14px 16px;border:1px solid #e7ecf4;border-radius:16px 0 0 16px;background:#f9fbff;color:#667085;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Status</td>
                     <td style="padding:14px 16px;border:1px solid #e7ecf4;border-left:0;border-radius:0 16px 16px 0;background:#ffffff;color:#101828;">
-                        Overall: {{ ticket.get_status_display|default:"---------" }}<br>
-                        Inditech: {{ ticket.get_inditech_status_display|default:"---------" }}<br>
-                        Client: {{ ticket.get_client_status_display|default:"---------" }}
+                        {{ ticket.get_status_display|default:"---------" }}
                     </td>
                 </tr>
                 <tr>
@@ -83,7 +81,7 @@
                 <div style="margin-top:22px;padding:18px 20px;border:1px solid #e7ecf4;border-radius:20px;background:#f9fbff;">
                     <div style="margin-bottom:8px;color:#667085;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Latest Update</div>
                     <div style="font-size:15px;font-weight:700;color:#101828;">{{ update.get_actor_type_display }}</div>
-                    <div style="margin-top:8px;color:#475467;">Overall: {{ update.get_status_display|default:"---------" }} | Inditech: {{ update.get_inditech_status_display|default:"---------" }} | Client: {{ update.get_client_status_display|default:"---------" }}</div>
+                    <div style="margin-top:8px;color:#475467;">Status: {{ update.get_status_display|default:"---------" }}</div>
                     {% if update.message %}
                         <div style="margin-top:10px;color:#101828;line-height:1.7;">{{ update.message|linebreaksbr }}</div>
                     {% endif %}

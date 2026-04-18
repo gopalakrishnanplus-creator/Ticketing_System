@@ -60,6 +60,8 @@ class TaskForm(forms.ModelForm):
 
         if not self.fields['assigned_to'].queryset.exists():
             self.fields['assigned_to'].queryset = User.objects.none()
+        self.fields["status"].choices = Task.ACTIVE_STATUS_CHOICES
+        self.fields["status"].initial = Task.ACTIVE_STATUSES[0]
         # Preselect viewers_ui from instance.viewers
         if self.instance and getattr(self.instance, "viewers", None):
             self.fields["viewers_ui"].initial = User.objects.filter(email__in=self.instance.viewers)

@@ -43,7 +43,7 @@
                     <span>Project Manager</span>
                     <strong>
                         {% if ticket.project_manager %}
-                            {{ ticket.project_manager.get_full_name|default:ticket.project_manager.username }}
+                            {{ ticket.project_manager|user_display_name:"No project manager" }}
                         {% else %}
                             No project manager
                         {% endif %}
@@ -62,12 +62,8 @@
                     <strong>{{ ticket.get_source_system_display }}</strong>
                 </div>
                 <div class="ticket-mail-field">
-                    <span>Inditech Status</span>
-                    <strong>{{ ticket.get_inditech_status_display|default:"---------" }}</strong>
-                </div>
-                <div class="ticket-mail-field">
-                    <span>Client Status</span>
-                    <strong>{{ ticket.get_client_status_display|default:"---------" }}</strong>
+                    <span>Status</span>
+                    <strong>{{ ticket.get_status_display|default:"---------" }}</strong>
                 </div>
                 <div class="ticket-mail-field">
                     <span>Created</span>
@@ -130,16 +126,8 @@
                         </div>
                         <div class="ticket-mail-grid ticket-mail-grid--compact">
                             <div class="ticket-mail-field">
-                                <span>Overall Status</span>
+                                <span>Status</span>
                                 <strong>{{ update.get_status_display|default:"---------" }}</strong>
-                            </div>
-                            <div class="ticket-mail-field">
-                                <span>Inditech</span>
-                                <strong>{{ update.get_inditech_status_display|default:"---------" }}</strong>
-                            </div>
-                            <div class="ticket-mail-field">
-                                <span>Client</span>
-                                <strong>{{ update.get_client_status_display|default:"---------" }}</strong>
                             </div>
                         </div>
 
@@ -170,51 +158,24 @@
 
     <aside class="ticket-side">
         <article class="form-panel detail-sidebar-card">
-            <h3>Inditech Update</h3>
-            <p class="field-help">Save the latest Inditech-side progress and include files if needed.</p>
+            <h3>Ticket Update</h3>
+            <p class="field-help">Keep the PM dashboard flow simple with one ticket status, one update note, and optional attachments.</p>
             <form method="post" enctype="multipart/form-data" class="ticket-update-form">
                 {% csrf_token %}
                 <div class="form-group">
-                    <label for="{{ inditech_form.status.id_for_label }}">Overall Status</label>
-                    {{ inditech_form.status }}
+                    <label for="{{ update_form.status.id_for_label }}">Status</label>
+                    {{ update_form.status }}
                 </div>
                 <div class="form-group">
-                    <label for="{{ inditech_form.inditech_status.id_for_label }}">Inditech Status</label>
-                    {{ inditech_form.inditech_status }}
+                    <label for="{{ update_form.message.id_for_label }}">Message</label>
+                    {{ update_form.message }}
                 </div>
                 <div class="form-group">
-                    <label for="{{ inditech_form.message.id_for_label }}">Message</label>
-                    {{ inditech_form.message }}
-                </div>
-                <div class="form-group">
-                    <label for="{{ inditech_form.attachments.id_for_label }}">Attachments</label>
-                    {{ inditech_form.attachments }}
+                    <label for="{{ update_form.attachments.id_for_label }}">Attachments</label>
+                    {{ update_form.attachments }}
                 </div>
                 <div class="button-row button-row--stacked">
-                    <button class="btn btn-primary" type="submit" name="submit_inditech_update">Save Inditech Update</button>
-                </div>
-            </form>
-        </article>
-
-        <article class="form-panel detail-sidebar-card">
-            <h3>Client Update</h3>
-            <p class="field-help">Use this to log or test the client-side response from the UI.</p>
-            <form method="post" enctype="multipart/form-data" class="ticket-update-form">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label for="{{ client_form.client_status.id_for_label }}">Client Status</label>
-                    {{ client_form.client_status }}
-                </div>
-                <div class="form-group">
-                    <label for="{{ client_form.message.id_for_label }}">Message</label>
-                    {{ client_form.message }}
-                </div>
-                <div class="form-group">
-                    <label for="{{ client_form.attachments.id_for_label }}">Attachments</label>
-                    {{ client_form.attachments }}
-                </div>
-                <div class="button-row button-row--stacked">
-                    <button class="btn btn-warning" type="submit" name="submit_client_update">Save Client Update</button>
+                    <button class="btn btn-primary" type="submit" name="submit_update">Save Ticket Update</button>
                 </div>
             </form>
         </article>
